@@ -1,0 +1,9 @@
+numpy
+pandas<3.0.0
+scipy
+wfdb
+matplotlib
+seaborn
+scikit-learn
+jupyter
+notebook
