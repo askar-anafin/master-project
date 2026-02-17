@@ -41,3 +41,23 @@ We use the **PTB-XL ECG Database**, a large publicly available dataset containin
    ```bash
    python scripts/download_data.py
    ```
+
+## Quick Start: Run the Demo 🚀
+
+You can test the trained models on random samples from the test set using the `src/demo.py` script.
+
+### 1. Diagnose Arrhythmias (MIT-BIH)
+
+Detects: Normal (N), Supraventricular (S), Ventricular (V), Fusion (F), Unknown (Q).
+
+```bash
+python src/demo.py --mode arrhythmia
+```
+
+### 2. Diagnose Heart Disease (PTB-XL)
+
+Detects: Normal (NORM), Myocardial Infarction (MI), Ischemia (STTC), Conduction Disturbance (CD), Hypertrophy (HYP).
+
+```bash
+python src/demo.py --mode disease
+```
