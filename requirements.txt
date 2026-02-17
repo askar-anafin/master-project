@@ -1,9 +1,12 @@
 numpy
-pandas<3.0.0
-scipy
-wfdb
+pandas
 matplotlib
 seaborn
+scipy
+wfdb
 scikit-learn
-jupyter
+torch
+torchvision
+jupyterlab
 notebook
+tqdm
