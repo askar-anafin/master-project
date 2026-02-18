@@ -28,7 +28,7 @@ class ResNetBlock(nn.Module):
         out = self.bn2(out)
         if self.downsample is not None:
             identity = self.downsample(x)
-        out += identity
+        out = out + identity
         out = self.relu(out)
         return out
 
@@ -121,14 +121,14 @@ class STReGE(nn.Module):
         out = self.bn_g1(out)
         out = self.relu(out)
         out = self.dropout(out)
-        out += res # Residual
+        out = out + res # Residual
         
         # Block 2
         res = out
         out = self.gc2(out, adj)
         out = self.bn_g2(out)
         out = self.relu(out)
-        out += res # Residual
+        out = out + res # Residual
         
         # Pooling
         out = out.mean(dim=1) # (Batch, 256)

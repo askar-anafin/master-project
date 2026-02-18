@@ -13,6 +13,8 @@ from datetime import datetime
 # Add project root
 sys.path.append(os.getcwd())
 
+print("PYTHON SCRIPT STARTED", flush=True)
+
 from src.ptbxl.loader import PTBXLDataset
 from src.datasets.base import ECGDataset
 from src.augmentations import Augmentation
@@ -28,7 +30,7 @@ def get_model(model_name, num_classes=5, input_channels=12):
     if model_name == 'cnn':
         return ResNet18(num_classes=num_classes, input_channels=input_channels)
     elif model_name == 'mamba':
-        return MambaECG(num_classes=num_classes, input_channels=input_channels, d_model=128, num_layers=4)
+        return MambaECG(num_classes=num_classes, input_channels=input_channels, d_model=128, num_layers=4, stride=8)
     elif model_name == 'gnn':
         return STReGE(num_classes=num_classes, num_nodes=input_channels, feature_dim=256)
     elif model_name == 'vit':
@@ -82,10 +84,10 @@ def train_experiment(model_name, experiment_name=None, limit=None, epochs=20, ba
     model = get_model(model_name).to(DEVICE)
     optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-2)
     criterion = nn.BCEWithLogitsLoss()
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=3, verbose=True)
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=3)
     
     # Mixed Precision Scaler
-    scaler = torch.cuda.amp.GradScaler()
+    scaler = torch.amp.GradScaler('cuda')
     
     best_val_score = 0.0
     
@@ -99,13 +101,18 @@ def train_experiment(model_name, experiment_name=None, limit=None, epochs=20, ba
             
             optimizer.zero_grad()
             
-            # AMP Context
-            with torch.cuda.amp.autocast():
+            # AMP Context (New API)
+            with torch.amp.autocast('cuda'):
                 outputs = model(X_batch)
                 loss = criterion(outputs, y_batch)
             
             # Scaled Backward
             scaler.scale(loss).backward()
+            
+            # Gradient Clipping
+            scaler.unscale_(optimizer)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+            
             scaler.step(optimizer)
             scaler.update()
             
@@ -157,7 +164,7 @@ def evaluate(model, loader, criterion, device):
         for X_batch, y_batch in loader:
             X_batch, y_batch = X_batch.to(device, non_blocking=True), y_batch.to(device, non_blocking=True)
             
-            with torch.cuda.amp.autocast():
+            with torch.amp.autocast('cuda'):
                 outputs = model(X_batch)
                 loss = criterion(outputs, y_batch)
             losses.append(loss.item())
@@ -182,7 +189,7 @@ def predict_all(model, loader, device):
     with torch.no_grad():
         for X_batch, y_batch in loader:
             X_batch = X_batch.to(device, non_blocking=True)
-            with torch.cuda.amp.autocast():
+            with torch.amp.autocast('cuda'):
                 outputs = model(X_batch)
                 probs = torch.sigmoid(outputs)
             y_true_list.append(y_batch.float().cpu().numpy())

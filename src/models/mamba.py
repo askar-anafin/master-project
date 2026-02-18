@@ -118,13 +118,13 @@ class MambaBlock(nn.Module):
         return y
 
 class MambaECG(nn.Module):
-    def __init__(self, num_classes=5, input_channels=12, d_model=128, num_layers=4):
+    def __init__(self, num_classes=5, input_channels=12, d_model=128, num_layers=4, stride=4):
         super(MambaECG, self).__init__()
         
         # Project Input (B, 12, L) -> (B, L, 12) -> Embedding -> (B, L, D)
-        # Downsample to reduce sequence length (5000 -> 1250) for feasibility of sequential loop
+        # Downsample to reduce sequence length
         self.embedding = nn.Sequential(
-            nn.Conv1d(input_channels, d_model, kernel_size=4, stride=4, padding=0),
+            nn.Conv1d(input_channels, d_model, kernel_size=4, stride=stride, padding=0),
             nn.BatchNorm1d(d_model),
             nn.ReLU()
         )
