@@ -10,3 +10,5 @@ torchvision
 jupyterlab
 notebook
 tqdm
+fastapi
+uvicorn
