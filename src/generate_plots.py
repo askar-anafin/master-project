@@ -69,8 +69,12 @@ def generate_confusion_matrix():
     plt.ylabel('True Label')
     plt.xlabel('Predicted Label')
     plt.tight_layout()
+    # Create figures directory if it doesn't exist
+    os.makedirs('figures', exist_ok=True)
+    plt.savefig('figures/confusion_matrix.png', dpi=300)
+    plt.savefig('figures/confusion_matrix.eps', format='eps')
     plt.savefig('confusion_matrix.png', dpi=300)
-    print("confusion_matrix.png saved!")
+    print("confusion_matrix.png and figures/confusion_matrix.eps saved!")
 
 if __name__ == "__main__":
     generate_confusion_matrix()
