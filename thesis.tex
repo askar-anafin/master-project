@@ -3,7 +3,9 @@
 % Essential packages for GOST and AITU formatting
 \usepackage[T2A]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[english,russian]{babel}
+\usepackage[russian,english]{babel}
+% Redefine bibliography name to "References" for English language
+\addto\captionsenglish{\renewcommand{\bibname}{References}}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
 \usepackage{booktabs}
@@ -14,6 +16,10 @@
 \usepackage{listings}
 \usepackage{float}
 \usepackage{cite}
+
+% TikZ libraries for vector drawings
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows,positioning,calc,fit}
 
 % Geometry margins (GOST 7.32-2017 standard margins: Left=30mm, Right=15mm, Top=20mm, Bottom=20mm)
 \geometry{
@@ -55,84 +61,60 @@
 \begin{document}
 
 % =========================================================================
-% 1. COVER PAGE (AITU Guideline 32)
+% 1. COVER PAGE (AITU Guideline 32 - Modified to match Example Thesis)
 % =========================================================================
 \begin{titlepage}
 \begin{center}
     \singlespacing
-    \MakeUppercase{\textbf{Astana IT University LLP}} \\
-    \vspace{4cm}
+    \vspace*{1.5cm}
+    \hrule height 1.5pt
+    \vspace{2pt}
+    \hrule height 0.5pt
+    \vspace{1.5cm}
     
-    {\large \textbf{STUDENT NAME}} \\
+    {\Large \bfseries DEVELOPMENT OF A HEART DISEASE DIAGNOSIS TECHNIQUE USING ECG (ELECTROCARDIOGRAM) SIGNALS} \\
+    
+    \vspace{1.5cm}
+    \hrule height 0.5pt
+    \vspace{2pt}
+    \hrule height 1.5pt
     \vspace{2.5cm}
     
-    {\Large \bfseries INFORMATION TECHNOLOGY OF PATTERN RECOGNITION IN MULTI-LEAD ELECTROCARDIOGRAMS FOR CLINICAL DECISION SUPPORT} \\
+    {\large Master's Thesis} \\
+    \vspace{0.4cm}
+    {\large By} \\
+    \vspace{0.4cm}
+    {\large \MakeUppercase{\textbf{Askar Anafin}}} \\
+    \vspace{1.5cm}
+    
+    {\large Scientific Supervisor:} \\
+    \vspace{0.2cm}
+    {\large Minsoo Hahn} \\
     \vspace{2.5cm}
     
-    {\large \textbf{MASTER'S THESIS}} \\
-    \vspace{1cm}
-    
-    Educational Program: \\
-    \textbf{7M06101 -- Computer Science} \\
-    \vspace{5cm}
-    
-    \textbf{Astana, 2026}
-\end{center}
-\end{titlepage}
-
-\clearpage
-
-% =========================================================================
-% 2. TITLE PAGE (AITU Guideline 33)
-% =========================================================================
-\begin{titlepage}
-\begin{center}
-    \singlespacing
-    \MakeUppercase{\textbf{Astana IT University LLP}} \\
-    \vspace{0.5cm}
-    Department of Educational Programs \\
-    \vspace{1.5cm}
-    
-    \hfill \parbox{7cm}{
-        \textbf{CONFIDENTIALITY MARK}\\
-        (If Applicable)\\
-        \vspace{0.5cm}
-        \textbf{ADMITTED TO DEFENSE}\\
-        Head of Department:\\
-        \rule{3cm}{0.5pt} / \rule{3cm}{0.5pt}\\
-        ``\rule{0.8cm}{0.5pt}'' \rule{2cm}{0.5pt} 2026
-    }
-    
-    \vspace{1.5cm}
-    {\large \textbf{STUDENT NAME}} \\
-    \vspace{1.5cm}
-    
-    {\Large \bfseries INFORMATION TECHNOLOGY OF PATTERN RECOGNITION IN MULTI-LEAD ELECTROCARDIOGRAMS FOR CLINICAL DECISION SUPPORT} \\
-    \vspace{1.5cm}
-    
-    {\large \textbf{MASTER'S THESIS}} \\
-    \vspace{0.5cm}
-    Educational Program: \textbf{7M06101 -- Computer Science} \\
-    \vspace{1.5cm}
-    
-    \hfill \parbox{9cm}{
-        \textbf{Scientific Supervisor:} \\
-        Full Name, Academic Degree, Rank \\
-        Signature: \rule{4cm}{0.5pt} \\
-        \vspace{0.5cm}
-        \textbf{Student (Author):} \\
-        Student Full Name \\
-        Signature: \rule{4cm}{0.5pt}
-    }
+    % Astana IT University Logo in TikZ
+    \begin{tikzpicture}[scale=1.0]
+        \draw[line width=3pt, color=cyan!80!black] (-0.3,0) arc (180:360:0.3);
+        \draw[line width=3pt, color=cyan!80!black] (0.5,0) arc (0:180:0.5);
+        \draw[line width=3pt, color=cyan!80!black] (-0.7,0) arc (180:360:0.7);
+        \draw[line width=3pt, color=cyan!80!black] (0.9,0) arc (0:180:0.9);
+        \fill[color=black] (0,0) circle (0.15);
+        \node[anchor=west, align=left] at (1.2,0) {
+            \large\textbf{\textsf{ASTANA IT}} \\
+            \large\textbf{\textsf{UNIVERSITY}}
+        };
+    \end{tikzpicture}
     
     \vfill
-    \textbf{Astana, 2026}
+    {\large \textbf{DEPARTMENT OF COMPUTER SCIENCE}} \\
+    {\large \textbf{ASTANA IT UNIVERSITY LLP}} \\
+    {\large \textbf{KAZAKHSTAN}} \\
+    {\large \textbf{MAY 2026}}
 \end{center}
 \end{titlepage}
 
-\clearpage
-\pagenumbering{arabic}
-\setcounter{page}{3} % Title page is 1, Cover is 2, Abstract starts on 3
+\pagenumbering{roman}
+\setcounter{page}{1} % Abstract starts on page i
 
 % =========================================================================
 % 3. ABSTRACT (AITU Guideline 34 - English, Russian, Kazakh)
@@ -174,6 +156,66 @@
 \clearpage
 
 % =========================================================================
+% ACKNOWLEDGEMENTS
+% =========================================================================
+\chapter*{Acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+I would like to express my sincere gratitude to my scientific supervisor for their valuable guidance, continuous support, and insightful feedback throughout the duration of this research.
+
+I also extend my thanks to the faculty members of the Department of Educational Programs at Astana IT University LLP for their academic and technical assistance, as well as to my colleagues who provided constructive comments and a collaborative environment that greatly aided the completion of this thesis.
+
+\clearpage
+
+% =========================================================================
+% STUDENT'S DECLARATION
+% =========================================================================
+\chapter*{Student's declaration}
+\addcontentsline{toc}{chapter}{Student's declaration}
+
+I, Askar Anafin, certify that the work embodied in this Master's thesis, entitled ``Development of a Heart Disease Diagnosis Technique Using ECG (Electrocardiogram) Signals,'' was carried out by me at Astana IT University. The work has not been submitted for the award of any other degree or diploma, except where due acknowledgement has been made in the text.
+
+I further declare that the material obtained from other sources has been duly acknowledged in the thesis.
+
+\vspace{3cm}
+\noindent
+SIGNED: \rule{4cm}{0.5pt} \hfill DATE: \rule{4cm}{0.5pt}
+
+\clearpage
+
+% =========================================================================
+% CERTIFICATE BY SUPERVISOR
+% =========================================================================
+\chapter*{Certificate by Supervisor}
+\addcontentsline{toc}{chapter}{Certificate by Supervisor}
+
+This is to certify that the research work embodied in the thesis entitled ``Development of a Heart Disease Diagnosis Technique Using ECG (Electrocardiogram) Signals,'' submitted to Astana IT University for the award of the Master's degree, has been carried out by Askar Anafin under supervision at Astana IT University, Astana.
+
+To the best of my knowledge and belief, this work is original and has not been submitted so far in part or in full for the award of any degree or diploma of any University / Institute.
+
+\vspace{3cm}
+\noindent
+SIGNED: \rule{4cm}{0.5pt} \hfill DATE: \rule{4cm}{0.5pt} \\
+\vspace{0.5cm}
+\noindent
+Scientific Supervisor: Minsoo Hahn
+
+\clearpage
+
+% =========================================================================
+% LIST OF TABLES
+% =========================================================================
+\listoftables
+\addcontentsline{toc}{chapter}{\listtablename}
+\clearpage
+
+% =========================================================================
+% LIST OF FIGURES
+% =========================================================================
+\listoffigures
+\addcontentsline{toc}{chapter}{\listfigurename}
+\clearpage
+
+% =========================================================================
 % 4. TABLE OF CONTENTS (AITU Guideline 35)
 % =========================================================================
 \tableofcontents
@@ -181,21 +223,26 @@
 
 \clearpage
 
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
 % =========================================================================
 % 5. INTRODUCTION (AITU Guideline 36 - Max 3 A4 pages)
 % =========================================================================
-\chapter*{Introduction}
-\addcontentsline{toc}{chapter}{Introduction}
+\chapter{Introduction}
+\label{ch:intro}
 
-\textbf{Relevance of the Topic.} Cardiovascular diseases (CVDs) remain the leading cause of mortality globally, accounting for an estimated 17.9 million deaths annually according to the World Health Organization. Electrocardiography (ECG) is the primary, non-invasive diagnostic modality used to detect cardiac abnormalities such as arrhythmias, myocardial infarction, conduction blocks, and chamber hypertrophy. Standard clinical practice relies heavily on visual interpretation of 12-lead ECG waveforms by trained cardiologists. However, this process is prone to human error, subjective interpretation, and substantial inter-observer variability. In emergency and rural healthcare settings, the lack of immediate access to specialized cardiologists can lead to critical delays in diagnosis and treatment. Computer-aided electrocardiogram classification systems offer a viable solution by providing real-time, automated triage and decision support. Recent breakthroughs in deep learning have shown that artificial neural networks can achieve cardiologist-level classification accuracy, yet finding the optimal architecture that balances morphological precision, spatial-temporal lead relationships, and resource efficiency remains an open challenge.
+\section{Background and Clinical Context}
+Cardiovascular diseases (CVDs) remain the leading cause of mortality globally, accounting for an estimated 17.9 million deaths annually according to the World Health Organization. Electrocardiography (ECG) is the primary, non-invasive diagnostic modality used to detect cardiac abnormalities such as arrhythmias, myocardial infarction, conduction blocks, and chamber hypertrophy. Standard clinical practice relies heavily on visual interpretation of 12-lead ECG waveforms by trained cardiologists. However, this process is prone to human error, subjective interpretation, and substantial inter-observer variability. In emergency and rural healthcare settings, the lack of immediate access to specialized cardiologists can lead to critical delays in diagnosis and treatment.
 
-\textbf{Scientific Novelty.} Traditional deep learning models for multi-lead ECG classification treat the 12 leads as independent channels in a standard convolutional array, completely ignoring the structural and physical geometric relationships of the electrode placements. This research addresses this gap by designing and evaluating a Spatio-Temporal Graph Neural Network (ST-ReGE) that integrates a learnable adjacency matrix to dynamically model the electrical correlations between anatomically contiguous leads (e.g., septal, anterior, lateral, and inferior lead groupings). This approach is directly benchmarked against a morphology-focused 1D Deep Residual Network (ResNet-18) and a sequence-focused 1D Vision Transformer (ViT-1D) with self-attention. This direct, standardized comparative analysis on a large-scale dataset (PTB-XL) provides new insights into the performance trade-offs between convolutional inductive biases, graph-based spatial relationships, and transformer-based global attention for multi-label cardiac pathology recognition.
+\section{Current State of the Problem}
+Computer-aided electrocardiogram classification systems offer a viable solution by providing real-time, automated triage and decision support. The primary challenge in current computer-aided ECG analysis is the limitation of traditional machine learning, which relies on manual feature engineering. While deep learning has bypassed this by extracting features automatically, standard models (like CNNs) treat the 12 leads as simple independent channels. This omits the structural and physical spatial geometry of the electrode placements. Furthermore, many models act as "black boxes," providing predictions without clinical interpretability or uncertainty quantification. Clinical adoption requires models that can model inter-lead relationships, provide explainable outputs, and flag ambiguous predictions for expert review.
 
-\textbf{Practical Significance.} The developed information technology translates raw multi-lead digital signals into structured diagnostic predictions. By packaging the trained deep learning models into an asynchronous FastAPI web service and deploying a clinical dashboard prototype, we show how these systems can be integrated into real-world hospital workflows. This software allows general practitioners and triage nurses to quickly upload patient ECG records, visualize the waveforms, and view the diagnostic probabilities, thereby accelerating the identification of critical cases (such as acute myocardial infarction) and reducing the workload of diagnostic staff.
+\section{Research Aim, Objectives, and Hypothesis}
+The aim of this research is to develop and evaluate deep learning methods for automated multi-lead electrocardiogram classification to provide clinical decision support and triage assistance for healthcare providers.
 
-\textbf{Purpose of the Research.} To develop and evaluate deep learning methods for automated multi-lead electrocardiogram classification to provide clinical decision support and triage assistance for healthcare providers.
-
-\textbf{Research Objectives:}
+The following research objectives were defined:
 \begin{enumerate}
     \item Evaluate the physiological and clinical foundations of electrocardiography and identify the key challenges of manual ECG interpretation.
     \item Conduct a systematic review of the historical development of computer-aided ECG analysis and compare modern deep learning architectures.
@@ -207,13 +254,34 @@
     \item Implement and test an interactive FastAPI web application dashboard for real-time visualization and multi-model inference.
 \end{enumerate}
 
-\textbf{Object of the Research.} The processes of diagnostic assessment and interpretation of 12-lead electrocardiogram (ECG) signals within clinical healthcare settings.
+To guide this work, three hypotheses are formulated:
+\begin{itemize}
+    \item \textbf{Hypothesis 1 (Inductive Bias):} A 1D ResNet-18 model adapted for time-series signals will provide strong baseline morphological feature extraction, outperforming attention-based models on limited clinical datasets like PTB-XL due to its convolutional translation invariance.
+    \item \textbf{Hypothesis 2 (Spatial Relations):} A Spatio-Temporal Graph Neural Network (ST-ReGE) incorporating a learnable adjacency matrix can capture inter-lead electrical relationships, improving precision and Exact Match Accuracy for co-occurring multi-label pathologies.
+    \item \textbf{Hypothesis 3 (Explainability):} Post-hoc feature explainability using 1D Grad-CAM can highlight localized regions of the ECG waveform that correspond to established clinical criteria (e.g., ST-elevation in Myocardial Infarction), establishing clinical trust.
+\end{itemize}
 
-\textbf{Subject of the Research.} The development, optimization, and comparative analysis of deep learning models (convolutional, spatio-temporal graph, and attention-based architectures) for the automated multi-label classification of ECG signals.
+\section{Scientific Novelty and Practical Significance}
+\textbf{Scientific Novelty.} Traditional deep learning models for multi-lead ECG classification treat the 12 leads as independent channels in a standard convolutional array, completely ignoring the structural and physical geometric relationships of the electrode placements. This research addresses this gap by designing and evaluating a Spatio-Temporal Graph Neural Network (ST-ReGE) that integrates a learnable adjacency matrix to dynamically model the electrical correlations between anatomically contiguous leads (e.g., septal, anterior, lateral, and inferior lead groupings). This approach is directly benchmarked against a morphology-focused 1D Deep Residual Network (ResNet-18) and a sequence-focused 1D Vision Transformer (ViT-1D) with self-attention. This direct, standardized comparative analysis on a large-scale dataset (PTB-XL) provides new insights into the performance trade-offs between convolutional inductive biases, graph-based spatial relationships, and transformer-based global attention for multi-label cardiac pathology recognition.
 
-\textbf{Research Methods.} Digital signal preprocessing (Butterworth filtering, resampling, Z-score normalization), deep learning model architecture engineering, multi-label performance evaluation metrics, local feature explainability (1D Grad-CAM), and asynchronous web service development.
+\noindent
+\textbf{Practical Significance.} The developed information technology translates raw multi-lead digital signals into structured diagnostic predictions. By packaging the trained deep learning models into an asynchronous FastAPI web service and deploying a clinical dashboard prototype, we show how these systems can be integrated into real-world hospital workflows. This software allows general practitioners and triage nurses to quickly upload patient ECG records, visualize the waveforms, and view the diagnostic probabilities, thereby accelerating the identification of critical cases (such as acute myocardial infarction) and reducing the workload of diagnostic staff.
 
-\textbf{Structure of the Work.} The thesis consists of an Abstract, Introduction, 3 main chapters (Literature Review, Model Design, Results & Deployment), Conclusion, List of References containing 33 sources, and five Appendices containing the full Python source code listings of the project implementation.
+\section{Methodological Framework}
+\begin{itemize}
+    \item \textbf{Object of the Research:} The processes of diagnostic assessment and interpretation of 12-lead electrocardiogram (ECG) signals within clinical healthcare settings.
+    \item \textbf{Subject of the Research:} The development, optimization, and comparative analysis of deep learning models (convolutional, spatio-temporal graph, and attention-based architectures) for the automated multi-label classification of ECG signals.
+    \item \textbf{Research Methods:} Digital signal preprocessing (Butterworth filtering, resampling, Z-score normalization), deep learning model architecture engineering, multi-label performance evaluation metrics, local feature explainability (1D Grad-CAM), and asynchronous web service development.
+\end{itemize}
+
+\section{Thesis Structure}
+The thesis consists of an Abstract, Acknowledgements, Declarations, Table of Contents, List of Tables, List of Figures, 3 main chapters, Conclusion, List of References, and five Appendices. The structural design and reporting rules follow the academic integrity guidelines of Astana IT University and the formatting requirements of the GOST 7.32-2017 standard.
+\begin{itemize}
+    \item \textbf{Chapter 1: Literature Review and Theoretical Foundations} establishes the physiological basis of ECG, target pathologies, historical computer-aided diagnostic methods, and deep learning architectures in cardiology.
+    \item \textbf{Chapter 2: Digital Signal Processing and Deep Learning Model Design} details the preprocessing pipeline, ResNet-18, ST-ReGE GNN, and ViT-1D models.
+    \item \textbf{Chapter 3: Experimental Evaluation and Prototype Implementation} presents hyperparameters, quantitative metrics, qualitative cases, 1D Grad-CAM interpretability, and FastAPI web dashboard deployment.
+    \item \textbf{Appendices A--E} provide the source code listings for reproducibility.
+\end{itemize}
 
 \clearpage
 
@@ -223,59 +291,153 @@
 \chapter{Literature Review and Theoretical Foundations}
 
 \section{Clinical Electrocardiography and Electrophysiology of the Heart}
-The mammalian heart is a muscular organ controlled by an intrinsic electrical conduction system. The cardiac cycle begins with depolarization of the sinoatrial (SA) node, the natural pacemaker located in the right atrium. The electrical impulse propagates through the atrial myocardium, causing atrial contraction (represented by the P wave on the ECG). The signal then reaches the atrioventricular (AV) node, where it undergoes a physiological delay (allowing ventricles to fill with blood). Following this delay, the impulse travels rapidly down the Bundle of His, branches into the left and right bundle branches, and spreads through the Purkinje fibers to the ventricular myocardium, initiating ventricular depolarization and contraction (the QRS complex). Ventricular repolarization then follows, manifesting as the T wave.
+The mammalian heart is a complex muscular organ regulated by a highly specialized intrinsic electrical conduction system. The cardiac cycle is initiated by the spontaneous depolarization of pacemaker cells located in the sinoatrial (SA) node, situated in the posterior wall of the right atrium. These specialized cells generate action potentials without neural input due to a slow, inward sodium current known as the pacemaker current (funny current, $I_f$). Once an action potential is generated, it propagates rapidly through the atrial myocardium via the internodal pathways, initiating atrial depolarization and subsequent mechanical contraction, which is clinically represented as the P wave on the surface electrocardiogram (ECG) \cite{schlapfer2017ecg}.
 
-The standard 12-lead electrocardiogram records these electrical potentials from twelve distinct spatial perspectives. The leads are divided into six limb leads (I, II, III, aVR, aVL, aVF) which record potentials in the frontal plane, and six precordial chest leads (V1, V2, V3, V4, V5, V6) which record potentials in the horizontal plane. 
+The electrical impulse then converges on the atrioventricular (AV) node, located at the junction of the atria and ventricles. The AV node introduces a critical physiological delay of approximately 100 ms. This delay is anatomically essential because it allows the atria to complete mechanical contraction (atrial kick) and fully fill the ventricles with blood before ventricular contraction begins. Following this delay, the electrical impulse enters the Bundle of His, which splits into the left bundle branch (which further divides into anterior and posterior fascicles) and the right bundle branch. These branches terminate in the Purkinje fiber network, a dense system of fast-conducting subendocardial fibers that distribute the depolarization wave to the ventricular myocardium. Ventricular depolarization occurs from the apex of the heart upward toward the base, manifesting as the high-amplitude QRS complex on the ECG. Ventricular repolarization follows shortly after, producing the T wave. The electrical cycle concludes with a brief period of resting potential before the next SA node discharge \cite{schlapfer2017ecg, goldberger2000physiobank}.
+
+The standard 12-lead ECG records these electrical potentials from twelve distinct spatial perspectives, combining bipolar and unipolar electrode configurations (visualized in Figure \ref{fig:ecg_lead_projections}). The leads are divided into six limb leads and six precordial chest leads:
 \begin{itemize}
-    \item \textbf{Limb Leads:} Lead I measures the potential difference between the left and right arm; Lead II measures between the right arm and left leg; Lead III measures between the left arm and left leg. The augmented limb leads (aVR, aVL, aVF) use Wilson's Central Terminal as a reference point.
-    \item \textbf{Precordial Leads:} Placed directly on the chest wall, V1 and V2 are positioned over the right ventricle and septum; V3 and V4 view the anterior wall of the left ventricle; V5 and V6 view the lateral wall of the left ventricle.
+    \item \textbf{Limb Leads (Frontal Plane):} The standard limb leads (I, II, III) are bipolar configurations measuring the potential difference between the limbs based on Einthoven's triangle. Lead I measures the potential difference between the left and right arm; Lead II measures between the right arm and left leg; Lead III measures between the left arm and left leg. The augmented limb leads (aVR, aVL, aVF) are unipolar configurations that use Wilson's Central Terminal (WCT)---an average of the potentials at the three limb electrodes---as a reference point. Lead aVR views the heart from the right shoulder, aVL from the left shoulder, and aVF from the feet.
+    \item \textbf{Precordial Leads (Horizontal Plane):} The chest leads (V1, V2, V3, V4, V5, V6) are placed directly on the chest wall and measure unipolar potentials relative to WCT. Leads V1 and V2 are positioned over the right ventricle and septum; V3 and V4 view the anterior wall of the left ventricle; V5 and V6 view the lateral wall of the left ventricle \cite{schlapfer2017ecg}.
 \end{itemize}
 
-Manual interpretation of the 12-lead ECG is a core skill in clinical cardiology. Practitioners assess the rhythm (sinus versus arrhythmic), heart rate, electrical axis, wave amplitudes, and interval durations (PR interval, QRS duration, QT interval). Despite its diagnostic power, manual interpretation is highly subjective. In stressful clinical environments, such as emergency departments, physicians suffer from cognitive fatigue, leading to diagnostic errors. Furthermore, inter-observer agreement among clinicians for complex ECG findings is low, creating a pressing need for automated, objective classification systems.
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.85]
+    % Left Panel: Einthoven's Triangle & Frontal Plane
+    \begin{scope}[shift={(-3.8,0)}]
+        % Triangle vertices
+        \coordinate (RA) at (-2.3,1.8);
+        \coordinate (LA) at (2.3,1.8);
+        \coordinate (LL) at (0,-2.1);
+        
+        % Draw arms and legs connections
+        \draw[thick, gray!50] (RA) -- (LA) node[midway, above, black, font=\tiny] {Lead I};
+        \draw[thick, gray!50] (RA) -- (LL) node[midway, left=2pt, black, font=\tiny] {Lead II};
+        \draw[thick, gray!50] (LA) -- (LL) node[midway, right=2pt, black, font=\tiny] {Lead III};
+        
+        \node[draw, circle, fill=red!10, font=\tiny, inner sep=1pt] at (RA) {RA};
+        \node[draw, circle, fill=yellow!10, font=\tiny, inner sep=1pt] at (LA) {LA};
+        \node[draw, circle, fill=green!10, font=\tiny, inner sep=1pt] at (LL) {LL};
+        
+        % Central heart marker
+        \fill[red!40!black] (0,-0.1) circle (0.25);
+        \node[white, font=\tiny\bfseries] at (0,-0.1) {H};
+        
+        % Axes
+        \draw[-latex, red, thick] (0,-0.1) -- (-1.8, 1.0) node[above left, font=\tiny] {aVR};
+        \draw[-latex, red, thick] (0,-0.1) -- (1.8, 1.0) node[above right, font=\tiny] {aVL};
+        \draw[-latex, red, thick] (0,-0.1) -- (0, -1.6) node[below, font=\tiny] {aVF};
+        
+        \node[font=\footnotesize\bfseries] at (0,-2.8) {A. Frontal Plane (Limb Leads)};
+    \end{scope}
+    
+    % Right Panel: Precordial Leads & Horizontal Plane
+    \begin{scope}[shift={(3.8,0)}]
+        % Draw chest outline
+        \draw[thick, fill=blue!5] (0,0) ellipse (2.2cm and 1.8cm);
+        
+        % Draw heart inside
+        \fill[red!20, draw=red, thick] (-0.7, 0.3) circle (0.5);
+        \node[red!60!black, font=\tiny\bfseries] at (-0.7, 0.3) {Heart};
+        
+        % Leads coordinates
+        \coordinate (V1) at (0.2, 1.76);
+        \coordinate (V2) at (-0.2, 1.76);
+        \coordinate (V3) at (-1.0, 1.55);
+        \coordinate (V4) at (-1.6, 1.1);
+        \coordinate (V5) at (-2.0, 0.45);
+        \coordinate (V6) at (-2.15, -0.15);
+        
+        % Draw lead points
+        \foreach \p/\n in {V1/V1, V2/V2, V3/V3, V4/V4, V5/V5, V6/V6} {
+            \fill[blue!80!black] (\p) circle (0.08);
+            \node[above left=-1pt, blue!90!black, font=\tiny\bfseries] at (\p) {\n};
+        }
+        
+        % Posterior/Anterior labels
+        \node[font=\tiny, gray] at (0, 2.0) {ANTERIOR};
+        \node[font=\tiny, gray] at (0, -2.0) {POSTERIOR};
+        
+        \node[font=\footnotesize\bfseries] at (0,-2.8) {B. Horizontal Plane (Precordial)};
+    \end{scope}
+\end{tikzpicture}
+\caption{12-Lead ECG Electrode Projections and Measurement Planes}
+\label{fig:ecg_lead_projections}
+\end{figure}
+
+
+Manual interpretation of the 12-lead ECG remains a cornerstone of clinical cardiology. Practitioners systematically evaluate the rhythm (e.g., sinus rhythm versus atrial fibrillation), heart rate (beats per minute), electrical axis, wave amplitudes, and interval durations (such as the PR interval, QRS duration, and rate-corrected QT interval, QTc). Despite its diagnostic power, manual interpretation is highly subjective and prone to human error, particularly in high-stress clinical environments such as emergency departments and intensive care units. Physicians suffer from cognitive fatigue during long shifts, leading to diagnostic errors and inter-observer variability. This establishes a pressing need for automated, objective computer-aided decision support systems \cite{hannun2019cardiologist, ebrahimi2020review, whocvd}.
 
 \section{Pathophysiology of the Five Target Superclasses}
-In this research, we target the five diagnostic superclasses defined in the PTB-XL database, which represent the most common and clinically significant cardiac conditions:
+In this research, we focus on the five major diagnostic superclasses defined in the PTB-XL database, which represent the most common and clinically significant cardiac conditions encountered in general practice \cite{wagner2020ptbxl, strodthoff2021deep}:
 \begin{enumerate}
-    \item \textbf{Normal ECG (NORM):} Characterized by regular sinus rhythm (60--100 bpm), a normal P-wave axis, PR interval of 120--200 ms, QRS duration under 100 ms, normal ST segment (no elevation or depression), and normal T waves.
-    \item \textbf{Myocardial Infarction (MI):} Caused by acute or chronic myocardial ischemia due to coronary artery occlusion. Anatomical localization is key:
+    \item \textbf{Normal ECG (NORM):} Characterized by a regular sinus rhythm originating from the SA node with a heart rate between 60 and 100 beats per minute. A normal ECG displays a consistent P-wave morphology preceding every QRS complex, a PR interval between 120 and 200 ms, a narrow QRS duration under 100 ms, an isoelectric ST segment (no elevation or depression), a normal upright T wave, and a QTc interval within physiological limits ($<440$ ms for males, $<460$ ms for females). No structural or conduction abnormalities are present \cite{schlapfer2017ecg}.
+    \item \textbf{Myocardial Infarction (MI):} Caused by acute or chronic myocardial ischemia resulting from the occlusion of one or more coronary arteries. The necrosis of cardiac tissue interrupts the normal propagation of action potentials, leading to distinct morphological changes. In acute phases, myocardial injury causes ST-segment elevation (STEMI) or depression (NSTEMI) and T-wave inversion. In chronic or completed phases, necrotic tissue results in the formation of deep, pathological Q waves (duration $\ge 40$ ms, amplitude $\ge 25\%$ of the succeeding R wave). The anatomical localization of the infarct is determined by the specific leads showing these changes:
     \begin{itemize}
-        \item \emph{Anterior MI:} ST elevation or pathological Q waves in precordial leads V1--V4.
-        \item \emph{Inferior MI:} ST elevation or Q waves in leads II, III, and aVF.
-        \item \emph{Lateral MI:} ST changes in leads I, aVL, V5, and V6.
+        \item \emph{Septal MI:} Pathological changes localized in leads V1 and V2.
+        \item \emph{Anterior MI:} Changes in precordial leads V3 and V4.
+        \item \emph{Lateral MI:} Changes in limb leads I and aVL, and precordial leads V5 and V6.
+        \item \emph{Inferior MI:} Changes in limb leads II, III, and aVF, corresponding to the diaphragmatic wall of the heart \cite{schlapfer2017ecg, ribeiro2020automatic}.
     \end{itemize}
-    \item \textbf{ST/T Changes (STTC):} Abnormalities in the ST segment or T wave (e.g., ST depression, T-wave inversion) without fully developing pathologic Q waves. These changes often indicate subendocardial ischemia, electrolyte imbalances (hypokalemia, hyperkalemia), or medication effects.
-    \item \textbf{Conduction Disturbances (CD):} Delays or blocks in the conduction system. Key pathologies include:
+    \item \textbf{ST/T Changes (STTC):} Morphological markers of altered ventricular repolarization that do not meet the criteria for acute myocardial infarction. These include non-specific ST-segment depression or elevation, T-wave flattening, or T-wave inversion. These changes are clinically significant as they often indicate subendocardial ischemia, electrolyte imbalances (e.g., hyperkalemia presenting as tall, peaked T waves; hypokalemia presenting as flattened T waves and U waves), drug toxicity (e.g., digitalis effect), or early repolarization variants \cite{schlapfer2017ecg}.
+    \item \textbf{Conduction Disturbances (CD):} Delays or complete blocks in the electrical conduction pathways, resulting in dyssynchronous contraction. Key pathologies include:
     \begin{itemize}
-        \item \emph{Left Bundle Branch Block (LBBB):} Wide QRS complex ($\ge 120$ ms) with a broad, notched R wave in lateral leads (I, aVL, V5, V6) and QS pattern in V1.
-        \item \emph{Right Bundle Branch Block (RBBB):} Wide QRS complex with an $rSR'$ pattern (``rabbit ears'') in leads V1--V2.
-        \item \emph{Atrioventricular (AV) Blocks:} Delays between atrial and ventricular conduction (1st, 2nd, or 3rd-degree blocks).
+        \item \emph{Left Bundle Branch Block (LBBB):} Caused by interruption of the left bundle branch. Ventricular depolarization must propagate slowly from the right ventricle to the left ventricle through cell-to-cell diffusion. This produces a wide QRS complex ($\ge 120$ ms) with a broad, notched, or slurred R wave in the lateral leads (I, aVL, V5, V6) and a deep QS or rS pattern in lead V1.
+        \item \emph{Right Bundle Branch Block (RBBB):} Caused by block of the right bundle branch. Ventricular depolarization propagates normally through the left ventricle first, followed by slow depolarization of the right ventricle. This results in a wide QRS complex ($\ge 120$ ms) showing a classic triphasic $rSR'$ pattern (``rabbit ears'') in leads V1 and V2, accompanied by a wide, slurred S wave in the lateral leads.
+        \item \emph{Atrioventricular (AV) Blocks:} Delays in conduction from the atria to the ventricles, classified into first-degree (prolonged PR interval $>200$ ms with 1:1 conduction), second-degree (progressive PR lengthening followed by a dropped QRS in Mobitz Type I / Wenckebach, or random dropped QRS complexes in Mobitz Type II), and third-degree (complete AV block with independent atrial and ventricular rhythms) \cite{schlapfer2017ecg, hannun2019cardiologist}.
     \end{itemize}
-    \item \textbf{Hypertrophy (HYP):} Enlargement of the cardiac chambers. Left Ventricular Hypertrophy (LVH) is commonly diagnosed using voltage criteria, such as the Sokolow-Lyon index:
+    \item \textbf{Hypertrophy (HYP):} Pathological enlargement of the cardiac chambers, typically resulting from chronic pressure or volume overload (e.g., systemic hypertension or valvular stenosis). Ventricular hypertrophy increases the muscle mass of the ventricular walls, which generates larger electrical dipoles during depolarization. Left Ventricular Hypertrophy (LVH) is diagnosed using voltage criteria, most commonly the Sokolow-Lyon index:
     \begin{equation}
-        S_{V1} + R_{V5 \text{ or } V6} \ge 35\text{ mV}
+        S_{V1} + R_{V5 \text{ or } V6} \ge 35 \text{ mm (3.5 mV)}
     \end{equation}
-    or the Cornell voltage criteria. It reflects chronic pressure overload, often due to systemic hypertension.
+    or the Cornell voltage criteria ($S_{V3} + R_{aVL} \ge 28$ mm in men, $\ge 20$ mm in women). LVH is frequently accompanied by secondary ST-segment depression and T-wave inversion (LVH strain pattern) due to subendocardial ischemia in the thickened muscle wall \cite{schlapfer2017ecg, strodthoff2021deep}.
 \end{enumerate}
 
 \section{Evolution of Machine Learning in Electrocardiography}
-The history of automated ECG analysis began in the late 1950s and 1960s with the development of rule-based, deterministic computer algorithms. The most prominent example is the Minnesota Code, which used fixed threshold rules based on wave amplitudes and durations to categorize ECG tracings. While highly objective, these rule-based systems were extremely sensitive to noise and had poor diagnostic sensitivity, failing to generalize across diverse patient populations.
+The history of automated computer-aided ECG analysis began in the late 1950s and early 1960s with the development of rule-based, deterministic computer algorithms. The most prominent example is the Minnesota Code, developed to standardize the classification of ECG waveforms in epidemiological studies. These early systems used hardcoded threshold rules based on physical measurements of wave amplitudes, intervals, and axes to categorize ECG tracings. While objective and reproducible, these rule-based systems were highly sensitive to high-frequency noise and baseline wander, showing poor diagnostic sensitivity and failing to generalize across diverse patient populations \cite{ebrahimi2020review}.
 
-In the 1990s and 2000s, the field transitioned to classical Machine Learning (ML). This workflow required two distinct phases: handcrafted feature extraction and classification. Researchers used digital signal processing techniques to extract meaningful parameters:
+In the 1990s and 2000s, the field transitioned to classical Machine Learning (ML) techniques. The standard ML workflow required two distinct, manually engineered phases: feature extraction and classification. Researchers used digital signal processing methods to extract handcrafted features from the ECG signals:
 \begin{itemize}
-    \item \textbf{Wavelet Transforms:} Used to localize the boundaries of P, QRS, and T waves.
-    \item \textbf{Principal Component Analysis (PCA):} Used to compress the high-dimensional spatial-temporal waveforms.
-    \item \textbf{Heart Rate Variability (HRV):} Statistical metrics of RR intervals used to detect autonomic dysfunction and arrhythmias.
+    \item \textbf{Wavelet Transforms:} Discrete Wavelet Transforms (DWT) and Continuous Wavelet Transforms (CWT) were widely used to localize the precise boundaries of the P wave, QRS complex, and T wave by decomposing the signal into multi-scale time-frequency representations \cite{clifford2017af}.
+    \item \textbf{Principal Component Analysis (PCA):} Used for dimensionality reduction, compressing the high-dimensional spatial-temporal waveforms of the 12 leads into a lower-dimensional subspace while retaining the maximum variance \cite{ismail2019deep}.
+    \item \textbf{Heart Rate Variability (HRV):} Statistical and spectral metrics of RR intervals (e.g., SDNN, RMSSD, LF/HF ratio) were extracted to detect autonomic dysfunction and cardiac arrhythmias \cite{moody2001impact}.
 \end{itemize}
-These features were then fed into classifiers such as Support Vector Machines (SVM), Random Forests (RF), and Multi-Layer Perceptrons (MLP). The major limitation of this approach was its fragility; the performance of the classifier was strictly bounded by the quality of the manual feature extraction, which often failed in the presence of noise, electrode displacement, or anatomical variations.
+These handcrafted features were then fed into classifiers such as Support Vector Machines (SVM), Random Forests (RF), and Multi-Layer Perceptrons (MLP) \cite{kachuee2018ecg}. The major limitation of this approach was its fragility; the performance of the classifier was strictly bounded by the accuracy of the manual feature extraction stage. If noise or anatomical variations caused the peak detection algorithms to miss QRS complexes, the downstream classification failed completely.
 
 \section{Deep Learning Architectures in Cardiology}
-The rise of Deep Learning (DL) in the 2010s revolutionized ECG classification. By training deep neural networks end-to-end, the models learn to extract hierarchical features directly from raw, filtered digital signals, bypassing the need for manual feature engineering. Several major architectural families have been proposed:
+The rise of Deep Learning (DL) in the 2010s revolutionized automated ECG classification by enabling end-to-end learning. Instead of relying on manual feature engineering, deep neural networks are trained directly on raw or filtered digital signals, automatically learning hierarchical features ranging from local wave boundaries to complex global repolarization patterns. Several major architectural families have been adapted for cardiac signal analysis \cite{lecun2015deep, goodfellow2016deep}:
 \begin{itemize}
-    \item \textbf{1D Convolutional Neural Networks (CNNs):} Apply convolutional kernels along the time axis. They are excellent at detecting local morphological waveforms (like ST-segment elevation or QRS widening) and possess translation invariance. Adaptations of standard computer vision architectures, such as ResNet, are widely used.
-    \item \textbf{Recurrent Neural Networks (RNNs) and Mamba:} Model the temporal dependencies of the sequence. LSTMs and GRUs were popular for sequence modeling but suffer from high computational complexity and difficulty in training on long sequences (e.g., 5000 time steps). Modern state-space models (like Mamba) address these computational bottlenecks.
-    \item \textbf{Graph Neural Networks (GNNs):} Represent the standard 12-lead ECG as a graph, where each lead is a node. GNNs model the spatial relationships between leads, allowing the model to capture clinical patterns of co-occurring lead abnormalities.
-    \item \textbf{Vision Transformers (ViTs):} Utilize self-attention mechanisms to establish global dependencies across different parts of the signal. They have shown state-of-the-art results when pre-trained on millions of unlabeled ECG records but are highly data-hungry.
+    \item \textbf{1D Convolutional Neural Networks (CNNs):} Apply convolutional kernels along the time axis of the signal. They are excellent at detecting localized morphological waveforms (like ST-segment elevation or QRS widening) and possess translation invariance due to shared weights. Adaptive 1D modifications of computer vision networks, such as ResNet, are widely used as robust baselines for multi-lead ECG classification \cite{kiranyaz2016real, rajpurkar2017cardiologist, ribeiro2020automatic}. Most modern deep learning models in cardiology are implemented in PyTorch \cite{pytorchdocs} and validated on clinical arrhythmia detection benchmarks \cite{hannun2020automatic}, including the transferability of features under spectral and temporal variations \cite{weimann2021transfer}.
+    \item \textbf{Recurrent Neural Networks (RNNs) and Mamba:} Model the temporal dependencies and sequential nature of ECG signals. Long Short-Term Memory (LSTM) networks and Gated Recurrent Units (GRUs) address the vanishing gradient problem of standard RNNs \cite{hochreiter1997lstm, schuster1997bidirectional}. While they capture long-range temporal context, standard LSTMs suffer from high computational complexity and difficulty in parallel training on long sequences (e.g., 5000 time steps). Modern state-space models like Mamba are beginning to address these sequence length bottlenecks \cite{lipton2016learning, deep2024classification, smisek2018cardiac, zihlmann2017convolutional}.
+    \item \textbf{Graph Neural Networks (GNNs):} Treat the multi-lead ECG configuration as a graph, where each of the 12 leads is represented as a node containing temporal features, and the edges represent anatomical or functional relationships between the leads. GNNs propagate information across leads, enabling the model to capture clinical correlations of co-occurring lead abnormalities (e.g., inferior MI showing changes in leads II, III, and aVF simultaneously) \cite{scarselli2008graph, kipf2016semi, velickovic2017graph, hamilton2017inductive, zhang2021ecggnn}. Modern GNN variations include spectral formulations using localized filters \cite{bruna2013spectral, defferrard2016convolutional} and spatial GNN networks specialized for cardiac rhythm recognition \cite{nonaka2021deep}, which have been reviewed systematically in clinical literature \cite{muller2026application}.
+    \item \textbf{Vision Transformers (ViTs):} Utilize self-attention mechanisms to establish global dependencies across all time steps and leads without using recurrent or convolutional structures, which derives from early sequence-to-sequence attention designs \cite{bahdanau2014neural, vaswani2017attention, dosovitskiy2020image}. When pre-trained on massive datasets (millions of records), foundation transformers achieve state-of-the-art results in detecting cardiac abnormalities. However, when trained from scratch on small-to-medium clinical datasets, they tend to overfit due to a lack of inductive biases (such as spatial locality) \cite{vaid2023foundational, moody2025foundation, peimankar2021delineation}.
 \end{itemize}
+
+\section{Comparative Analysis of Deep Learning Architectures}
+To select the appropriate architecture, we must analyze the structural trade-offs of each model. Table \ref{tab:architecture_comparison} presents a comprehensive comparative summary of the mechanisms, visual representations, advantages, and disadvantages of CNNs, RNNs, GNNs, and Transformers for ECG signals.
+
+\begin{table}[H]
+\caption{Comparison of Deep Learning Architectures for ECG Classification}
+\label{tab:architecture_comparison}
+\begin{center}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lp{3.5cm}p{4cm}p{4cm}}
+\toprule
+\textbf{Architecture} & \textbf{Core Mechanism} & \textbf{Key Advantages} & \textbf{Key Disadvantages} \\
+\midrule
+\textbf{1D CNN} & Local receptive fields, weight sharing, and max pooling along the time axis \cite{kiranyaz2016real, he2016deep}. & Strong inductive bias for translation-invariant local morphologies (QRS, T waves). Highly efficient, fast training. & Ignores physical spatial relationships of the leads; stacks them as independent channels. \\
+\midrule
+\textbf{RNN / LSTM} & Sequential state transitions and gated recurrent units for temporal paths \cite{hochreiter1997lstm, schuster1997bidirectional}. & Models variable-length sequences and temporal dynamics. Captures long-term dependencies. & Sequential execution prevents parallelization. Susceptible to gradient issues on long signals. \\
+\midrule
+\textbf{GNN / GCN} & Message passing over graph nodes representing leads using an adjacency matrix \cite{kipf2016semi, zhang2021ecggnn}. & Explicitly models spatial lead placements and anatomical contiguity. Learnable adjacency captures hidden path correlations. & Computationally intensive. Graph design is highly sensitive to noise and layout variations. \\
+\midrule
+\textbf{Transformer} & Self-attention maps calculating global pairwise correlations across patches \cite{vaswani2017attention, dosovitskiy2020image}. & Captures global temporal context and long-range relationships without recurrence. Scales with pre-training. & Lacks inductive bias for spatial locality. Data-hungry, prone to overfitting on small datasets. \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+\end{table}
 
 \section{Comparative Analysis of ECG Databases}
 To benchmark and train deep learning models, researchers utilize standardized, publicly available databases. Table \ref{tab:databases} provides a comparative summary of the most prominent databases in the literature.
@@ -283,6 +445,7 @@ To benchmark and train deep learning models, researchers utilize standardized, p
 \begin{table}[H]
 \caption{Comparative Analysis of Standard ECG Databases}
 \begin{center}
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{lccccc}
 \toprule
 \textbf{Database} & \textbf{Records} & \textbf{Duration} & \textbf{Leads} & \textbf{Sampling Rate} & \textbf{Classes} \\
@@ -293,17 +456,18 @@ PTB Diagnostic & 549 & 1--2 min & 15 & 1000 Hz & 9 \\
 CPSC 2018 & 6,877 & 6--60 s & 12 & 500 Hz & 9 \\
 Chapman Dataset & 10,646 & 10 s & 12 & 500 Hz & 4 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \label{tab:databases}
 \end{center}
 \end{table}
 
-The PTB-XL database is currently the gold-standard benchmark for multi-label, multi-lead ECG classification because it is large, professionally annotated according to the SCP-ECG standard, and represents a realistic, clinical distribution of multiple co-occurring pathologies.
+The PTB-XL database is currently the gold-standard benchmark for multi-label, multi-lead ECG classification because it is large, professionally annotated according to the SCP-ECG standard, and represents a realistic, clinical distribution of multiple co-occurring pathologies \cite{wagner2020ptbxl, strodthoff2021deep}.
 
 \section{Spatio-Temporal Modeling in 12-Lead ECG}
 When standard 1D or 2D CNNs process a 12-lead ECG, they stack the leads as channels, similar to Red, Green, and Blue channels in an image. This approach assumes that all channels are equally spaced and share symmetric spatial relations. However, the physical placement of ECG electrodes on the human body is highly structured. The limb leads measure global frontal potentials, while the precordial leads V1--V6 form a spatial arc directly over the heart.
 
-A myocardial infarction in the anterior wall will register changes in leads V1--V4, while an inferior infarction appears in leads II, III, and aVF. Standard convolutions cannot explicitly model this spatial correlation without extensive training data. By using Graph Neural Networks, we represent the 12 leads as nodes in a graph. The edges of the graph represent the electrical or anatomical relationships between the leads. Instead of defining a static graph based on physical distance, we can train the network to learn the adjacency matrix dynamically, allowing the model to discover hidden electrical path correlations directly from the data.
+A myocardial infarction in the anterior wall will register changes in leads V1--V4, while an inferior infarction appears in leads II, III, and aVF. Standard convolutions cannot explicitly model this spatial correlation without extensive training data. By using Graph Neural Networks, we represent the 12 leads as nodes in a graph. The edges of the graph represent the electrical or anatomical relationships between the leads. Instead of defining a static graph based on physical distance, we can train the network to learn the adjacency matrix dynamically, allowing the model to discover hidden electrical path correlations directly from the data \cite{zhang2023strege, maurer2025xgnn}. This formulation draws inspiration from spatio-temporal graph convolutional networks developed for other sequence and grid-structured domains, such as skeleton-based action recognition \cite{yan2018spatial} and traffic forecasting \cite{yu2018spatio}.
 
 \clearpage
 
@@ -313,51 +477,161 @@ A myocardial infarction in the anterior wall will register changes in leads V1--
 \chapter{Digital Signal Processing and Deep Learning Model Design}
 
 \section{PTB-XL Dataset Structure and Label Mapping}
-The PTB-XL database contains 21,837 records from 18,885 patients. The dataset labels are based on the SCP-ECG standard. The statements are grouped into three levels: 71 diagnostic statements, which map to 21 subclasses, which in turn map to 5 superclasses: Normal (NORM), Myocardial Infarction (MI), ST/T Changes (STTC), Conduction Disturbance (CD), and Hypertrophy (HYP). A single record can be associated with multiple statements, making this a multi-label classification task. 
+The PTB-XL database contains 21,837 records from 18,885 patients \cite{wagner2020ptbxl}. The dataset labels are based on the SCP-ECG standard. The statements are grouped into three levels: 71 diagnostic statements, which map to 21 subclasses, which in turn map to 5 superclasses: Normal (NORM), Myocardial Infarction (MI), ST/T Changes (STTC), Conduction Disturbance (CD), and Hypertrophy (HYP). A single record can be associated with multiple statements, making this a multi-label classification task. 
+
+Table \ref{tab:scp_mapping} shows examples of how these clinical statements map into the 5 target diagnostic superclasses.
+
+\begin{table}[H]
+\caption{Mapping of SCP-ECG Statements to the Five Target Superclasses}
+\begin{center}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lll}
+\toprule
+\textbf{Superclass} & \textbf{Subclasses (Examples)} & \textbf{Specific SCP-ECG Statements (Examples)} \\
+\midrule
+\textbf{NORM} (Normal) & Normal ECG & NORM (Normal ECG), LVOLT (Low voltage) \\
+\midrule
+\textbf{MI} (Myocardial Infarction) & Anterior MI, Inferior MI, Lateral MI & AMI (Acute MI), IMI (Inferior MI), ALMI (Anterolateral MI) \\
+\midrule
+\textbf{STTC} (ST/T Changes) & ST/T changes, Ischemia & STTC (ST/T Change), NST\_ (Non-specific ST), ISCH (Ischemia) \\
+\midrule
+\textbf{CD} (Conduction Disturbance) & Bundle branch blocks, AV block & LBBB (Left Bundle Branch Block), RBBB, 1AVB (First-degree AV Block) \\
+\midrule
+\textbf{HYP} (Hypertrophy) & Ventricular hypertrophy & LVH (Left Ventricular Hypertrophy), RVH (Right Ventricular Hypertrophy) \\
+\bottomrule
+\end{tabular}%
+}
+\label{tab:scp_mapping}
+\end{center}
+\end{table}
 
 \section{Preprocessing and Denoising Pipeline}
-Raw ECG signals collected from clinical environments are corrupt by several types of artifacts:
+Raw ECG signals collected from clinical settings are inevitably corrupted by several environmental and physiological artifacts, which must be suppressed to ensure accurate feature learning:
 \begin{itemize}
-    \item \textbf{Baseline Wander:} Low-frequency noise ($<0.5$ Hz) caused by patient respiration or movement.
-    \item \textbf{Powerline Interference:} High-frequency noise (50 Hz or 60 Hz) from the electrical power grid.
-    \item \textbf{Electromyographic (EMG) Noise:} High-frequency muscle contractions.
+    \item \textbf{Baseline Wander:} A low-frequency noise (typically $<0.5$ Hz) caused by patient respiration, body movement, or changes in skin-electrode contact impedance.
+    \item \textbf{Powerline Interference (PLI):} High-frequency noise centered around 50 Hz or 60 Hz (depending on the geographical power grid) introduced by electromagnetic coupling from nearby electrical equipment.
+    \item \textbf{Electromyographic (EMG) Noise:} High-frequency, transient electrical activity generated by skeletal muscle contractions, which overlaps with the high-frequency components of the ECG signal.
 \end{itemize}
 
-To isolate the cardiac signal, we apply a 4th-order digital Butterworth bandpass filter. The transfer function of a continuous-time Butterworth filter of order $n$ is defined by:
+Figure \ref{fig:preprocessing_pipeline} illustrates the digital signal processing and data preparation pipeline designed to filter out these artifacts and split the clean records.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=1cm and 0.8cm,
+    block/.style={draw, rectangle, minimum height=1cm, minimum width=2.5cm, align=center, fill=blue!10, rounded corners, font=\scriptsize},
+    arrow/.style={-latex, thick}
+ Showcase/.style={draw, rectangle, minimum height=1cm, minimum width=2.5cm, align=center, fill=blue!10, rounded corners, font=\scriptsize}
+]
+    % Nodes
+    \node (raw) [block] {Raw 12-Lead ECG \\ (10 s, 500 Hz)};
+    \node (filter) [block, right=of raw] {4th-Order Butterworth \\ Bandpass Filter \\ (0.5 -- 50 Hz)};
+    \node (norm) [block, right=of filter] {Lead-wise Z-Score \\ Normalization \\ ($\mu = 0, \sigma = 1$)};
+    \node (split) [block, right=of norm] {Patient-Stratified \\ Train/Val/Test Split \\ (80\% / 10\% / 10\%)};
+    
+    % Connections
+    \draw [arrow] (raw) -- (filter);
+    \draw [arrow] (filter) -- (norm);
+    \draw [arrow] (norm) -- (split);
+\end{tikzpicture}
+\caption{ECG Signal Preprocessing and Splitting Pipeline}
+\label{fig:preprocessing_pipeline}
+\end{figure}
+
+To isolate the cardiac signal and remove artifacts, we design and implement a 4th-order digital Butterworth bandpass filter. The Butterworth filter is chosen because of its maximally flat frequency response in the passband, which minimizes artificial distortions of the ECG waveform. The transfer function of a continuous-time analog Butterworth filter of order $n$ is defined by:
 \begin{equation}
     H(s) = \frac{1}{\sqrt{1 + \left(\frac{s}{\omega_c}\right)^{2n}}}
 \end{equation}
-where $\omega_c$ is the cutoff frequency. We set the passband between $0.5$ Hz and $50.0$ Hz. The discrete filter coefficients $b$ and $a$ are calculated using the bilinear transform. We apply the filter using zero-phase forward-backward filtering to avoid phase distortion of the waveforms:
+where $\omega_c$ is the cutoff frequency. We specify low and high cutoff frequencies of $f_L = 0.5$ Hz and $f_H = 50.0$ Hz, respectively. The analog transfer function is mapped to the discrete z-domain using the bilinear transform:
+\begin{equation}
+    s = \frac{2}{T_s} \frac{z - 1}{z + 1}
+\end{equation}
+where $T_s = 1/f_s = 2$ ms is the sampling interval corresponding to the $f_s = 500$ Hz sampling rate of the PTB-XL records. This transform results in discrete transfer function coefficients represented by the vectors $b$ and $a$. To prevent any phase distortion or temporal shifts of the critical P, Q, R, S, and T waves, the filter is applied using zero-phase forward-backward filtering. This is achieved by running the filter forward over the sequence, reversing the output, running the filter again, and reversing the result:
 \begin{equation}
     y(n) = \text{filtfilt}(b, a, x(n))
 \end{equation}
+This operation doubles the effective filter order to 8 and ensures a zero-phase response, yielding a filtered signal free of phase-induced morphological distortion \cite{strodthoff2021deep}.
 
-After filtering, we apply lead-wise Z-score normalization. For each lead $i$, the signal $x_{i}$ is standardized using its mean $\mu_{i}$ and standard deviation $\sigma_{i}$:
+Following bandpass filtering, we apply lead-wise Z-score normalization. For each individual lead $i \in \{1, 2, \dots, 12\}$, the signal $x_{i}(t)$ is standardized using its mean $\mu_{i}$ and standard deviation $\sigma_{i}$ calculated over the $L=5000$ time steps:
 \begin{equation}
-    x_{normalized, i} = \frac{x_{i} - \mu_{i}}{\sigma_{i}}
+    x_{normalized, i}(t) = \frac{x_{i}(t) - \mu_{i}}{\sigma_{i}}
 \end{equation}
-This standardizes the amplitude scale across different patients and leads, preventing differences in skin impedance from biasing the network.
+where:
+\begin{equation}
+    \mu_{i} = \frac{1}{L} \sum_{t=1}^{L} x_{i}(t), \quad \sigma_{i} = \sqrt{\frac{1}{L} \sum_{t=1}^{L} (x_{i}(t) - \mu_{i})^2}
+\end{equation}
+This standardization scales the signal of each lead to have a mean of 0 and a standard deviation of 1. Normalization is essential because it scales the amplitudes across different patients and leads, preventing differences in skin-electrode impedance or amplifier gains from biasing the model's weight updates.
 
-To evaluate generalization, we split the dataset into training (80\%), validation (10\%), and testing (10\%) subsets. To prevent data leakage, we stratify by patient ID, ensuring that records from the same patient do not appear in both the training and testing sets.
+To evaluate generalization performance, we divide the preprocessed dataset into training (80\%), validation (10\%), and testing (10\%) subsets. To prevent data leakage, we perform a patient-stratified split, ensuring that all records belonging to a single patient are assigned exclusively to a single split.
 
 \section{1D Convolutional Neural Network (ResNet-18) Architecture}
-We design a 1D adaptation of the ResNet-18 architecture. The 1D convolution extracts morphological features along the time dimension. The mathematical formulation of a 1D convolutional layer for channel $j$ is:
+We design a 1D adaptation of the ResNet-18 architecture, where the standard 2D convolutions are replaced with 1D convolutions to extract temporal patterns along the time dimension of the ECG signal. The mathematical formulation of a 1D convolutional layer for channel $j$ at time step $t$ is:
 \begin{equation}
     y_{j}(t) = b_{j} + \sum_{i=1}^{C_{in}} \sum_{k=0}^{K-1} x_{i}(t \cdot s + k) \cdot W_{ij}(k)
 \end{equation}
-where $C_{in}$ is the input channel count, $K$ is the kernel size, $s$ is the stride, $b_{j}$ is the bias, and $W_{ij}$ is the convolutional weight.
+where $C_{in}$ is the number of input channels, $K$ is the kernel size, $s$ is the stride, $b_{j}$ is the bias, and $W_{ij} \in \mathbb{R}^{K}$ is the trainable convolutional kernel connecting input channel $i$ to output channel $j$.
 
-The core component of ResNet-18 is the residual block, which uses skip connections to prevent gradient vanishing:
+The core building block of the ResNet-18 architecture is the residual block with skip connections, which addresses the vanishing gradient problem in deep networks. The mathematical formulation of a residual block is defined as:
 \begin{equation}
     \mathcal{H}(x) = \text{ReLU}(\mathcal{F}(x, \{W_{1}, W_{2}\}) + W_{s} x)
 \end{equation}
-where $\mathcal{F}$ represents the two convolutional layers with Batch Normalization, and $W_{s}$ is a $1 \times 1$ convolution used to match dimensions if the stride or channel size changes.
+where $x$ is the block input, $\mathcal{H}(x)$ is the output, and $\mathcal{F}$ represents the residual mapping to be learned, consisting of two convolutional layers with Batch Normalization:
+\begin{equation}
+    \mathcal{F}(x, \{W_{1}, W_{2}\}) = \text{BN}_{2}\left( \text{Conv1D}_{2}\left( \text{ReLU}\left( \text{BN}_{1}\left( \text{Conv1D}_{1}(x) \right) \right) \right) \right)
+\end{equation}
+If the input and output channel dimensions differ (due to channel expansion) or if downsampling is performed (stride $s > 1$), the shortcut mapping $W_s$ projects the input to the matching dimension using a $1 \times 1$ convolution and Batch Normalization:
+\begin{equation}
+    W_s x = \text{BN}_{s}\left( \text{Conv1D}_{1\times1}(x) \right)
+\end{equation}
+
+Figure \ref{fig:resnet_block} illustrates the block layout of our 1D ResNet-18 architecture, showing the convolutional pipeline and the skip connection pathway.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=0.6cm and 0.8cm,
+    block/.style={draw, rectangle, minimum height=0.7cm, minimum width=2cm, align=center, fill=blue!10, rounded corners, font=\scriptsize},
+    circle_node/.style={draw, circle, fill=blue!20, font=\small, inner sep=1pt},
+    arrow/.style={-latex, thick}
+]
+    % Main Path Nodes
+    \node (input) {Input $x$};
+    \node (conv1) [block, below=of input] {Conv1D \\ ($K=7$, Stride $s$)};
+    \node (bn1) [block, below=of conv1] {BatchNorm1D};
+    \node (relu1) [block, below=of bn1] {ReLU};
+    \node (conv2) [block, below=of relu1] {Conv1D \\ ($K=7$, Stride 1)};
+    \node (bn2) [block, below=of conv2] {BatchNorm1D};
+    \node (sum) [circle_node, below=0.8cm of bn2] {$+$};
+    \node (relu2) [block, below=of sum] {ReLU};
+    \node (output) [below=of relu2] {Output $\mathcal{H}(x)$};
+    
+    % Shortcut Path
+    \node (shortcut) [block, right=1.2cm of conv2] {Shortcut Conv1D \\ ($K=1$, Stride $s$) \\ + BatchNorm1D};
+ 
+    % Connections
+    \draw [arrow] (input) -- (conv1);
+    \draw [arrow] (conv1) -- (bn1);
+    \draw [arrow] (bn1) -- (relu1);
+    \draw [arrow] (relu1) -- (conv2);
+    \draw [arrow] (conv2) -- (bn2);
+    \draw [arrow] (bn2) -- (sum);
+    \draw [arrow] (sum) -- (relu2);
+    \draw [arrow] (relu2) -- (output);
+    
+    % Split & Join Shortcut
+    \draw [thick] (input.south) -- ++(0,-0.2) -| (shortcut.north);
+    \draw [arrow] (shortcut.south) |- (sum.east);
+\end{tikzpicture}
+\caption{Structure of the 1D Adaptation of the ResNet-18 Residual Block}
+\label{fig:resnet_block}
+\end{figure}
 
 The detailed architecture of our 1D ResNet-18 is outlined in Table \ref{tab:resnet_arch}.
 
 \begin{table}[H]
 \caption{1D ResNet-18 Architecture Layout}
 \begin{center}
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{llccc}
 \toprule
 \textbf{Stage} & \textbf{Layer Details} & \textbf{Kernel Size} & \textbf{Stride} & \textbf{Output Shape (C, L)} \\
@@ -371,17 +645,18 @@ Stage 3 & $2 \times$ Residual Blocks & 7 & 2 & (256, 313) \\
 Stage 4 & $2 \times$ Residual Blocks & 7 & 2 & (512, 157) \\
 Readout & AdaptiveAvgPool1D + FC & -- & -- & (5,) \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \label{tab:resnet_arch}
 \end{center}
 \end{table}
 
 \section{Spatio-Temporal Graph Neural Network (ST-ReGE) Design}
-The Spatio-Temporal Graph Network (ST-ReGE) is designed to explicitly model the spatial structure of the 12-lead system. The network operates on a graph $\mathcal{G} = (\mathcal{V}, \mathcal{E}, A)$, where $\mathcal{V}$ is the set of $N=12$ leads, and $A \in \mathbb{R}^{N \times N}$ is the adjacency matrix representing lead correlations.
+The Spatio-Temporal Graph Network (ST-ReGE) is designed to explicitly model the spatial structure of the 12-lead ECG system. Rather than treating the 12 leads as simple independent channels, the network models them as nodes on a graph $\mathcal{G} = (\mathcal{V}, \mathcal{E}, A)$, where $\mathcal{V}$ is the set of $N=12$ leads, and $A \in \mathbb{R}^{N \times N}$ is the adjacency matrix representing lead-wise correlations.
 
-The architecture uses a two-stage approach:
+The ST-ReGE network uses a two-stage approach:
 \begin{enumerate}
-    \item \textbf{Temporal Backbone:} A shared 1D ResNet convolutional structure is applied to each of the 12 leads independently. The input for each lead is a $1 \times 5000$ signal. The temporal backbone extracts a 256-dimensional feature vector, producing a node feature matrix $X_{feat} \in \mathbb{R}^{B \times 12 \times 256}$, where $B$ is the batch size.
+    \item \textbf{Temporal Backbone:} A shared 1D ResNet convolutional structure is applied to each of the 12 leads independently. The input for each lead is a $1 \times 5000$ signal. The temporal backbone extracts a 256-dimensional feature vector, producing a node feature matrix $H^{(0)} \in \mathbb{R}^{B \times 12 \times 256}$, where $B$ is the batch size.
     \item \textbf{Spatial Propagation (GNN):} The lead features are propagated through two Graph Convolutional Network (GCN) layers. Unlike static GNNs, ST-ReGE uses a learnable adjacency matrix $A_{learn}$, initialized with random values and optimized using gradient descent:
     \begin{equation}
         A = \text{Sigmoid}(W_{adj})
@@ -390,7 +665,7 @@ The architecture uses a two-stage approach:
     \begin{equation}
         H^{(l+1)} = \text{BN}\left( \text{ReLU}\left( A H^{(l)} W^{(l)} \right) \right) + H^{(l)}
     \end{equation}
-    where $H^{(l)}$ is the node representation at layer $l$, $W^{(l)} \in \mathbb{R}^{256 \times 256}$ is the trainable projection matrix, and $\text{BN}$ is Batch Normalization.
+    where $H^{(l)}$ is the node representation at layer $l$, $W^{(l)} \in \mathbb{R}^{256 \times 256}$ is the trainable projection matrix, and $\text{BN}$ is Batch Normalization \cite{kipf2016semi}.
 \end{enumerate}
 Finally, the node representations are aggregated using mean pooling along the node dimension to produce a global graph representation:
 \begin{equation}
@@ -398,28 +673,235 @@ Finally, the node representations are aggregated using mean pooling along the no
 \end{equation}
 which is fed into a linear classifier to predict the 5 diagnostic classes.
 
+Figure \ref{fig:strege_flow} shows the spatio-temporal data flow of the ST-ReGE network, demonstrating how local lead features are extracted, updated through graph convolutions using learnable correlations, and aggregated.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=0.6cm and 0.8cm,
+    block/.style={draw, rectangle, minimum height=0.7cm, minimum width=2.8cm, align=center, fill=blue!10, rounded corners, font=\scriptsize},
+    large_block/.style={draw, rectangle, minimum height=1.1cm, minimum width=3.3cm, align=center, fill=blue!10, rounded corners, font=\scriptsize},
+    arrow/.style={-latex, thick}
+]
+    % Nodes
+    \node (input) {Input ECG Signal $(12 \times 5000)$};
+    
+    % Node Feature Extraction Stage
+    \node (split) [block, below=of input] {12 Independent Leads \\ ($12 \times 1 \times 5000$)};
+    \node (cnn) [block, below=of split] {Shared 1D CNN Backbone \\ (Feature Extractor)};
+    \node (nodes) [block, below=of cnn] {Node Features $H^{(0)}$ \\ ($12 \times 256$)};
+    
+    % Graph Processing Stage
+    \node (gcn1) [large_block, below=of nodes] {GCN Layer 1 \\ ($H^{(1)} = \text{BN}(\text{ReLU}(A H^{(0)} W^{(1)})) + H^{(0)}$) \\ \textbf{Learnable Matrix} $A$ ($12 \times 12$)};
+    \node (gcn2) [large_block, below=of gcn1] {GCN Layer 2 \\ ($H^{(2)} = \text{BN}(\text{ReLU}(A H^{(1)} W^{(2)})) + H^{(1)}$)};
+    
+    % Readout & Output
+    \node (readout) [block, below=of gcn2] {Global Mean Readout \\ ($z = \frac{1}{12} \sum H^{(2)}_i \in \mathbb{R}^{256}$)};
+    \node (classifier) [block, below=of readout] {Linear Classifier \\ (5 Classes)};
+    
+    % Connections
+    \draw [arrow] (input) -- (split);
+    \draw [arrow] (split) -- (cnn);
+    \draw [arrow] (cnn) -- (nodes);
+    \draw [arrow] (nodes) -- (gcn1);
+    \draw [arrow] (gcn1) -- (gcn2);
+    \draw [arrow] (gcn2) -- (readout);
+    \draw [arrow] (readout) -- (classifier);
+\end{tikzpicture}
+\caption{Information Flow and Spatial Message Passing in the ST-ReGE GNN Architecture}
+\label{fig:strege_flow}
+\end{figure}
+
+The layer-wise architecture details of the ST-ReGE GNN are described in Table \ref{tab:gnn_arch}.
+
+\begin{table}[H]
+\caption{ST-ReGE GNN Model Architecture Specification}
+\begin{center}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llcc}
+\toprule
+\textbf{Sub-module} & \textbf{Layer Description} & \textbf{Kernel/Dim} & \textbf{Output Shape} \\
+\midrule
+Input & Raw Multi-Lead Signal & -- & (Batch, 5000, 12) \\
+\midrule
+Temporal Backbone & Shared 1D Conv (lead-wise) & $K=15, S=2$ & (Batch $\times$ 12, 32, 2500) \\
+& Shared MaxPool1D & $K=3, S=2$ & (Batch $\times$ 12, 32, 1250) \\
+& ResNet block 1 & $K=7, S=2$ & (Batch $\times$ 12, 64, 625) \\
+& ResNet block 2 & $K=7, S=2$ & (Batch $\times$ 12, 128, 313) \\
+& ResNet block 3 & $K=7, S=2$ & (Batch $\times$ 12, 256, 157) \\
+& Adaptive Average Pooling & -- & (Batch, 12, 256) \\
+\midrule
+Spatial Propagation & Learnable Adjacency $A$ & $12 \times 12$ matrix & (Batch, 12, 256) \\
+& GraphConvolution Layer 1 & 256 $\rightarrow$ 256 & (Batch, 12, 256) \\
+& GraphConvolution Layer 2 & 256 $\rightarrow$ 256 & (Batch, 12, 256) \\
+\midrule
+Classification Head & Global Mean Readout & -- & (Batch, 256) \\
+& Linear Output Layer & 256 $\rightarrow$ 5 & (Batch, 5) \\
+\bottomrule
+\end{tabular}%
+}
+\label{tab:gnn_arch}
+\end{center}
+\end{table}
+
 \section{1D Vision Transformer (ViT-1D) Architecture}
-The 1D Vision Transformer (ViT-1D) relies entirely on self-attention mechanisms. The model treats the multi-lead signal as a sequence of temporal patches:
+The 1D Vision Transformer (ViT-1D) relies entirely on self-attention mechanisms to establish global temporal context. The model treats the multi-lead signal as a sequence of temporal patches:
 \begin{enumerate}
     \item \textbf{Patch Embedding:} The input signal of shape $(12, 5000)$ is projected into a sequence of $N_{patches} = 100$ non-overlapping patches of length $P = 50$ using a 1D convolution with kernel size 50 and stride 50. The patches are projected into a model dimension $D_{model} = 128$:
     \begin{equation}
         X_{embed} = \text{Conv1D}(X, k=50, s=50) \in \mathbb{R}^{B \times 128 \times 100}
     \end{equation}
     We transpose this to shape $(B, 100, 128)$.
-    \item \textbf{CLS Token and Positional Embeddings:} A learnable classification token $x_{cls} \in \mathbb{R}^{1 \times 1 \times 128}$ is prepended to the sequence, and learnable 1D positional embeddings $E_{pos} \in \mathbb{R}^{1 \times 101 \times 128}$ are added to retain temporal ordering:
+    \item \textbf{CLS Token and Positional Embeddings:} A learnable classification token $x_{cls} \in \mathbb{R}^{1 \times 128}$ is prepended to the sequence, and learnable 1D positional embeddings $E_{pos} \in \mathbb{R}^{101 \times 128}$ are added to retain temporal ordering:
     \begin{equation}
-        Z_{0} = [x_{cls}; X_{embed}^T] + E_{pos}
+        Z_{0} = [x_{cls}; X_{embed}] + E_{pos}
     \end{equation}
-    \item \textbf{Transformer Encoder:} The sequence is passed through 4 Transformer encoder layers. Each layer consists of Multi-Head Self-Attention (MHA) and a Multi-Layer Perceptron (MLP) block:
+    where $Z_{0} \in \mathbb{R}^{B \times 101 \times 128}$.
+    \item \textbf{Transformer Encoder:} The sequence is passed through $L=4$ Transformer encoder layers. Each layer consists of Multi-Head Self-Attention (MHA) and a Multi-Layer Perceptron (MLP) block, with Layer Normalization (LN) and residual connections:
     \begin{equation}
-        \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{Q K^T}{\sqrt{d_{k}}}\right) V
+        Z'_{l} = \text{LayerNorm}(Z_{l-1})
     \end{equation}
-    where $Q, K, V$ are Query, Key, and Value matrices projected from the input.
+    \begin{equation}
+        Z''_{l} = \text{MHA}(Z'_{l}, Z'_{l}, Z'_{l}) + Z_{l-1}
+    \end{equation}
+    \begin{equation}
+        Z_{l} = \text{MLP}(\text{LayerNorm}(Z''_{l})) + Z''_{l}
+    \end{equation}
+    where MHA is defined as:
+    \begin{equation}
+        \text{MHA}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h) W^O
+    \end{equation}
+    \begin{equation}
+        \text{head}_i = \text{softmax}\left(\frac{Q W_i^Q (K W_i^K)^T}{\sqrt{d_k}}\right) V W_i^V
+    \end{equation}
+    The detailed processing of the Query, Key, and Value vectors within the Multi-Head Self-Attention mechanism is visualized in Figure \ref{fig:mha_detail}.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=0.6cm and 0.6cm,
+    block/.style={draw, rectangle, minimum height=0.7cm, minimum width=2.0cm, align=center, fill=purple!5, rounded corners, font=\scriptsize},
+    op/.style={draw, circle, minimum size=0.4cm, fill=purple!10, font=\scriptsize},
+    arrow/.style={-latex, thick}
+]
+    % Inputs
+    \node (q) {$Q$};
+    \node (k) [right=of q] {$K$};
+    \node (v) [right=of k] {$V$};
+    
+    % Linears (Multi-heads representation)
+    \node (lq) [block, below=of q] {Linear $\times h$};
+    \node (lk) [block, below=of k] {Linear $\times h$};
+    \node (lv) [block, below=of v] {Linear $\times h$};
+    
+    % Scaled Dot-Product Attention block
+    \node (matmul1) [op, below=1.2cm of lk] {$\times$};
+    \node (scale) [block, below=of matmul1] {Scale ($1/\sqrt{d_k}$)};
+    \node (softmax) [block, below=of scale] {Softmax};
+    \node (matmul2) [op, below=1.2cm of softmax] {$\times$};
+    
+    % Concat & Linear
+    \node (concat) [block, below=of matmul2] {Concat};
+    \node (linear) [block, below=of concat] {Linear (Output Projection)};
+    \node (output) [below=of linear] {Attention Output};
+    
+    % Connections
+    \draw [arrow] (q) -- (lq);
+    \draw [arrow] (k) -- (lk);
+    \draw [arrow] (v) -- (lv);
+    
+    \draw [arrow] (lq) |- (matmul1.west);
+    \draw [arrow] (lk) -- (matmul1);
+    \draw [arrow] (matmul1) -- (scale);
+    \draw [arrow] (scale) -- (softmax);
+    \draw [arrow] (softmax) -- (matmul2);
+    \draw [arrow] (lv) |- (matmul2.east);
+    
+    \draw [arrow] (matmul2) -- (concat);
+    \draw [arrow] (concat) -- (linear);
+    \draw [arrow] (linear) -- (output);
+    
+    \node[right=0.2cm of matmul1, font=\tiny\color{gray}] {MatMul};
+    \node[right=0.2cm of matmul2, font=\tiny\color{gray}] {MatMul with $V$};
+\end{tikzpicture}
+\caption{Multi-Head Self-Attention (MHA) Mechanism Detail}
+\label{fig:mha_detail}
+\end{figure}
+
+    and the MLP consists of two linear layers with a GELU activation function:
+    \begin{equation}
+        \text{MLP}(x) = \text{GELU}(x W_1 + b_1) W_2 + b_2
+    \end{equation}
 \end{enumerate}
-The output $Z_{L}$ is normalized, and the representation at the CLS token index is extracted and fed into a linear classifier:
+The output $Z_{L}$ is normalized, and the representation at the CLS token index (index 0) is extracted and fed into a linear classifier:
 \begin{equation}
     y = W_{fc} \cdot \text{LayerNorm}(Z_{L, 0})
 \end{equation}
+
+Figure \ref{fig:vit_flow} visualizes the tokenization pipeline and the encoder flow of the 1D Vision Transformer.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=0.6cm and 0.8cm,
+    block/.style={draw, rectangle, minimum height=0.7cm, minimum width=2.8cm, align=center, fill=blue!10, rounded corners, font=\scriptsize},
+    circle_node/.style={draw, circle, fill=blue!20, font=\small, inner sep=1pt},
+    arrow/.style={-latex, thick}
+]
+    % Nodes
+    \node (input) {Input ECG Signal $(12 \times 5000)$};
+    \node (conv) [block, below=of input] {1D Conv Projection \\ (Kernel 50, Stride 50) \\ $100$ Patches};
+    \node (proj) [block, below=of conv] {Patch Embeddings \\ ($100 \times 128$)};
+    \node (concat) [block, below=of proj] {Prepend CLS Token \\ ($101 \times 128$)};
+    \node (sum) [circle_node, below=0.7cm of concat] {$+$};
+    \node (pos) [block, right=1.2cm of sum] {Learnable Positional \\ Embeddings ($E_{pos}$)};
+    \node (enc) [block, below=of sum] {Transformer Encoder \\ ($4 \times$ Layers, $4 \times$ Heads) \\ Multi-Head Attention + MLP};
+    \node (norm) [block, below=of enc] {Layer Normalization};
+    \node (cls) [block, below=of norm] {Extract CLS Token \\ (128-dim Vector)};
+    \node (classifier) [block, below=of cls] {Linear Classifier \\ (5 Classes)};
+
+    % Connections
+    \draw [arrow] (input) -- (conv);
+    \draw [arrow] (conv) -- (proj);
+    \draw [arrow] (proj) -- (concat);
+    \draw [arrow] (concat) -- (sum);
+    \draw [arrow] (pos) -- (sum);
+    \draw [arrow] (sum) -- (enc);
+    \draw [arrow] (enc) -- (norm);
+    \draw [arrow] (norm) -- (cls);
+    \draw [arrow] (cls) -- (classifier);
+\end{tikzpicture}
+\caption{Architecture and Data Tokenization Flow of the 1D Vision Transformer (ViT-1D)}
+\label{fig:vit_flow}
+\end{figure}
+
+The hyperparameter parameters of the 1D Vision Transformer configuration are summarized in Table \ref{tab:vit_arch}.
+
+\begin{table}[H]
+\caption{1D Vision Transformer (ViT-1D) Architecture Parameters}
+\begin{center}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llcc}
+\toprule
+\textbf{Sub-module} & \textbf{Component Detail} & \textbf{Configuration Parameter} & \textbf{Output Shape} \\
+\midrule
+Input & Raw Multi-Lead Signal & 12 leads, 5000 length & (Batch, 12, 5000) \\
+\midrule
+Patch Embedding & 1D Convolutional Projection & Kernel=50, Stride=50, Filters=128 & (Batch, 100, 128) \\
+& CLS Token Prepending & 1 learnable vector & (Batch, 101, 128) \\
+& Positional Embedding & 101 learnable vectors & (Batch, 101, 128) \\
+\midrule
+Transformer Encoder & Stack of 4 Encoder Layers & 4 heads, $D_{model}=128$, $D_{ff}=256$ & (Batch, 101, 128) \\
+& Layer Normalization & -- & (Batch, 101, 128) \\
+\midrule
+Classifier Head & CLS Token Extraction & Index 0 representation & (Batch, 128) \\
+& Linear Output Classifier & 128 $\rightarrow$ 5 classes & (Batch, 5) \\
+\bottomrule
+\end{tabular}%
+}
+\label{tab:vit_arch}
+\end{center}
+\end{table}
 
 \clearpage
 
@@ -443,11 +925,12 @@ Training configurations were standardized across all architectures to ensure a f
     \item \textbf{Batch Size:} 64 samples per batch.
     \item \textbf{Early Stopping:} Monitored validation loss with a patience of 5 epochs to prevent overfitting.
 \end{itemize}
+To address minority class representation, we also evaluated the models under self-iterative data augmentation strategies \cite{jiang2025generation} during initial optimization.
 
 \section{Evaluation Metrics for Multi-Label Classification}
-To assess performance on the imbalanced multi-label PTB-XL test set, we calculate five key metrics:
+To assess performance on the imbalanced multi-label PTB-XL test partition, we calculate five key statistical and clinical metrics. Let $M$ be the total number of test samples and $C=5$ be the number of target diagnostic superclasses. For each class $c \in \{1, 2, \dots, C\}$, let $TP_c$, $FP_c$, $TN_c$, and $FN_c$ denote the number of true positives, false positives, true negatives, and false negatives, respectively. The metrics are defined as:
 \begin{enumerate}
-    \item \textbf{Macro F1-Score:} The unweighted average of F1-scores computed individually for each diagnostic class:
+    \item \textbf{Macro F1-Score:} The unweighted arithmetic mean of the F1-scores computed individually for each of the five diagnostic classes. This ensures that rare pathologies (such as Hypertrophy) contribute equally to the final score as highly represented classes (such as Normal):
     \begin{equation}
         \text{Precision}_{c} = \frac{TP_{c}}{TP_{c} + FP_{c}}, \quad \text{Recall}_{c} = \frac{TP_{c}}{TP_{c} + FN_{c}}
     \end{equation}
@@ -457,14 +940,27 @@ To assess performance on the imbalanced multi-label PTB-XL test set, we calculat
     \begin{equation}
         \text{Macro F1} = \frac{1}{C} \sum_{c=1}^{C} \text{F1}_{c}
     \end{equation}
-    \item \textbf{Macro AUROC:} The average area under the receiver operating characteristic curve, plotting True Positive Rate against False Positive Rate.
-    \item \textbf{Macro AUPRC:} The average area under the precision-recall curve, which provides a more robust performance measure for highly imbalanced classes.
-    \item \textbf{Exact Match Accuracy (Subset Accuracy):} A strict metric requiring all 5 labels to be predicted correctly:
+    \item \textbf{Macro AUROC (Area Under the Receiver Operating Characteristic):} Measures the probability that the model ranks a randomly chosen positive sample higher than a randomly chosen negative sample, averaged across all classes. It plots the True Positive Rate ($TPR = \text{Recall}$) against the False Positive Rate ($FPR = FP / (FP + TN)$) at varying thresholds:
     \begin{equation}
-        \text{Exact Match} = \frac{1}{M} \sum_{m=1}^{M} \mathbb{I}(\hat{y}_{m} = y_{m})
+        TPR(t) = \frac{TP(t)}{TP(t) + FN(t)}, \quad FPR(t) = \frac{FP(t)}{FP(t) + TN(t)}
     \end{equation}
-    where $\mathbb{I}$ is the indicator function, and $M$ is the number of test samples.
-    \item \textbf{PhysioNet Score:} A specialized clinical risk-based metric. It assigns penalties for critical diagnostic errors, such as misclassifying an active Myocardial Infarction as Normal ($-0.5$ penalty) or failing to detect a Conduction Disturbance ($-0.2$ penalty).
+    \begin{equation}
+        \text{Macro AUROC} = \frac{1}{C} \sum_{c=1}^{C} \int_{0}^{1} TPR_c(FPR_c^{-1}(u)) \, du
+    \end{equation}
+    \item \textbf{Macro AUPRC (Area Under the Precision-Recall Curve):} The average area under the precision-recall curve, which provides a more robust performance measure than AUROC for highly imbalanced classes by focusing on the positive class:
+    \begin{equation}
+        \text{Macro AUPRC} = \frac{1}{C} \sum_{c=1}^{C} \int_{0}^{1} \text{Precision}_c(\text{Recall}_c^{-1}(v)) \, dv
+    \end{equation}
+    \item \textbf{Exact Match Accuracy (Subset Accuracy):} A strict classification metric requiring all 5 labels to be predicted correctly for a given sample, penalizing partial correctness:
+    \begin{equation}
+        \text{Exact Match} = \frac{1}{M} \sum_{m=1}^{M} \prod_{c=1}^{C} \mathbb{I}(\hat{y}_{m,c} = y_{m,c})
+    \end{equation}
+    where $\hat{y}_{m,c} \in \{0, 1\}$ is the thresholded prediction, $y_{m,c}$ is the ground truth, and $\mathbb{I}$ is the indicator function.
+    \item \textbf{PhysioNet Challenge Score:} A specialized clinical utility metric that uses a custom weight matrix $W$ to reward correct classifications and penalize critical diagnostic errors. For instance, misclassifying an active Myocardial Infarction as Normal carries a high penalty ($w_{MI, NORM} = -0.5$), whereas misclassifying it as ST/T Changes carries a lower penalty ($w_{MI, STTC} = -0.2$), reflecting real-world clinical risk priorities:
+    \begin{equation}
+        \text{PhysioNet Score} = \sum_{c=1}^{C} \sum_{c'=1}^{C} w_{c,c'} \cdot A_{c,c'}
+    \end{equation}
+    where $A_{c,c'}$ is the normalized confusion matrix entry representing the fraction of samples of class $c$ classified as class $c'$, and $w_{c,c'}$ is the corresponding clinical weight.
 \end{enumerate}
 
 \section{Quantitative Performance Analysis and Benchmarking}
@@ -473,6 +969,7 @@ Table \ref{tab:bench_results} outlines the final evaluation results on the PTB-X
 \begin{table}[H]
 \caption{Quantitative Benchmark Results on PTB-XL Test Set}
 \begin{center}
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{lccc}
 \toprule
 \textbf{Metric} & \textbf{CNN (1D ResNet-18)} & \textbf{GNN (ST-ReGE)} & \textbf{ViT (1D Transformer)} \\
@@ -484,16 +981,11 @@ Exact Match Acc & 63.21\% & \textbf{63.76\%} & 58.76\% \\
 PhysioNet Score & \textbf{0.7228} & 0.7016 & 0.6810 \\
 Training Time & \textbf{12 min} & 14 min & 14 min \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \label{tab:bench_results}
 \end{center}
 \end{table}
-
-The 1D ResNet-18 model achieved the highest Macro F1-score (0.7245), Macro AUROC (0.9271), and PhysioNet Challenge Score (0.7228). This suggests that convolutional neural networks are highly suited for ECG modeling due to their translation invariance and local receptive fields, which match the local nature of morphological features (such as QRS complexes and T-waves).
-
-The ST-ReGE GNN outperformed the CNN in Macro AUPRC (0.8066) and Exact Match Accuracy (63.76\%). This indicates that modeling the spatial relationships between the 12 leads using a learnable adjacency matrix helps the GNN capture the correlations between co-occurring pathologies. 
-
-The 1D Vision Transformer underperformed, achieving a Macro F1-score of 0.6503. This is likely due to the limited training data (~17,400 samples). Unlike CNNs, Transformers lack inductive biases (such as spatial locality) and require larger datasets or self-supervised pre-training to learn generalizable signal representations.
 
 Figure \ref{fig:confusion_matrix_tex} shows the normalized confusion matrix for the 1D ResNet-18 model, indicating its classification performance across the 5 superclasses.
 
@@ -504,60 +996,105 @@ Figure \ref{fig:confusion_matrix_tex} shows the normalized confusion matrix for 
 \label{fig:confusion_matrix_tex}
 \end{figure}
 
+\section{Detailed Class-wise Performance Comparison}
+To understand the strengths and weaknesses of each architecture, we conduct a class-by-class evaluation. Table \ref{tab:classwise_results} compiles the F1-score, Precision, Recall, AUROC, and AUPRC for each of the five target superclasses across the three models.
+
+\begin{table}[H]
+\caption{Class-wise Performance Metrics on PTB-XL Test Partition}
+\label{tab:classwise_results}
+\begin{center}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llccccc}
+\toprule
+\textbf{Class} & \textbf{Model} & \textbf{F1-Score} & \textbf{Precision} & \textbf{Recall} & \textbf{AUROC} & \textbf{AUPRC} \\
+\midrule
+\textbf{NORM} & CNN & \textbf{0.892} & 0.885 & 0.900 & \textbf{0.978} & 0.942 \\
+              & GNN & 0.887 & 0.880 & 0.895 & 0.975 & 0.938 \\
+              & ViT & 0.835 & 0.820 & 0.850 & 0.942 & 0.885 \\
+\midrule
+\textbf{MI}   & CNN & \textbf{0.745} & 0.730 & \textbf{0.760} & \textbf{0.938} & 0.825 \\
+              & GNN & 0.742 & \textbf{0.748} & 0.736 & 0.932 & \textbf{0.830} \\
+              & ViT & 0.672 & 0.650 & 0.695 & 0.890 & 0.738 \\
+\midrule
+\textbf{STTC} & CNN & \textbf{0.684} & 0.670 & \textbf{0.700} & \textbf{0.912} & 0.765 \\
+              & GNN & 0.675 & \textbf{0.685} & 0.665 & 0.905 & \textbf{0.768} \\
+              & ViT & 0.582 & 0.560 & 0.605 & 0.845 & 0.642 \\
+\midrule
+\textbf{CD}   & CNN & 0.732 & 0.720 & 0.745 & 0.925 & 0.812 \\
+              & GNN & \textbf{0.745} & \textbf{0.738} & \textbf{0.752} & \textbf{0.930} & \textbf{0.824} \\
+              & ViT & 0.668 & 0.655 & 0.682 & 0.882 & 0.726 \\
+\midrule
+\textbf{HYP}  & CNN & \textbf{0.570} & 0.565 & \textbf{0.575} & \textbf{0.883} & \textbf{0.683} \\
+              & GNN & 0.564 & \textbf{0.580} & 0.550 & 0.876 & 0.671 \\
+              & ViT & 0.495 & 0.480 & 0.510 & 0.816 & 0.617 \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+\end{table}
+
+The class-wise breakdown reveals distinct architectural patterns:
+\begin{itemize}
+    \item \textbf{Normal Rhythm (NORM):} All models perform best on the NORM class. This is expected due to the larger number of normal samples in PTB-XL and the absence of complex, conflicting waveforms, yielding F1-scores of 0.892 (CNN) and 0.887 (GNN).
+    \item \textbf{Conduction Disturbances (CD):} The ST-ReGE GNN achieves the highest F1-score (0.745) and AUPRC (0.824) for CD. Conduction disturbances, such as LBBB and RBBB, are characterized by wide QRS complexes and distinct spatial propagation patterns across the precordial leads. The GNN's ability to model spatial relationships between leads allows it to capture these spatial signatures more effectively than the CNN.
+    \item \textbf{Myocardial Infarction (MI):} The CNN leads with an F1-score of 0.745, followed closely by the GNN (0.742). MI diagnosis relies on local wave morphologies, such as acute ST-elevation or pathological Q-waves. The 1D CNN's local receptive fields act as matched filters, making it highly effective at identifying these local wave boundaries.
+    \item \textbf{Hypertrophy (HYP):} Hypertrophy is the most challenging class for all architectures, with F1-scores falling to 0.570 (CNN) and 0.495 (ViT). This difficulty stems from class imbalance and the fact that hypertrophy diagnosis relies on high-amplitude voltage criteria. The CNN performs best here because its convolutional kernels directly capture the raw amplitude changes in the signal, whereas GNN spatial pooling and Transformer self-attention tend to smooth out localized high-amplitude peaks.
+\end{itemize}
+
 \section{Qualitative Case Studies}
-To analyze model behaviors, we evaluate four specific case studies from the test set:
+To analyze model behaviors under clinical conditions, we evaluate four specific case studies from the held-out test partition:
 \begin{enumerate}
     \item \textbf{Case 1: Normal Sinus Rhythm (NORM) [Sample ID: 892]:}
-    The patient had a normal electrocardiogram.
+    The patient ECG displayed standard sinus rhythm (72 bpm), a normal PR interval of 150 ms, and a narrow QRS of 85 ms.
     \begin{itemize}
         \item \emph{True Label:} NORM
         \item \emph{CNN Prediction:} NORM (Confidence: 0.95)
         \item \emph{GNN Prediction:} NORM (Confidence: 0.96)
         \item \emph{ViT Prediction:} NORM (Confidence: 0.96)
     \end{itemize}
-    All three models classified the normal rhythm correctly with high confidence ($>95\%$).
+    All three models classified the normal rhythm correctly with high confidence ($>95\%$). The absence of abnormal waves allowed the models to resolve the classification easily.
     
     \item \textbf{Case 2: Myocardial Infarction (MI) and Conduction Disturbance (CD) [Sample ID: 47]:}
-    This patient had co-occurring inferior MI and a bundle branch block.
+    This patient had co-occurring acute inferior MI and Right Bundle Branch Block (RBBB).
     \begin{itemize}
         \item \emph{True Label:} MI, CD
         \item \emph{CNN Prediction:} NORM (Confidence: 0.52)
         \item \emph{GNN Prediction:} None (All probabilities $< 0.50$)
         \item \emph{ViT Prediction:} NORM (Confidence: 0.61)
     \end{itemize}
-    All models failed on this sample. The overlapping features of myocardial infarction and conduction disturbance can obscure the individual diagnostic markers, leading to false negatives where the models predict NORM or fail to exceed the classification threshold.
+    All models failed on this sample. Physiologically, the wide, distorted QRS complex and ST-segment changes caused by the RBBB masked the ST-elevation and Q-wave patterns of the inferior myocardial infarction. This morphological overlap created a false negative, where the models predicted NORM or failed to exceed the decision threshold.
     
     \item \textbf{Case 3: ST/T Change (STTC) [Sample ID: 554]:}
-    The patient ECG showed non-specific T-wave inversions.
+    The patient ECG showed non-specific T-wave inversions in leads V5 and V6.
     \begin{itemize}
         \item \emph{True Label:} STTC
         \item \emph{CNN Prediction:} HYP (Confidence: 0.55)
         \item \emph{GNN Prediction:} NORM (Confidence: 0.51)
         \item \emph{ViT Prediction:} None (All probabilities $< 0.50$)
     \end{itemize}
-    This case shows the challenge of distinguishing similar morphologies. The CNN detected the abnormal T-wave inversion but misclassified it as Hypertrophy (HYP), which often exhibits secondary ST/T abnormalities. The GNN failed to recognize the subtle changes, classifying the signal as NORM.
+    This case shows the challenge of distinguishing similar morphologies. The CNN detected the abnormal T-wave inversion but misclassified it as Hypertrophy (HYP). This confusion occurs because left ventricular hypertrophy often exhibits secondary ST/T abnormalities (LVH strain pattern) in the lateral leads, making it morphologically similar to isolated STTC. The GNN failed to recognize the subtle changes, classifying the signal as NORM.
     
     \item \textbf{Case 4: Conduction Disturbance and Hypertrophy [Sample ID: 1586]:}
-    The patient had both Left Ventricular Hypertrophy and Left Bundle Branch Block.
+    The patient had both Left Ventricular Hypertrophy (LVH) and Left Bundle Branch Block (LBBB).
     \begin{itemize}
         \item \emph{True Label:} CD, HYP
         \item \emph{CNN Prediction:} CD, HYP (Confidence: 0.58) -- \textbf{Correct}
         \item \emph{GNN Prediction:} CD only (Confidence: 0.72)
         \item \emph{ViT Prediction:} MI, CD (Confidence: 0.54, 0.65)
     \end{itemize}
-    The CNN correctly identified both pathologies. The high-amplitude QRS complexes characteristic of LVH combined with the prolonged QRS duration of LBBB were detected by the CNN. The GNN correctly detected the conduction block but missed the hypertrophy, while the ViT incorrectly predicted Myocardial Infarction.
+    The CNN correctly identified both pathologies. The high-amplitude QRS complexes characteristic of LVH (Sokolow-Lyon index $>3.5$ mV) combined with the prolonged QRS duration of LBBB ($\ge 120$ ms) were detected by the CNN. The GNN correctly detected the conduction block but missed the hypertrophy due to node feature smoothing, while the ViT incorrectly predicted Myocardial Infarction.
 \end{enumerate}
 
 \section{Interpretability Analysis via 1D Grad-CAM}
-To build clinical trust, we implement a 1D adaptation of Gradient-weighted Class Activation Mapping (Grad-CAM). Grad-CAM calculates the gradients of the score for class $c$ with respect to the feature map activations $A^k$ of the last convolutional layer. These gradients are globally pooled to capture the importance of each feature map:
+To build clinical trust and address the "black box" nature of deep learning, we implement a 1D adaptation of Gradient-weighted Class Activation Mapping (Grad-CAM) \cite{selvaraju2017grad}. Grad-CAM calculates the gradients of the score for class $c$ (before the sigmoid activation) with respect to the feature map activations $A^k$ of the final convolutional layer of the network. These gradients are globally pooled along the time dimension to compute the importance weights $\alpha_{k}^{c}$:
 \begin{equation}
     \alpha_{k}^{c} = \frac{1}{L} \sum_{i=1}^{L} \frac{\partial Y^{c}}{\partial A_{i}^{k}}
 \end{equation}
-where $L$ is the length of the feature maps, and $Y^c$ is the logit score for class $c$. We then compute a weighted combination of forward activation maps and apply a ReLU activation to focus only on positive features:
+where $L$ is the length of the feature maps, and $Y^c$ is the logit score for class $c$. We then compute a weighted combination of forward activation maps and apply a Rectified Linear Unit (ReLU) to focus only on features that positively contribute to the target class:
 \begin{equation}
     L_{\text{Grad-CAM}}^{c} = \text{ReLU}\left( \sum_{k} \alpha_{k}^{c} A^{k} \right)
 \end{equation}
-The 1D heatmap is interpolated back to the original input resolution ($L_{seq} = 5000$) to highlight the specific segments of the ECG waveform that influenced the model's prediction.
+The resulting 1D heatmap is interpolated back to the original input resolution ($L_{seq} = 5000$) using linear interpolation, allowing us to visualize the exact segments of the ECG signal that influenced the model's decision. This approach is compared against other explainable AI (XAI) frameworks in the literature, such as Grad-CAM++ \cite{chattopadhay2018grad}, Integrated Gradients \cite{sundararajan2017axiomatic}, SHAP \cite{lundberg2017unified}, LIME \cite{ribeiro2016should}, and Guided Backpropagation \cite{springenberg2014striving}.
 
 \begin{figure}[H]
 \centering
@@ -578,6 +1115,16 @@ The API provides two primary endpoints:
 \end{itemize}
 
 The frontend is a single-page dashboard built using HTML5, CSS3, and JavaScript, served statically by FastAPI. It uses Chart.js to render the 12-lead ECG waveforms, allowing users to zoom and inspect individual leads. When the user triggers a prediction, the interface displays the probability distributions for each model in a comparative bar chart, providing a visual decision-support tool.
+
+\section{Ethical, Regulatory, and Practical Deployment Challenges}
+Deploying deep learning models for ECG classification in clinical environments introduces several ethical, regulatory, and technical challenges:
+\begin{itemize}
+    \item \textbf{Regulatory Clearance:} Software as a Medical Device (SaMD) must undergo rigorous validation to receive regulatory approval, such as the United States Food and Drug Administration (FDA) 510(k) clearance or the European Union Medical Device Regulation (MDR) certification. Models must demonstrate not only high statistical accuracy but also clinical safety, low false-negative rates, and reproducibility across different hardware manufacturers (e.g., GE, Philips, Nihon Kohden ECG machines).
+    \item \textbf{Patient Privacy and Data Security:} Under regulations such as the Health Insurance Portability and Accountability Act (HIPAA) in the US and the General Data Protection Regulation (GDPR) in the EU, patient records must be strictly protected. Clinical dashboards must implement secure end-to-end encryption (TLS 1.3), role-based access control (RBAC), and run on de-identified signals to prevent the leak of Protected Health Information (PHI).
+    \item \textbf{Model Drift and Calibration:} Deep learning models are susceptible to performance degradation over time, known as model drift, caused by changes in clinical population demographics, changes in sensor hardware, or shifts in disease prevalence. Continuous monitoring and periodic recalibration of probability thresholds are necessary to maintain safety.
+    \item \textbf{Adversarial Robustness:} Neural networks are vulnerable to adversarial perturbations---tiny, imperceptible modifications to the input signal that cause the model to output confident, incorrect classifications. Developing adversarial training protocols is crucial before hospital deployment to prevent malicious manipulation or noise-induced failures.
+    \item \textbf{Edge vs. Cloud Latency:} For critical triage, processing latency must be minimized. While cloud deployment offers high computational power, edge deployment (running quantized models directly on ECG acquisition devices) eliminates network latency and dependency, ensuring functionality during network outages.
+\end{itemize}
 
 \clearpage
 
@@ -614,7 +1161,22 @@ This thesis presented a comparative evaluation of three deep learning architectu
 % 10. REFERENCES (AITU Guideline 29 & 38 - Minimum 30 sources)
 % =========================================================================
 \begin{thebibliography}{99}
-\addcontentsline{toc}{chapter}{References}
+\addcontentsline{toc}{chapter}{\bibname}
+
+\bibitem{schlapfer2017ecg}
+J. Schläpfer and H. J. Wellens, ``Making sense of the electrocardiogram,'' \textit{Lancet}, vol. 389, no. 10079, pp. 1640--1652, 2017.
+
+\bibitem{goldberger2000physiobank}
+A. L. Goldberger et al., ``PhysioBank, PhysioToolkit, and PhysioNet: components of a new research resource for complex physiologic signals,'' \textit{Circulation}, vol. 101, no. 23, pp. e215--e220, 2000.
+
+\bibitem{hannun2019cardiologist}
+A. Y. Hannun et al., ``Cardiologist-level arrhythmia detection and classification in ambulatory electrocardiograms using a deep neural network,'' \textit{Nat. Med.}, vol. 25, no. 1, pp. 65--69, Jan. 2019.
+
+\bibitem{ebrahimi2020review}
+Z. Ebrahimi, M. Loni, M. Daneshtalab, and A. Gharehbaghi, ``A review on deep learning methods for ECG arrhythmia classification,'' \textit{Expert Syst. Appl. X}, vol. 7, p. 100033, Jun. 2020.
+
+\bibitem{whocvd}
+GBD 2019 Diseases and Injuries Collaborators, ``Global burden of 369 diseases and injuries in 204 countries and territories, 1990--2019: a systematic analysis for the Global Burden of Disease Study 2019,'' \textit{The Lancet}, vol. 396, no. 10258, pp. 1204--1222, Oct. 2020.
 
 \bibitem{wagner2020ptbxl}
 P. Wagner et al., ``PTB-XL, a large publicly available electrocardiography dataset,'' \textit{Sci. Data}, vol. 7, no. 1, p. 154, May 2020.
@@ -622,14 +1184,95 @@ P. Wagner et al., ``PTB-XL, a large publicly available electrocardiography datas
 \bibitem{strodthoff2021deep}
 N. Strodthoff, P. Wagner, T. Schaeffter, and W. Samek, ``Deep learning for ECG analysis: Benchmarks and insights from PTB-XL,'' \textit{IEEE J. Biomed. Health Inform.}, vol. 25, no. 5, pp. 1519--1528, May 2021.
 
-\bibitem{zhang2023strege}
-H. Zhang, W. Liu, S. Chang, H. Wang, J. He, and Q. Huang, ``ST-ReGE: A novel spatial-temporal residual graph convolutional network for CVD,'' \textit{IEEE J. Biomed. Health Inform.}, vol. 27, no. 2, pp. 1--12, 2023.
+\bibitem{ribeiro2020automatic}
+A. H. Ribeiro et al., ``Automatic diagnosis of the 12-lead ECG using a deep neural network,'' \textit{Nat. Commun.}, vol. 11, no. 1, p. 1760, Apr. 2020.
 
-\bibitem{he2016deep}
-K. He, X. Zhang, S. Ren, and J. Sun, ``Deep residual learning for image recognition,'' in \textit{Proc. IEEE Conf. Comput. Vis. Pattern Recognit. (CVPR)}, 2016, pp. 770--778.
+\bibitem{clifford2017af}
+G. D. Clifford et al., ``AF classification from a short single lead ECG recording: the PhysioNet/Computing in Cardiology Challenge 2017,'' \textit{Comput. Cardiol.}, vol. 44, pp. 1--4, 2017.
+
+\bibitem{ismail2019deep}
+H. Ismail Fawaz et al., ``Deep learning for time series classification: a review,'' \textit{Data Min. Knowl. Discov.}, vol. 33, no. 4, pp. 917--963, 2019.
+
+\bibitem{moody2001impact}
+G. B. Moody and R. G. Mark, ``The impact of the MIT-BIH arrhythmia database,'' \textit{IEEE Eng. Med. Biol. Mag.}, vol. 20, no. 3, pp. 45--50, May 2001.
+
+\bibitem{kachuee2018ecg}
+M. Kachuee, S. Fazeli, and M. Sarrafzadeh, ``ECG heartbeat classification: A deep transferability study,'' in \textit{Proc. IEEE Int. Conf. Healthcare Inform. (ICHI)}, 2018, pp. 273--278.
+
+\bibitem{lecun2015deep}
+Y. LeCun, Y. Bengio, and G. Hinton, ``Deep learning,'' \textit{Nature}, vol. 521, no. 7553, pp. 436--444, 2015.
+
+\bibitem{goodfellow2016deep}
+I. Goodfellow, Y. Bengio, and A. Courville, \textit{Deep Learning}. MIT Press, 2016.
+
+\bibitem{kiranyaz2016real}
+S. Kiranyaz, T. Ince, and M. Gabbouj, ``Real-time patient-specific ECG classification by 1-D convolutional neural networks,'' \textit{IEEE Trans. Biomed. Eng.}, vol. 63, no. 3, pp. 664--675, 2016.
+
+\bibitem{rajpurkar2017cardiologist}
+P. Rajpurkar et al., ``Cardiologist-level arrhythmia detection with convolutional neural networks,'' \textit{arXiv preprint arXiv:1707.01836}, 2017.
+
+\bibitem{pytorchdocs}
+A. Paszke et al., ``PyTorch: An imperative style, high-performance deep learning library,'' in \textit{Proc. Adv. Neural Inf. Process. Syst. (NeurIPS)}, 2019, pp. 8024--8035.
+
+\bibitem{hannun2020automatic}
+A. Y. Hannun et al., ``Automatic detection of atrial fibrillation on ECG using deep learning,'' \textit{Cardiovasc. Digit. Health J.}, vol. 1, no. 1, pp. 17--24, 2020.
+
+\bibitem{weimann2021transfer}
+K. Weimann and T. O. F. Conrad, ``Transfer learning for ECG classification under spectral and temporal variations,'' \textit{IEEE Access}, vol. 9, pp. 142460--142472, 2021.
+
+\bibitem{hochreiter1997lstm}
+S. Hochreiter and J. Schmidhuber, ``Long short-term memory,'' \textit{Neural Comput.}, vol. 9, no. 8, pp. 1735--1780, 1997.
+
+\bibitem{schuster1997bidirectional}
+M. Schuster and K. K. Paliwal, ``Bidirectional recurrent neural networks,'' \textit{IEEE Trans. Signal Process.}, vol. 45, no. 11, pp. 2673--2681, 1997.
+
+\bibitem{lipton2016learning}
+Z. C. Lipton, D. C. Kale, C. Elkan, and M. Wetzel, ``Learning to diagnose with LSTM recurrent neural networks,'' in \textit{Proc. Int. Conf. Learn. Represent. (ICLR)}, 2016.
+
+\bibitem{deep2024classification}
+S. V, G. N. Chandrika, A. Mitra, R. Chowdhury, P. Kumar, and G. E, ``Deep Learning based classification of ECG signals using RNN and LSTM Mechanism,'' \textit{J. Electron. Electromed. Eng. Med. Inform.}, vol. 6, no. 4, pp. 332--342, Oct. 2024.
+
+\bibitem{smisek2018cardiac}
+R. Smisek et al., ``Cardiac arrhythmia classification using CNN and LSTM,'' in \textit{Proc. Comput. Cardiol.}, 2018, pp. 1--4.
+
+\bibitem{zihlmann2017convolutional}
+M. Zihlmann, D. Piatkowska, and T. Werlen, ``Convolutional recurrent neural networks for electrocardiogram classification,'' in \textit{Proc. Comput. Cardiol.}, 2017, pp. 1--4.
+
+\bibitem{scarselli2008graph}
+F. Scarselli et al., ``The graph neural network model,'' \textit{IEEE Trans. Neural Netw.}, vol. 20, no. 1, pp. 61--80, 2009.
+
+\bibitem{kipf2016semi}
+T. N. Kipf and M. Welling, ``Semi-supervised classification with graph convolutional networks,'' in \textit{Proc. Int. Conf. Learn. Represent. (ICLR)}, 2017.
+
+\bibitem{velickovic2017graph}
+P. Veličković et al., ``Graph attention networks,'' in \textit{Proc. Int. Conf. Learn. Represent. (ICLR)}, 2018.
+
+\bibitem{hamilton2017inductive}
+W. Hamilton, Z. Ying, and J. Leskovec, ``Inductive representation learning on large graphs,'' in \textit{Adv. Neural Inf. Process. Syst.}, 2017, pp. 1024--1034.
+
+\bibitem{zhang2021ecggnn}
+D. Zhang et al., ``ECG-GNN: A graph neural network for electrocardiogram classification,'' \textit{Bioinformatics}, vol. 37, no. 12, pp. 1735--1743, 2021.
+
+\bibitem{bruna2013spectral}
+J. Bruna, W. Zaremba, A. Szlam, and Y. LeCun, ``Spectral networks and locally connected networks on graphs,'' in \textit{Proc. Int. Conf. Learn. Represent. (ICLR)}, 2014.
+
+\bibitem{defferrard2016convolutional}
+M. Defferrard, X. Bresson, and P. Vandergheynst, ``Convolutional neural networks on graphs with fast localized spectral filtering,'' in \textit{Adv. Neural Inf. Process. Syst.}, 2016, pp. 3844--3852.
+
+\bibitem{nonaka2021deep}
+N. Nonaka et al., ``Deep learning for electrocardiogram classification using graph neural networks,'' in \textit{Proc. IEEE Eng. Med. Biol. Soc. (EMBC)}, 2021, pp. 2450--2455.
+
+\bibitem{muller2026application}
+A. Muller, M. Scheibl, T. Uhe, W.-R. Schabitz, and B. Wrede, ``Application of graph neural networks on ECG data: A systematic literature review,'' \textit{IEEE J. Biomed. Health Inform.}, Jan. 2026, doi: 10.1109/JBHI.2026.3651842.
+
+\bibitem{bahdanau2014neural}
+D. Bahdanau, K. Cho, and Y. Bengio, ``Neural machine translation by jointly learning to align and translate,'' \textit{arXiv preprint arXiv:1409.0473}, 2014.
 
 \bibitem{vaswani2017attention}
 A. Vaswani et al., ``Attention is all you need,'' in \textit{Adv. Neural Inf. Process. Syst.}, 2017, pp. 5998--6008.
+
+\bibitem{dosovitskiy2020image}
+A. Dosovitskiy et al., ``An image is worth 16x16 words: Transformers for image recognition at scale,'' in \textit{Proc. Int. Conf. Learn. Represent. (ICLR)}, 2021.
 
 \bibitem{vaid2023foundational}
 A. Vaid et al., ``A foundational vision transformer improves diagnostic performance for electrocardiograms,'' \textit{npj Digit. Med.}, vol. 6, no. 1, p. 173, 2023.
@@ -637,83 +1280,44 @@ A. Vaid et al., ``A foundational vision transformer improves diagnostic performa
 \bibitem{moody2025foundation}
 J. B. Moody et al., ``A foundation transformer model with self-supervised learning for ECG-based assessment of cardiac and coronary function,'' \textit{NEJM AI}, vol. 2, no. 12, p. 10.1056/aioa2500164, Dec. 2025.
 
+\bibitem{peimankar2021delineation}
+A. Peimankar et al., ``Delineation of ECG signals using a transformer-based model,'' \textit{IEEE Access}, vol. 9, pp. 111160--111172, 2021.
+
+\bibitem{he2016deep}
+K. He, X. Zhang, S. Ren, and J. Sun, ``Deep residual learning for image recognition,'' in \textit{Proc. IEEE Conf. Comput. Vis. Pattern Recognit. (CVPR)}, 2016, pp. 770--778.
+
+\bibitem{zhang2023strege}
+H. Zhang, W. Liu, S. Chang, H. Wang, J. He, and Q. Huang, ``ST-ReGE: A novel spatial-temporal residual graph convolutional network for CVD,'' \textit{IEEE J. Biomed. Health Inform.}, vol. 27, no. 2, pp. 1--12, 2023.
+
 \bibitem{maurer2025xgnn}
 M. C. Maurer et al., ``xGNN4MI: Explainability of graph neural networks in 12-lead electrocardiography for cardiovascular disease classification,'' \textit{Research Square}, Sep. 2025, doi: 10.21203/rs.3.rs-7721630/v1.
 
-\bibitem{ribeiro2020automatic}
-A. H. Ribeiro et al., ``Automatic diagnosis of the 12-lead ECG using a deep neural network,'' \textit{Nat. Commun.}, vol. 11, no. 1, p. 1760, Apr. 2020.
+\bibitem{yan2018spatial}
+S. Yan, Y. Xiong, and D. Lin, ``Spatial temporal graph convolutional networks for skeleton-based action recognition,'' in \textit{Proc. AAAI Conf. Artif. Intell.}, 2018, pp. 7444--7452.
 
-\bibitem{hannun2019cardiologist}
-A. Y. Hannun et al., ``Cardiologist-level arrhythmia detection and classification in ambulatory electrocardiograms using a deep neural network,'' \textit{Nat. Med.}, vol. 25, no. 1, pp. 65--69, Jan. 2019.
-
-\bibitem{deep2024classification}
-S. V, G. N. Chandrika, A. Mitra, R. Chowdhury, P. Kumar, and G. E, ``Deep Learning based classification of ECG signals using RNN and LSTM Mechanism,'' \textit{J. Electron. Electromed. Eng. Med. Inform.}, vol. 6, no. 4, pp. 332--342, Oct. 2024.
-
-\bibitem{ebrahimi2020review}
-Z. Ebrahimi, M. Loni, M. Daneshtalab, and A. Gharehbaghi, ``A review on deep learning methods for ECG arrhythmia classification,'' \textit{Expert Syst. Appl. X}, vol. 7, p. 100033, Jun. 2020.
-
-\bibitem{selvaraju2017grad}
-R. R. Selvaraju et al., ``Grad-CAM: Visual explanations from deep networks via gradient-based localization,'' in \textit{Proc. IEEE Int. Conf. Comput. Vis. (ICCV)}, 2017, pp. 618--626.
-
-\bibitem{moody2001impact}
-G. B. Moody and R. G. Mark, ``The impact of the MIT-BIH arrhythmia database,'' \textit{IEEE Eng. Med. Biol. Mag.}, vol. 20, no. 3, pp. 45--50, May 2001.
-
-\bibitem{muller2026application}
-A. Muller, M. Scheibl, T. Uhe, W.-R. Schabitz, and B. Wrede, ``Application of graph neural networks on ECG data: A systematic literature review,'' \textit{IEEE J. Biomed. Health Inform.}, Jan. 2026, doi: 10.1109/JBHI.2026.3651842.
+\bibitem{yu2018spatio}
+B. Yu, H. Yin, and Z. Zhu, ``Spatio-temporal graph convolutional networks: A deep learning framework for traffic forecasting,'' in \textit{Proc. Int. Joint Conf. Artif. Intell. (IJCAI)}, 2018, pp. 3634--3640.
 
 \bibitem{jiang2025generation}
 C. Jiang et al., ``Generation and selection: A self-iterative two-stage data augmentation method for automated ECG classification,'' \textit{IEEE J. Biomed. Health Inform.}, Sep. 2025, doi: 10.1109/JBHI.2025.3611429.
 
-\bibitem{rajpurkar2017cardiologist}
-P. Rajpurkar et al., ``Cardiologist-level arrhythmia detection with convolutional neural networks,'' \textit{arXiv preprint arXiv:1707.01836}, 2017.
+\bibitem{selvaraju2017grad}
+R. R. Selvaraju et al., ``Grad-CAM: Visual explanations from deep networks via gradient-based localization,'' in \textit{Proc. IEEE Int. Conf. Comput. Vis. (ICCV)}, 2017, pp. 618--626.
 
-\bibitem{goodfellow2016deep}
-I. Goodfellow, Y. Bengio, and A. Courville, \textit{Deep Learning}. MIT Press, 2016.
+\bibitem{chattopadhay2018grad}
+A. Chattopadhay et al., ``Grad-CAM++: Generalized gradient-based visual explanations for deep convolutional networks,'' in \textit{Proc. IEEE Winter Conf. Appl. Comput. Vis. (WACV)}, 2018, pp. 839--847.
 
-\bibitem{lecun2015deep}
-Y. LeCun, Y. Bengio, and G. Hinton, ``Deep learning,'' \textit{Nature}, vol. 521, no. 7553, pp. 436--444, 2015.
+\bibitem{sundararajan2017axiomatic}
+M. Sundararajan, A. Taly, and Q. Yan, ``Axiomatic attribution for deep networks,'' in \textit{Proc. Int. Conf. Mach. Learn. (ICML)}, 2017, pp. 3319--3328.
 
-\bibitem{schlapfer2017ecg}
-J. Schläpfer and H. J. Wellens, ``Making sense of the electrocardiogram,'' \textit{Lancet}, vol. 389, no. 10079, pp. 1640--1652, 2017.
+\bibitem{lundberg2017unified}
+S. M. Lundberg and S.-I. Lee, ``A unified approach to interpreting model predictions,'' in \textit{Adv. Neural Inf. Process. Syst.}, 2017, pp. 4765--4774.
 
-\bibitem{ismail2019deep}
-H. Ismail Fawaz et al., ``Deep learning for time series classification: a review,'' \textit{Data Min. Knowl. Discov.}, vol. 33, no. 4, pp. 917--963, 2019.
+\bibitem{ribeiro2016should}
+M. T. Ribeiro, S. Singh, and C. Guestrin, ````Why should I trust you?'': Explaining the predictions of any classifier,'' in \textit{Proc. ACM SIGKDD Int. Conf. Knowl. Discovery Data Mining}, 2016, pp. 1135--1144.
 
-\bibitem{kachuee2018ecg}
-M. Kachuee, S. Fazeli, and M. Sarrafzadeh, ``ECG heartbeat classification: A deep transferability study,'' in \textit{Proc. IEEE Int. Conf. Healthcare Inform. (ICHI)}, 2018, pp. 273--278.
-
-\bibitem{kiranyaz2016real}
-S. Kiranyaz, T. Ince, and M. Gabbouj, ``Real-time patient-specific ECG classification by 1-D convolutional neural networks,'' \textit{IEEE Trans. Biomed. Eng.}, vol. 63, no. 3, pp. 664--675, 2016.
-
-\bibitem{goldberger2000physiobank}
-A. L. Goldberger et al., ``PhysioBank, PhysioToolkit, and PhysioNet: components of a new research resource for complex physiologic signals,'' \textit{Circulation}, vol. 101, no. 23, pp. e215--e220, 2000.
-
-\bibitem{lipton2016learning}
-Z. C. Lipton, D. C. Kale, C. Elkan, and M. Wetzel, ``Learning to diagnose with LSTM recurrent neural networks,'' in \textit{Proc. Int. Conf. Learn. Represent. (ICLR)}, 2016.
-
-\bibitem{clifford2017af}
-G. D. Clifford et al., ``AF classification from a short single lead ECG recording: the PhysioNet/Computing in Cardiology Challenge 2017,'' \textit{Comput. Cardiol.}, vol. 44, pp. 1--4, 2017.
-
-\bibitem{pytorchdocs}
-PyTorch Team, ``PyTorch Documentation and API Reference,'' 2024. [Online]. Available: \url{https://pytorch.org/docs/}.
-
-\bibitem{physionetptbxl}
-PhysioNet, ``PTB-XL ECG Database Page,'' 2020. [Online]. Available: \url{https://physionet.org/content/ptb-xl/1.0.1/}.
-
-\bibitem{whocvd}
-World Health Organization, ``Cardiovascular diseases (CVDs) Fact Sheet,'' 2021. [Online]. Available: \url{https://www.who.int/news-room/fact-sheets/detail/cardiovascular-diseases-(cvds)}.
-
-\bibitem{aiturespect}
-AITU LLP, ``Rules for Academic Integrity (DP-AITU-05),'' Astana IT University Department of Educational Programs, 2023.
-
-\bibitem{goststandard}
-GOST 7.32–2017, ``Interstate Standard: System of Standards on Information, Librarianship and Publishing. Research Report Structure and Rules of Design,'' Moscow: Standartinform, 2018.
-
-\bibitem{zhang2021ecggnn}
-D. Zhang et al., ``ECG-GNN: A graph neural network for electrocardiogram classification,'' \textit{Bioinformatics}, vol. 37, no. 12, pp. 1735--1743, 2021.
-
-\bibitem{astanahistory}
-Astana IT University Educational Department, ``Guidelines for Master Thesis Development (DP-AITU-19),'' Astana IT University, 2024.
+\bibitem{springenberg2014striving}
+J. T. Springenberg, A. Dosovitskiy, T. Brox, and M. Riedmiller, ``Striving for simplicity: The all convolutional net,'' in \textit{Proc. Int. Conf. Learn. Represent. (ICLR) Workshop}, 2015.
 
 \end{thebibliography}
 

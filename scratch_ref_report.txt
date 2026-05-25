@@ -1,0 +1,61 @@
+=== CITATION REPORT ===
+Total unique citations in text: 52
+Total bibitems in bibliography: 52
+
+All citations in text are present in the bibliography.
+
+All bibitems in the bibliography are cited in the text.
+
+Citations in order of appearance:
+  [1] schlapfer2017ecg
+  [2] goldberger2000physiobank
+  [3] hannun2019cardiologist
+  [4] ebrahimi2020review
+  [5] whocvd
+  [6] wagner2020ptbxl
+  [7] strodthoff2021deep
+  [8] ribeiro2020automatic
+  [9] clifford2017af
+  [10] ismail2019deep
+  [11] moody2001impact
+  [12] kachuee2018ecg
+  [13] lecun2015deep
+  [14] goodfellow2016deep
+  [15] kiranyaz2016real
+  [16] rajpurkar2017cardiologist
+  [17] pytorchdocs
+  [18] hannun2020automatic
+  [19] weimann2021transfer
+  [20] hochreiter1997lstm
+  [21] schuster1997bidirectional
+  [22] lipton2016learning
+  [23] deep2024classification
+  [24] smisek2018cardiac
+  [25] zihlmann2017convolutional
+  [26] scarselli2008graph
+  [27] kipf2016semi
+  [28] velickovic2017graph
+  [29] hamilton2017inductive
+  [30] zhang2021ecggnn
+  [31] bruna2013spectral
+  [32] defferrard2016convolutional
+  [33] nonaka2021deep
+  [34] muller2026application
+  [35] bahdanau2014neural
+  [36] vaswani2017attention
+  [37] dosovitskiy2020image
+  [38] vaid2023foundational
+  [39] moody2025foundation
+  [40] peimankar2021delineation
+  [41] he2016deep
+  [42] zhang2023strege
+  [43] maurer2025xgnn
+  [44] yan2018spatial
+  [45] yu2018spatio
+  [46] jiang2025generation
+  [47] selvaraju2017grad
+  [48] chattopadhay2018grad
+  [49] sundararajan2017axiomatic
+  [50] lundberg2017unified
+  [51] ribeiro2016should
+  [52] springenberg2014striving

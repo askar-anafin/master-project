@@ -1,0 +1,219 @@
+
+--- Page 3 ---
+Acknowledgements
+I would like to express my sincere gratitude to my scientific supervisor for valuable
+guidance and support throughout this research. I also thank the faculty members of
+Astana IT University and my colleagues for their academic and technical assistance
+during the preparation of this thesis.
+ii
+
+--- Page 4 ---
+Student’s declaration
+I, Ayan Kokhan, certify that the work embodied in this Master’s thesis,
+entitled DualPathNet for Automated Cobb Angle Measurement from Spinal
+Radiographs, was carried out by me at Astana IT University. The work has
+not been submitted for the award of any other degree or diploma, except
+where due acknowledgement has been made in the text.
+I further declare that the material obtained from other sources has been duly
+acknowledged in the thesis.
+SIGNED: DATE:
+iii
+
+--- Page 5 ---
+Certificate by Supervisor
+This is to certify that the research work embodied in the thesis entitled Dual-
+PathNet for Automated Cobb Angle Measurement from Spinal Radiographs,
+submitted to Astana IT University for the award of the Master’s degree, has
+been carried out by Ayan Kokhan under supervision at Astana IT University,
+Astana.
+To the best of my knowledge and belief, this work is original and has not been
+submitted so far in part or in full for the award of any degree or diploma of
+any University/ Institute.
+SIGNED: DATE:
+iv
+
+--- Page 6 ---
+List of Tables
+Table Page
+2.1 Representative AASCE 2019 challenge results for Cobb angle estimation. . . 9
+2.2 Comparison of representative spinal datasets. . . . . . . . . . . . . . . . . . 13
+5.1 Results across configurations on SpinalAI2024 splits. . . . . . . . . . . . . . 36
+5.2 Effect of backbone architecture on Cobb angle MAE. . . . . . . . . . . . . . 38
+5.3 Ablation summary of component effects on Cobb angle MAE. . . . . . . . . 39
+5.4 Comparison with published methods. . . . . . . . . . . . . . . . . . . . . . . 46
+5.5 AASCE19 zero-shot transfer performance across preprocessing and test-time
+adaptation settings. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48
+5.6 Proposed method performance across evaluation splits and settings. . . . . . 49
+v
+
+--- Page 7 ---
+List of Figures
+Figure Page
+3.1 DualPathNet architecture. A shared backbone drives a global regression path
+and a local geometric path via grid sampling. A learned fusion gate combines
+direct and aggregated angle signals; an uncertainty head estimates per-angle
+variance for the fused output. . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+5.1 Training loss and validation MAE trajectories across the principal configurations. 34
+5.2 Comparison of Cobb angle MAE and keypoint localisation error across back-
+bone architectures. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 38
+5.3 Ablation summary showing component contributions to Cobb angle MAE. . 39
+5.4 Resolution paradox illustrating the divergence between Cobb angle MAE and
+keypoint error. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41
+5.5 Reliability diagram for uncertainty calibration showing target confidence vs
+observed coverage before and after post-hoc variance calibration. . . . . . . . 43
+5.6 Risk-coverage curve demonstrating the performance of selective prediction
+using predicted uncertainty as a triage filter. . . . . . . . . . . . . . . . . . . 44
+5.7 True vs. predicted maximum Cobb angle scatter plot with clinical treatment
+decision boundaries at 25◦and 45◦. Points are coloured by clinical congruence
+(green = congruent, orange = 25◦boundary error, red = 45◦boundary error). 45
+5.8 AASCE19 zero-shot transfer performance across different preprocessing and
+test-time adaptation (TTA) configurations. . . . . . . . . . . . . . . . . . . . 48
+5.9 Qualitative inference output showing predicted vertebral landmarks, local
+vertebral tilt estimates, spinal axis, and Cobb-angle boundary extrema. . . . 51
+5.10 Qualitative comparison of DualPathNet inference on mild and severe scoliosis
+examples, including predicted vertebral landmarks, curve extrema, and Cobb-
+angle estimates. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 52
+vi
+
+--- Page 8 ---
+Table of Contents
+Abstract i
+Acknowledgements ii
+Student’s declaration iii
+Certificate by Supervisor iv
+List of Tables v
+List of Figures vi
+1 Introduction 1
+1.1 Background and Clinical Context . . . . . . . . . . . . . . . . . . . . . . 1
+1.2 Current State of the Problem . . . . . . . . . . . . . . . . . . . . . . . . 2
+1.3 Research Aim, Objectives, and Hypothesis . . . . . . . . . . . . . . . . . 2
+1.4 Scientific Novelty and Practical Significance . . . . . . . . . . . . . . . . 3
+1.5 Methodological Framework . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+1.6 Thesis Structure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+2 Literature Review 6
+2.1 Clinical Background of Scoliosis Assessment . . . . . . . . . . . . . . . . 6
+2.2 Traditional Computer-Aided Methods . . . . . . . . . . . . . . . . . . . . 7
+2.3 Deep Learning Methods for Spinal Analysis . . . . . . . . . . . . . . . . 8
+2.4 Deep Learning Design Strategies . . . . . . . . . . . . . . . . . . . . . . . 10
+2.5 Datasets and Evaluation Protocols . . . . . . . . . . . . . . . . . . . . . 13
+2.6 Research Gap . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+vii
+
+--- Page 9 ---
+TABLE OF CONTENTS
+3 Methodology and Architecture 18
+3.1 Overview of the Proposed Method . . . . . . . . . . . . . . . . . . . . . . 18
+3.2 Data Collection and Preparation . . . . . . . . . . . . . . . . . . . . . . . 19
+3.3 DualPathNet Architecture . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+3.4 Multi-Task Optimisation Strategy . . . . . . . . . . . . . . . . . . . . . . 25
+3.5 Training Procedure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+4 Implementation 30
+4.1 Hardware and Software Environment . . . . . . . . . . . . . . . . . . . . 30
+4.2 Configuration Management . . . . . . . . . . . . . . . . . . . . . . . . . . 30
+4.3 Data Pipeline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+4.4 Training and Evaluation Protocol . . . . . . . . . . . . . . . . . . . . . . 31
+4.5 Reproducibility . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+5 Results and Discussion 33
+5.1 Experimental Setup . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+5.2 Main Results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34
+5.3 Ablation and Error Analysis . . . . . . . . . . . . . . . . . . . . . . . . . 36
+5.4 Cross-Domain Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+5.5 Discussion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50
+6 Conclusion 54
+A DualPathNet Implementation Excerpt 57
+B Multi-Task Loss Summary 59
+C Best-Performing Configuration 61
+Bibliography 65
+viii
+
+--- Page 10 ---
+Chapter 1
+Introduction
+1.1 B ackground and Clinical Context
+Scoliosis is a structural deformity of the spine characterised by a lateral curvature
+exceeding 10 degrees as measured by the Cobb angle on an anteroposterior radiograph
+[1]. The condition affects approximately 2–3% of the adolescent population [2]. The
+Cobb angle is the primary quantitative criterion for grading severity, selecting treatment,
+and monitoring progression [3]. Curves below 25 degrees are typically managed through
+observation, curves between 25 and 45 degrees may require bracing, and curves exceeding
+45 degrees are candidates for surgical correction [4]. A measurement error of 5 degrees
+can shift a patient across these treatment boundaries.
+The standard measurement procedure requires a specialist to identify the most tilted
+vertebrae at the boundaries of each spinal curve, draw lines along their endplates, and
+measure the angle between these lines. This process is manual, time-consuming, and
+subject to observer variability. Reported inter-observer differences range from 3 to 5
+degrees, and intra-observer differences are approximately 3 degrees [5–7]. These figures
+define a practical benchmark: an automated method should produce errors comparable
+to or smaller than the disagreement between experts.
+Deep learning has produced encouraging results in this domain. Convolutional net-
+works trained on annotated radiographs can localise vertebral landmarks and estimate
+Cobb angles with errors approaching those of human observers on certain benchmarks
+[8–10]. Two limitations persist, however. First, most published systems operate on images
+downsampled to 512×512 pixels or below, discarding spatial detail relevant to precise
+1
+
+--- Page 11 ---
+CHAPTER 1. INTRODUCTION
+localisation of vertebral corners [11, 12]. Second, the majority of models produce point
+estimates without an uncertainty estimate, which complicates clinical deployment where
+unreliable predictions should be flagged for review [13].
+1.2 C urrent State of the Problem
+Automated Cobb angle estimation has been approached through several methodological
+families. Classification-based methods assign images to discrete severity categories but
+do not produce continuous angle values [14]. Segmentation-based methods produce pixel-
+level vertebral masks from which angles can be derived geometrically [15, 16]. Landmark
+detection methods predict anatomical point coordinates and compute angles from their
+spatial relationships [11, 12, 17]. Direct regression methods predict Cobb angles as
+continuous outputs without explicit geometric intermediaries [18].
+Reported mean absolute errors on the AASCE benchmark range from approximately
+3 to 5 degrees for competitive methods [11]. Three observations characterise the current
+state of the field. First, the majority of methods process images at 512×512 pixels or lower.
+Second, few methods explicitly combine direct regional angle regression with geometric
+information derived from vertebral landmarks or tilts. Third, prediction reliability has
+received limited attention in the scoliosis literature despite its relevance for clinical
+adoption [13].
+This thesis focuses on these three issues: image resolution, integration of direct and
+geometry-derived angle signals, and explicit reporting of model uncertainty.
+1.3 R esearch Aim, Objectives, and Hypothesis
+The aim of this work is to develop and experimentally evaluate a multi-task neural
+network for automated Cobb angle estimation from spinal radiographs, incorporating
+dual-path angle prediction and uncertainty-aware outputs.
+The following objectives were defined:
+1. Conduct a critical review of existing approaches to automated scoliosis assessment.
+The review covers deep learning architectures, multi-task learning strategies, and
+methods for prediction reliability.
+2
+
+--- Page 12 ---
+CHAPTER 1. INTRODUCTION
+2. Design the DualPathNet architecture. The design combines global feature extraction
+through adaptive pooling with local feature extraction at predicted vertebral
+locations. A learned gating mechanism combines direct regional angle predictions
+with geometry-derived auxiliary angle signals.
+3. Formulate a composite loss function with coordinate-loss scale normalisation. The
+loss jointly supervises vertebral centre detection, corner keypoint regression, per-
+vertebra tilt prediction, regional Cobb angle regression, vertebra count classification,
+and fused-output uncertainty prediction.
+4. Implement a curriculum learning training pipeline with configurable phase transi-
+tions, progressively introducing angle supervision, reliability weighting, and hard-
+sample mining.
+5. Evaluate the trained model on the SpinalAI2024 dataset with leakage-mitigated
+splits. The evaluation compares baseline configurations, ablation variants, and
+published methods. It also assesses cross-domain adaptability through zero-shot
+transfer and fine-tuning on the independent AASCE19 clinical dataset.
+The primary hypothesis is that a dual-path multi-task neural network can achieve a
+mean absolute error below 2.5 degrees on leakage-mitigated SpinalAI2024 validation and
+holdout splits under the regional PT/MT/TL-L evaluation protocol. This hypothesis
+concerns the combination of direct regional Cobb angle regression with geometry-derived
+auxiliary signals from vertebral tilt predictions. A secondary hypothesis is that model
+uncertainty can rank high-error cases sufficiently well to support selective expert review.
+An exploratory hypothesis is that the architecture can be adapted to a clinical target
+domain through limited fine-tuning at a low learning rate. Zero-shot clinical generalisation
+is expected to remain constrained by synthetic-to-clinical domain shift.
+1.4 S cientific Novelty and Practical Significance
+This thesis contributes a dual-path multi-task framework for Cobb angle estimation
+and evaluates it empirically. The proposed framework combines five components: direct
+regional angle regression, tilt-based geometric angle aggregation, learned fusion of direct
+and geometry-derived angle signals, coordinate-loss scale normalisation, and per-angle
+uncertainty modelling. The main contributions are as follows:
+3
