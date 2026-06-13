@@ -1,0 +1,826 @@
+\documentclass[11pt,aspectratio=169]{beamer}
+
+% Essential packages
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian,english]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows,positioning,calc,fit}
+\usepackage{helvet}     % Premium sans-serif font
+\usepackage{mathptmx}   % Premium serif font
+
+% Theme settings - Premium Custom Cream & Rust Theme
+\usetheme{default}
+\usecolortheme{default}
+
+% Configure custom color palette
+\definecolor{cream}{RGB}{245, 244, 240}
+\definecolor{slate}{RGB}{15, 23, 42}
+\definecolor{rust}{RGB}{184, 55, 38}
+\definecolor{teal}{RGB}{38, 90, 84}
+\definecolor{peach}{RGB}{230, 204, 184}
+\definecolor{cardbg}{RGB}{248, 246, 240}
+\definecolor{mutedgray}{RGB}{148, 163, 184}
+
+\setbeamercolor{background canvas}{bg=cream}
+\setbeamercolor{normal text}{fg=slate}
+\setbeamercolor{structure}{fg=rust}
+\setbeamercolor{titlelike}{bg=cream,fg=slate}
+
+% Configure block elements
+\setbeamercolor{block title}{bg=peach,fg=rust}
+\setbeamercolor{block body}{bg=cardbg,fg=slate}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+
+% Typography
+\usefonttheme{professionalfonts}
+\setbeamerfont{title}{family=\rmfamily,size=\large,series=\bfseries}
+\setbeamerfont{frametitle}{family=\rmfamily,size=\large,series=\bfseries}
+\setbeamerfont{author}{size=\small}
+\setbeamerfont{institute}{size=\scriptsize}
+\setbeamerfont{date}{size=\scriptsize}
+
+% Customize header and footer templates
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+
+\setbeamertemplate{frametitle}{
+    \nointerlineskip
+    \begin{beamercolorbox}[wd=\paperwidth,ht=4.5ex,dp=2.0ex,left]{frametitle}
+        \hspace*{0.6cm}
+        \begin{minipage}[b]{0.78\paperwidth}
+            {\color{rust}\fontsize{9}{11}\selectfont\sffamily\bfseries\scshape\insertsection}\\[0.2ex]
+            {\color{slate}\rmfamily\Large\bfseries\insertframetitle}
+        \end{minipage}%
+        \begin{minipage}[b]{0.12\paperwidth}
+            \hfill{\color{rust}\rmfamily\Large\bfseries\insertframenumber}
+        \end{minipage}
+    \end{beamercolorbox}
+    \vspace*{-0.1cm}
+    \hspace*{0.6cm}{\color{slate}\hrule height 0.5pt width 0.91\paperwidth}
+    \vspace*{0.1cm}
+}
+
+\setbeamertemplate{footline}{
+    \ifnum\insertframenumber>1
+        \leavevmode%
+        \hspace*{0.6cm}
+        \begin{beamercolorbox}[wd=0.91\paperwidth,ht=2.5ex,dp=1.5ex,left]{footline in head/foot}%
+            \color{mutedgray}\fontsize{9}{11}\selectfont\sffamily Askar Anafin | Master Thesis Defense | June 2026
+        \end{beamercolorbox}%
+        \vspace*{0.1cm}
+    \fi
+}
+
+% Custom bullet points
+\setbeamertemplate{itemize item}{\color{rust}\small$\blacktriangleright$}
+\setbeamertemplate{itemize subitem}{\color{teal}\scriptsize$\blacktriangleright$}
+
+% Title details
+\title[Heart Disease Diagnosis via ECG]{Development of a Heart Disease Diagnosis Technique \\ Using ECG (Electrocardiogram) Signals}
+\author[Askar Anafin]{Askar Anafin}
+\institute[Astana IT University]{
+    School of Artificial Intelligence and Data Science\\
+    Astana IT University LLP\\
+    Applied Data Analytics (7M06103)
+}
+\date[June 2026]{June 2026 \\ \vspace{0.3cm} Scientific Supervisor: Minsoo Hahn, PhD}
+
+\begin{document}
+
+% ---------------------------------------------------------
+% Slide 1: Title Slide (Strictly White Background)
+% ---------------------------------------------------------
+\begin{frame}[plain]
+    \begin{center}
+        \vspace*{0.2cm}
+        \IfFileExists{figures/aitu_logo.png}{
+            \includegraphics[width=1.8cm]{figures/aitu_logo.png}
+        }{
+            {\color{rust}\fontsize{10}{12}\selectfont\sffamily\bfseries ASTANA IT UNIVERSITY}
+        }
+        \vspace{0.2cm}
+        
+        {\color{slate}\hrule height 1pt}
+        \vspace{0.3cm}
+        {\rmfamily\LARGE\bfseries\color{slate} Development of a {\color{rust}\itshape Heart Disease Diagnosis} Technique \\ Using ECG Signals}
+        \vspace{0.3cm}
+        {\color{slate}\hrule height 1pt}
+        
+        \vspace{0.6cm}
+        \begin{columns}[T]
+            \begin{column}{0.48\textwidth}
+                \flushleft
+                {\color{mutedgray}\fontsize{9}{11}\selectfont\sffamily\bfseries CANDIDATE}\\[0.1cm]
+                {\color{slate}\large\rmfamily\bfseries Askar Anafin}\\[0.1cm]
+                {\color{slate}\fontsize{9}{11}\selectfont\sffamily Applied Data Analytics (7M06103)\\School of AI \& DS, AITU}
+            \end{column}
+            \begin{column}{0.48\textwidth}
+                \flushright
+                {\color{mutedgray}\fontsize{9}{11}\selectfont\sffamily\bfseries SCIENTIFIC SUPERVISOR}\\[0.1cm]
+                {\color{slate}\large\rmfamily\bfseries Minsoo Hahn, PhD}\\[0.1cm]
+                {\color{slate}\fontsize{9}{11}\selectfont\sffamily Astana IT University}
+            \end{column}
+        \end{columns}
+    \end{center}
+\end{frame}
+
+
+% ---------------------------------------------------------
+% Slide 3: Relevance of Thesis Topic
+% ---------------------------------------------------------
+\section{Relevance}
+\begin{frame}{Relevance of Thesis Topic}
+    \begin{columns}[T]
+        \begin{column}{0.6\textwidth}
+            \textbf{Clinical Significance \& Motivations}
+            \begin{itemize}
+                \item \textbf{Global Mortality:} CVDs are the leading cause of death worldwide, causing 17.9M deaths/year.
+                \item \textbf{Clinical Bottleneck:} Manual ECG interpretation is slow, subjective, and prone to fatigue.
+                \item \textbf{High Variability:} Inter-observer diagnostic error exceeds 20\% in emergency departments.
+            \end{itemize}
+            \vspace{0.2cm}
+            \textbf{Research Gaps in Computer-Aided ECG}
+            \begin{itemize}
+                \item \textbf{Fragile Features:} Traditional ML relies on noise-sensitive peak detection.
+                \item \textbf{Spatial Gap:} Standard 1D CNNs ignore the 3D anatomical geometry of electrode placement.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.4\textwidth}
+            \begin{block}{The Research Need}
+                Develop deep learning systems that model local wave morphology and spatial lead projections for real-time, explainable triage.
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 4: Research Aim
+% ---------------------------------------------------------
+\section{Research Aim}
+\begin{frame}{Research Aim}
+    \begin{center}
+        \vspace*{0.8cm}
+        \begin{beamercolorbox}[sep=1em,wd=0.9\textwidth,center,rounded=true,colsep*=1.5pt]{block title}
+            \color{slate}\textbf{RESEARCH AIM} \\ \vspace{0.4cm}
+            \large The main aim of this research is to develop and evaluate deep learning methods for automated multi-lead electrocardiogram classification to provide clinical decision support and patient triage.
+        \end{beamercolorbox}
+        \vspace{0.6cm}
+    \end{center}
+    \begin{itemize}
+        \item \textbf{Clinical Impact:} Targets reducing the 20\% emergency room observer error rate.
+        \item \textbf{Model Scope:} Focuses on standard 12-lead digital ECG time-series signals.
+        \item \textbf{Deployment:} Lightweight web application delivering inferences in milliseconds.
+    \end{itemize}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 5: Objectives
+% ---------------------------------------------------------
+\section{Objectives}
+\begin{frame}{Objectives}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{\small 1. Preprocessing}
+                \fontsize{8}{9.5}\selectfont Build zero-phase preprocessing pipeline to filter baseline wander and high-frequency noise.
+            \end{block}
+            \vspace{0.1cm}
+            \begin{block}{\small 2. CNN Baseline}
+                \fontsize{8}{9.5}\selectfont Develop a 1D ResNet-18 model as a baseline for wave morphology extraction.
+            \end{block}
+            \vspace{0.1cm}
+            \begin{block}{\small 3. ST-ReGE GNN}
+                \fontsize{8}{9.5}\selectfont Design GNN with a learnable adjacency matrix to capture spatial lead projections.
+            \end{block}
+            \vspace{0.1cm}
+            \begin{block}{\small 4. 1D ViT Model}
+                \fontsize{8}{9.5}\selectfont Develop a 1D Vision Transformer model to capture long-range rhythm dependencies.
+            \end{block}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \begin{block}{\small 5. Spatio-Temporal Hybrid}
+                \fontsize{8}{9.5}\selectfont Formulate a Hybrid combining convolutional morphology with transformer rhythm.
+            \end{block}
+            \vspace{0.18cm}
+            \begin{block}{\small 6. Boundary Calibration}
+                \fontsize{8}{9.5}\selectfont Calibrate boundaries via post-hoc validation search and soft-voting ensembling.
+            \end{block}
+            \vspace{0.18cm}
+            \begin{block}{\small 7. FastAPI Dashboard}
+                \fontsize{8}{9.5}\selectfont Build real-time FastAPI dashboard for triage upload and wave visualization.
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 6: Literature Review
+% ---------------------------------------------------------
+\section{Literature Review}
+\begin{frame}{Literature Review}
+    \centering
+    \resizebox{0.95\textwidth}{!}{%
+    \begin{tabular}{lllll}
+        \toprule
+        \textbf{Publication Authors \& Year} & \textbf{Data Acquisition Method} & \textbf{Dataset Size} & \textbf{Model(s) Used} & \textbf{Accuracy / Performance} \\
+        \midrule
+        Kiranyaz et al. (2016) & Bipolar ECG (MIT-BIH) & 48 records & 1D CNN (patient-specific) & 98.9\% (beat-wise accuracy) \\
+        Rajpurkar et al. (2017) & Single-lead (Zio Patch) & 91,232 records & 34-layer deep 1D CNN & F1-score: 0.837 \\
+        Ribeiro et al. (2020) & 12-lead (Telehealth Minas) & 2,322,513 records & 1D ResNet-based CNN & F1-score $>$ 0.80 \\
+        Zhang et al. (2021) & 12-lead (CPSC 2018) & 6,877 records & ECG-GNN (fixed spatial) & F1-score: 0.812 \\
+        Vaid et al. (2023) & 12-lead (Mount Sinai) & 1,077,137 records & 1D Vision Transformer & AUROC: 0.940 \\
+        Strodthoff et al. (2021) & 12-lead (PTB-XL benchmark) & 21,837 records & 1D ResNet-18 benchmark & Macro F1: 0.705--0.720 \\
+        \midrule
+        \textbf{This Thesis (June 2026)} & \textbf{12-lead (PTB-XL, filtered)} & \textbf{21,388 records} & \textbf{ST-ReGE GNN + Ensemble \& Calibration} & \textbf{Macro F1: 0.7506 / AUROC: 0.9344} \\
+        \bottomrule
+    \end{tabular}%
+    }
+    \vspace{0.3cm}
+    \begin{block}{Research Choice}
+        ST-ReGE GNN and ensembling model lead geometry and rhythms, outperforming static convolutional baselines.
+    \end{block}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 7: Novelty of the Research
+% ---------------------------------------------------------
+\section{Novelty of the Research}
+\begin{frame}{Novelty of the Research}
+    \begin{columns}[T]
+        \begin{column}{0.31\textwidth}
+            {\color{rust}\fontsize{7}{9}\selectfont\sffamily\bfseries 01\quad METHODOLOGY}\\[0.1cm]
+            {\color{slate}\rmfamily\bfseries Dynamic Lead Graph}\\[0.15cm]
+            \fontsize{8}{10}\selectfont Models standard leads as graph nodes, using a learnable, sigmoid-activated adjacency matrix to discover anatomical pathways dynamically.
+        \end{column}
+        \begin{column}{0.31\textwidth}
+            {\color{teal}\fontsize{7}{9}\selectfont\sffamily\bfseries 02\quad EVALUATION}\\[0.1cm]
+            {\color{slate}\rmfamily\bfseries Multi-Paradigm Comparison}\\[0.15cm]
+            \fontsize{8}{10}\selectfont Evaluates convolutional morphology, spatial lead propagation, and attention models on a standardized, filtered dataset.
+        \end{column}
+        \begin{column}{0.31\textwidth}
+            {\color{rust}\fontsize{7}{9}\selectfont\sffamily\bfseries 03\quad CALIBRATION}\\[0.1cm]
+            {\color{slate}\rmfamily\bfseries Decision Boundary Tuning}\\[0.15cm]
+            \fontsize{8}{10}\selectfont Applies validation-set grid search to calibrate decision thresholds, optimizing minority recall without costly retraining.
+        \end{column}
+    \end{columns}
+    \vspace{0.3cm}
+    \begin{block}{Scientific Contribution}
+        Addresses physical lead layout modeling, model comparison fairness, and screening threshold calibration.
+    \end{block}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 8: Problem Statement: Input/Output
+% ---------------------------------------------------------
+\section{Problem Statement: Input/Output}
+\begin{frame}{Problem Statement: Input/Output Tensors}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \begin{block}{Input Data: ECG Signal Tensor}
+                Digital signal tensor represented as:
+                \[ X \in \mathbb{R}^{B \times 12 \times 5000} \]
+                \begin{itemize}
+                    \item \textbf{B:} Batch size of records.
+                    \item \textbf{12 leads:} Standard chest and limb electrodes recording cardiac electrical potentials.
+                    \item \textbf{5000:} Sequence length (10 seconds duration recorded at a sampling rate of 500 Hz).
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{block}{Output Data: Diagnostic Target Labels}
+                Multi-label binary target vector:
+                \[ y \in \{0, 1\}^{B \times 5} \]
+                Diagnostic superclasses:
+                \begin{itemize}
+                    \item \textbf{NORM:} Normal ECG
+                    \item \textbf{MI:} Myocardial Infarction
+                    \item \textbf{STTC:} ST/T changes
+                    \item \textbf{CD:} Conduction Disturbance
+                    \item \textbf{HYP:} Hypertrophy
+                \end{itemize}
+                Multiple diagnoses can overlap.
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 8b: Problem Statement: ECG Signal Data Table [NEW]
+% ---------------------------------------------------------
+\begin{frame}{ECG Signal Data Table (12 Leads, First 5 Time Steps)}
+    \fontsize{9}{11}\selectfont
+    \textbf{Sample Values of ECG Signal Tensor $X$ (Values in mV, Sampled at 500 Hz):}
+    \vspace{0.2cm}
+    \centering
+    \resizebox{0.98\textwidth}{!}{%
+    \begin{tabular}{lcccccccccccc}
+        \toprule
+        \textbf{Time Step} & \textbf{I} & \textbf{II} & \textbf{III} & \textbf{aVR} & \textbf{aVL} & \textbf{aVF} & \textbf{V1} & \textbf{V2} & \textbf{V3} & \textbf{V4} & \textbf{V5} & \textbf{V6} \\
+        \midrule
+        0 ms ($t_1$) & -0.08 & 0.15 & 0.23 & -0.04 & -0.16 & 0.19 & -0.05 & 0.12 & 0.35 & 0.82 & 0.55 & 0.21 \\
+        2 ms ($t_2$) & -0.07 & 0.18 & 0.25 & -0.05 & -0.16 & 0.21 & -0.04 & 0.15 & 0.38 & 0.88 & 0.58 & 0.23 \\
+        4 ms ($t_3$) & -0.05 & 0.22 & 0.27 & -0.07 & -0.16 & 0.24 & -0.03 & 0.18 & 0.42 & 0.95 & 0.62 & 0.26 \\
+        6 ms ($t_4$) & -0.03 & 0.26 & 0.29 & -0.09 & -0.16 & 0.27 & -0.02 & 0.21 & 0.46 & 1.02 & 0.66 & 0.29 \\
+        8 ms ($t_5$) & -0.01 & 0.30 & 0.31 & -0.11 & -0.16 & 0.30 & -0.01 & 0.24 & 0.50 & 1.08 & 0.70 & 0.32 \\
+        \bottomrule
+    \end{tabular}%
+    }
+    \vspace{0.3cm}
+    \begin{block}{Tensor Interpretation}
+        \fontsize{8.5}{10}\selectfont
+        Each row is a time step separated by 2 ms. The columns represent standard 12-lead potential differences in mV. A single 10-second ECG record contains 5000 such rows.
+    \end{block}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 9: Collection of Input Data: Initial Dataset
+% ---------------------------------------------------------
+\section{Collection, Analysis and Processing of Input Data}
+\begin{frame}{Initial Dataset Overview}
+    \begin{columns}[T]
+        \begin{column}{0.6\textwidth}
+            \textbf{Dataset Overview \& Split Logic}
+            \begin{itemize}
+                \item \textbf{PTB-XL ECG Database}: A large-scale public corpus containing 21,799 clinical records from 18,869 patients.
+                \item \textbf{Demographics}: 52\% are male, 48\% are female. Ages cover 0 to 95 years (median 62, interquartile range of 22).
+                \item \textbf{Patient-Stratified Folds}: Fold column (strat\_fold 1--10) isolates patient records to prevent leakage and preserves diagnostic label ratios across splits.
+                \item \textbf{Severe Class Imbalance}: Imbalance ratio is $\sim$4:1 (NORM vs. HYP), requiring post-hoc boundary calibration to optimize minority recall.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.4\textwidth}
+            \begin{block}{Class Balance Metrics}
+                \begin{itemize}
+                    \item NORM: 9,528 records
+                    \item MI: 5,486 records
+                    \item STTC: 5,250 records
+                    \item CD: 4,907 records
+                    \item HYP: 2,655 records
+                \end{itemize}
+                Normal records are nearly 4 times more frequent than Hypertrophy, indicating severe class imbalance.
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 10: Processing of Input Data: Preprocessing
+% ---------------------------------------------------------
+% Section collapsed into Collection, Analysis and Processing of Input Data
+\begin{frame}{Zero-Phase Signal Preprocessing}
+    \begin{columns}[T]
+        \begin{column}{0.52\textwidth}
+            \textbf{Artifact Denoising \& Standardization}
+            \begin{itemize}
+                \item \textbf{Noise Sources}: Baseline wander (<0.5 Hz) from breathing and high-frequency EMG muscle noise.
+                \item \textbf{Bandpass Filter}: 4th-order Butterworth digital filter (0.5 to 50 Hz).
+                \item \textbf{Zero-Phase Delay}: Forward-backward filtering (filtfilt) cancels out phase shifts and prevents wave distortion.
+                \item \textbf{Normalization}: Lead-wise Z-score scaling standardizes amplitudes across records.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \centering
+            \IfFileExists{figures/preprocessing_comparison.png}{
+                \includegraphics[width=\textwidth]{figures/preprocessing_comparison.png}
+            }{
+                \begin{beamercolorbox}[sep=1em,center,rounded=true]{palette secondary}
+                    [preprocessing\_comparison.png missing]
+                \end{beamercolorbox}
+            }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 11: Cleaning of Input Data: Label Filtering
+% ---------------------------------------------------------
+% Section collapsed into Collection, Analysis and Processing of Input Data
+\begin{frame}{Diagnostic Label Filtering}
+    \begin{columns}[T]
+        \begin{column}{0.6\textwidth}
+            \textbf{Diagnostic Label Filtering}
+            \begin{itemize}
+                \item \textbf{Diagnostic Filtering}: Retains only records with active diagnostic statement labels.
+                \item \textbf{All-Zeros Bias}: 411 records (1.89\%) have only rhythm/form codes, yielding all-zero labels.
+                \item \textbf{Metric Inflation}: Keeping all-zero records creates optimistic bias, artificially inflating F1 and AUPRC.
+                \item \textbf{Final Dataset}: Removing all-zero records leaves 21,388 records, matching standard benchmarks.
+                \item \textbf{Class Totals}: Positive class counts are unaffected (removed records were completely empty).
+            \end{itemize>
+        \end{column}
+        \begin{column}{0.4\textwidth}
+            \centering
+            \resizebox{\textwidth}{!}{%
+            \begin{tabular}{lrr}
+                \toprule
+                \textbf{Category} & \textbf{Raw Count} & \textbf{Filtered} \\
+                \midrule
+                Full Corpus & 21,799 & 21,388 \\
+                Normal (NORM) & 9,514 & 9,514 \\
+                Infarction (MI) & 5,469 & 5,469 \\
+                ST/T Changes & 5,235 & 5,235 \\
+                Blocks (CD) & 4,898 & 4,898 \\
+                Hypertrophy & 2,649 & 2,649 \\
+                All-Zero Target & 411 & 0 \\
+                \bottomrule
+            \end{tabular}%
+            }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 12: Models and Methods: 1D Adapted ResNet-18 (CNN)
+% ---------------------------------------------------------
+\section{Models and Methods for Solving the Problem}
+\begin{frame}{Baseline Models: CNN \& ViT}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \begin{block}{1D Adapted ResNet-18 (CNN)}
+                \begin{itemize}
+                    \item \textbf{Temporal Morphology}: Convolutions capture wave shapes along the temporal axis.
+                    \item \textbf{Inductive Bias}: Weight-sharing and translation invariance make CNNs highly data-efficient.
+                    \item \textbf{Architecture}: Stacks four residual stages with shortcut projections to prevent gradient degradation.
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{block}{1D Vision Transformer (ViT-1D)}
+                \begin{itemize}
+                    \item \textbf{Sequential Rhythm}: Models long-range temporal dependencies and cardiac rhythms using self-attention.
+                    \item \textbf{Tokenization}: Splits temporal sequence into 100 non-overlapping patches, prepending a \texttt{[CLS]} token.
+                    \item \textbf{Constraint}: Lacks spatial and temporal locality biases, making it data-hungry and prone to overfitting.
+                \end{itemize}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 13: Models and Methods: ST-ReGE GNN
+% ---------------------------------------------------------
+% Section collapsed into Models and Methods for Solving the Problem
+\begin{frame}{Spatio-Temporal ReGE GNN}
+    \begin{columns}[T]
+        \begin{column}{0.55\textwidth}
+            \textbf{Lead-Spatial Dynamic Graph}
+            \begin{itemize}
+                \item \textbf{Lead-Spatial Graph}: Models 12 physical leads as graph nodes to capture spatial correlations.
+                \item \textbf{Shared Backbone}: Independent 1D CNN processes each lead to extract 256-D morphological features.
+                \item \textbf{Learnable Adjacency}: Trainable $A = \text{Sigmoid}(W_{\text{adj}})$ dynamically discovers functional electrical pathways.
+                \item \textbf{Message Passing}: Two GCN layers propagate features over the discovered pathways.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.45\textwidth}
+            \begin{block}{Tuning \& Theoretical Concept}
+                \fontsize{8}{9.5}\selectfont
+                \textbf{Tuning Approach:} Uses Adam optimizer ($10^{-3}$, weight decay $10^{-4}$), batch size = 32, Cosine Annealing, and validation early stopping (patience = 10).
+                \vspace{0.12cm}
+                
+                \textbf{GCN Layer Formula:}
+                \[ H^{(l+1)} = \text{BatchNorm}\left(\text{ReLU}\left(A H^{(l)} W^{(l)}\right)\right) + H^{(l)} \]
+                \vspace{0.12cm}
+                
+                \textbf{Theoretical Value:} Traditional GNNs use physical distances. A learnable adjacency matrix $A$ learns functional lead relations directly from data.
+                \vspace{0.12cm}
+                
+                \textbf{Analogy:} Think of a social network: instead of leads only talking to their physical neighbors, they dynamically learn to share heart abnormality 'news' with leads on opposite walls.
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 14: Models and Methods: Spatio-Temporal Hybrid Model
+% ---------------------------------------------------------
+% Section collapsed into Models and Methods for Solving the Problem
+\begin{frame}{Spatio-Temporal Hybrid Model}
+    \begin{columns}[T]
+        \begin{column}{0.55\textwidth}
+            \textbf{Morphology \& Rhythm Fusion}
+            \begin{itemize}
+                \item \textbf{CNN Front-End}: 3 ResNet stages compress raw signals to 313 steps to extract local QRS morphology.
+                \item \textbf{Squeeze-and-Excitation}: SE channel attention blocks recalibrate lead importance before temporal modeling.
+                \item \textbf{Transformer Back-End}: 3-layer Encoder (8 heads, $d_{\text{model}} = 256$) models global rhythm context.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.45\textwidth}
+            \begin{block}{Synergy \& Tuning Concept}
+                \fontsize{8}{9.5}\selectfont
+                \textbf{Tuning \& Regularization:} Trained with 0.2 dropout, batch size = 32, Cosine Annealing, and early stopping (patience = 10) to prevent overfitting.
+                \vspace{0.12cm}
+                
+                \textbf{Synergy Concept:} Transformers lack "locality bias" and struggle to learn raw beat shapes. Stacking a CNN front-end to extract beat shapes lets the Transformer focus purely on rhythm sequences.
+                \vspace{0.12cm}
+                
+                \textbf{Analogy:} Like a document review team. The CNN acts as a spellchecker to verify individual beat shapes, while the Transformer acts as a reader checking overall rhythm flow.
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 14b: Core Outcomes: ST-ReGE \& Spatio-Temporal Hybrid
+% ---------------------------------------------------------
+\begin{frame}{Core Outcomes: ST-ReGE \& Hybrid}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \begin{block}{ST-ReGE GNN Outcomes}
+                \fontsize{7.5}{9.5}\selectfont
+                \begin{itemize}
+                    \item \textbf{How it Works}: Models 12 leads as graph nodes and dynamically learns physical adjacency $A = \text{Sigmoid}(W_{\text{adj}})$ combined with 2 GCN propagation layers.
+                    \item \textbf{What it Solves}: The spatial lead propagation gap of traditional 1D CNNs, discovering functional electrical pathways across different cardiac walls.
+                    \item \textbf{Theoretical Value}: Captures joint electrical changes across leads (e.g., inferior leads II, III, aVF) instead of independent stacked channels.
+                    \item \textbf{Limitations}: Assumes lead geometry fits a learnable static graph; increased model complexity compared to standard baseline convolutions.
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{block}{Spatio-Temporal Hybrid Outcomes}
+                \fontsize{7.5}{9.5}\selectfont
+                \begin{itemize}
+                    \item \textbf{How it Works}: Stacks a 3-stage ResNet morphological front-end, SE channel lead attention block, and a 3-layer Transformer Encoder rhythm back-end.
+                    \item \textbf{What it Solves}: The data-hunger and overfitting constraints of pure 1D Vision Transformers on medium-sized database splits.
+                    \item \textbf{Theoretical Value}: Blends local temporal inductive bias of CNNs (beat shape details) with global rhythm sequence attention of Transformers.
+                    \item \textbf{Limitations}: Higher computational memory and parameter counts; multi-head self-attention adds latency compared to simple convolutions.
+                \end{itemize}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 15: Models and Methods: Ensemble \& Boundary Calibration
+% ---------------------------------------------------------
+% Section collapsed into Models and Methods for Solving the Problem
+\begin{frame}{Ensemble \& Boundary Calibration}
+    \begin{columns}[T]
+        \begin{column}{0.31\textwidth}
+            {\color{rust}\fontsize{7}{9}\selectfont\sffamily\bfseries SOFT ENSEMBLING}\\[0.1cm]
+            {\color{slate}\rmfamily\bfseries Joint Probability Voting}\\[0.15cm]
+            \fontsize{8}{10}\selectfont Blends CNN, GNN, and Hybrid probabilities to stabilize predictions on minority classes:
+            \[ P_{\text{ens}} = \frac{P_{\text{cnn}} + P_{\text{gnn}} + P_{\text{hyb}}}{3} \]
+        \end{column}
+        \begin{column}{0.31\textwidth}
+            {\color{teal}\fontsize{7}{9}\selectfont\sffamily\bfseries CALIBRATION}\\[0.1cm]
+            {\color{slate}\rmfamily\bfseries Validation Grid Search}\\[0.15cm]
+            \fontsize{8}{10}\selectfont Replaces default 0.5 boundaries with class-specific thresholds:
+            \fontsize{7}{9}\selectfont
+            \texttt{[NORM: 0.48, MI: 0.42, STTC: 0.34, CD: 0.47, HYP: 0.39]}
+        \end{column}
+        \begin{column}{0.31\textwidth}
+            {\color{rust}\fontsize{7}{9}\selectfont\sffamily\bfseries CLINICAL UTILITY}\\[0.1cm]
+            {\color{slate}\rmfamily\bfseries On-the-Fly Tuning}\\[0.15cm]
+            \fontsize{8}{10}\selectfont Allows dynamic adjustment of diagnostic sensitivity. Grid search runs on validation set in seconds on a CPU without retraining.
+        \end{column}
+    \end{columns}
+    \vspace{0.3cm}
+    \begin{block}{Why Calibration over Cost-Sensitive Loss Weighting?}
+        \fontsize{8.5}{10}\selectfont
+        \begin{itemize}
+            \item \textbf{Preserves Rank:} Decision tuning does not alter gradients, protecting rank-ordering AUPRC.
+            \item \textbf{Efficiency:} Runs in seconds on CPU, whereas retraining cost-sensitive networks takes hours.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 15b: Why Multi-Label Evaluation Metrics Matter
+% ---------------------------------------------------------
+\begin{frame}{Why Multi-Label Evaluation Metrics Matter}
+    \begin{columns}[T]
+        \begin{column}{0.55\textwidth}
+            \textbf{Imbalance \& Macro Evaluation}
+            \begin{itemize}
+                \item \textbf{Class Imbalance}: Accuracy is highly misleading when positive cases are rare (e.g., NORM vs. HYP is $\sim$4:1). A model predicting all negative achieves 80\%+ accuracy but is clinically useless.
+                \item \textbf{Macro F1-Score}: Harmonic mean of precision and recall averaged across all classes. Ensures rare but critical pathologies are weighted equally to normal cases.
+                \item \textbf{AUPRC}: Focuses strictly on positive class prediction, preventing false-positive inflation from large true-negative pools.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.45\textwidth}
+            \begin{block}{Clinical Triage Trade-Offs}
+                \fontsize{8.5}{10}\selectfont
+                \textbf{Recall (Sensitivity):} Maximized during screening to ensure zero active pathologies (e.g., MI) are missed (minimizing False Negatives).
+                \vspace{0.15cm}
+                
+                \textbf{Precision (Utility):} Maximized to prevent false alarms that overwhelm emergency rooms and clinical resources (minimizing False Positives).
+                \vspace{0.15cm}
+                
+                \textbf{PhysioNet Score:} Uses clinical cost weights to penalize high-risk errors (e.g. calling MI Normal) more severely.
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 16: Results: Quantitative Benchmarks
+% ---------------------------------------------------------
+\section{Results}
+\begin{frame}{Quantitative Model Benchmarks}
+    \centering
+    \resizebox{0.95\textwidth}{!}{%
+    \begin{tabular}{lcccccc}
+        \toprule
+        \textbf{Metric} & \textbf{CNN} & \textbf{GNN (ST-ReGE)} & \textbf{ViT-1D} & \textbf{S-T Hybrid} & \textbf{Ensemble (Def)} & \textbf{Ensemble (Opt)} \\
+        \midrule
+        Macro F1-Score & 0.7285 & 0.7444 & 0.6820 & 0.7226 & 0.7435 & \textbf{0.7506 (+0.71\%)} \\
+        Macro AUROC & 0.9266 & 0.9269 & 0.8939 & 0.9221 & 0.9344 & \textbf{0.9344} \\
+        Macro AUPRC & 0.8125 & 0.8218 & 0.7484 & 0.8064 & 0.8354 & \textbf{0.8354} \\
+        Exact Match Acc & 63.58\% & \textbf{64.42\%} & 59.51\% & 62.41\% & 65.59\% & 64.24\% \\
+        Training Time & 22.5 min & 23.9 min & 19.5 min & \textbf{16.7 min} & N/A & N/A \\
+        \bottomrule
+    \end{tabular}%
+    }
+    \vspace{0.3cm}
+    \begin{block}{Quantitative Highlights}
+        \begin{itemize}
+            \item \textbf{ST-ReGE GNN} is the top single model.
+            \item \textbf{The calibrated soft ensemble} achieves the highest overall score (0.7506 F1).
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 17: Results: Model Interpretability (1D Grad-CAM)
+% ---------------------------------------------------------
+% Section collapsed into Results
+\begin{frame}{Model Interpretability (1D Grad-CAM)}
+    \begin{columns}[c]
+        \begin{column}{0.55\textwidth}
+            \textbf{Visualizing Decision Criteria}
+            \begin{itemize}
+                \item \textbf{1D Grad-CAM}: Computes gradients of class scores relative to the last convolutional layer's activation maps to generate heatmaps.
+                \item \textbf{MI Localization}: For Myocardial Infarction predictions, peak activation highlights the \textbf{ST-segment elevation} in Lead V2.
+                \item \textbf{Clinical Alignment}: Heatmaps focus on diagnostic waveforms rather than baseline noise, verifying the model uses medically sound features.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.45\textwidth}
+            \centering
+            \IfFileExists{figures/gradcam_mi.png}{
+                \includegraphics[width=\textwidth]{figures/gradcam_mi.png}
+            }{
+                \begin{beamercolorbox}[sep=1em,center,rounded=true]{palette secondary}
+                    [gradcam\_mi.png missing]
+                \end{beamercolorbox}
+            }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 18: Results: Clinical Error Analysis (Confusion Matrix)
+% ---------------------------------------------------------
+% Section collapsed into Results
+\begin{frame}{Clinical Error Analysis (Confusion Matrix)}
+    \begin{columns}[c]
+        \begin{column}{0.55\textwidth}
+            \textbf{Diagnostic Sensitivity \& Logical Confusion}
+            \begin{itemize}
+                \item \textbf{Healthy Screening}: Normal Sinus Rhythms (NORM) are correctly filtered with a high \textbf{91\% sensitivity}.
+                \item \textbf{HYP vs. STTC Mimicry}: 15\% of Hypertrophy (HYP) cases are misclassified as ST/T changes (STTC).
+                \item \textbf{Ventricular Strain Justification}: Left Ventricular Hypertrophy causes physical strain on the heart wall, resulting in lateral ST-segment depression and T-wave inversion. This mimics primary ischemic ST/T changes, causing logical overlap.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.45\textwidth}
+            \centering
+            \IfFileExists{figures/confusion_matrix.png}{
+                \includegraphics[width=\textwidth]{figures/confusion_matrix.png}
+            }{
+                \begin{beamercolorbox}[sep=1em,center,rounded=true]{palette secondary}
+                    [confusion\_matrix.png missing]
+                \end{beamercolorbox}
+            }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 19: Results: FastAPI Web Dashboard
+% ---------------------------------------------------------
+% Section collapsed into Results
+\begin{frame}{FastAPI Diagnostic Triage Dashboard}
+    \begin{columns}[c]
+        \begin{column}{0.55\textwidth}
+            \textbf{Asynchronous GUI Integration}
+            \begin{itemize}
+                \item \textbf{Async Backend}: FastAPI server utilizing Pydantic for validation and fast inference.
+                \item \textbf{File Ingestion}: Validates and accepts digital ECG input files in JSON or CSV formats.
+                \item \textbf{Triage Dashboard}: Clean light-theme interface with slate gray panels to prevent eye strain.
+                \item \textbf{Waveform Plots}: Plots lead waveforms dynamically on pink ECG thermal grid layouts.
+                \item \textbf{Triage Output}: Displays ensemble class probabilities and flags critical cases.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.45\textwidth}
+            \centering
+            \IfFileExists{figures/test_webapp.png}{
+                \includegraphics[width=\textwidth]{figures/test_webapp.png}
+            }{
+                \begin{beamercolorbox}[sep=1em,center,rounded=true]{palette secondary}
+                    [test\_webapp.png missing]
+                \end{beamercolorbox}
+            }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 20: Scholarly Publications & Personal Contributions
+% ---------------------------------------------------------
+\section{Results}
+\begin{frame}{Scholarly Publication}
+    \begin{columns}[c]
+        \begin{column}{0.50\textwidth}
+            \begin{block}{\sffamily\bfseries SCHOLARLY CITATION}
+                \vspace{0.3cm}
+                {\rmfamily\Large\bfseries ``Development of a Heart Disease Diagnosis Technique Using ECG Signals''}\\[0.5cm]
+                \textbf{Authors:} Askar Anafin, Minsoo Hahn\\
+                \textbf{Journal:} Central Asian Journal (CAJ), 2026
+            \end{block}
+        \end{column}
+        \begin{column}{0.50\textwidth}
+            \centering
+            \begin{minipage}{0.48\linewidth}
+                \IfFileExists{figures/journal_title.png}{
+                    \includegraphics[width=\textwidth]{figures/journal_title.png}
+                }{
+                    \begin{beamercolorbox}[sep=1em,center,rounded=true]{palette secondary}
+                        [journal\_title.png]
+                    \end{beamercolorbox}
+                }
+            \end{minipage}
+            \hfill
+            \begin{minipage}{0.48\linewidth}
+                \IfFileExists{figures/publication_screen.png}{
+                    \includegraphics[width=\textwidth]{figures/publication_screen.png}
+                }{
+                    \begin{beamercolorbox}[sep=1em,center,rounded=true]{palette secondary}
+                        [publication\_screen.png]
+                    \end{beamercolorbox}
+                }
+            \end{minipage}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 21: Conclusion
+% ---------------------------------------------------------
+\section{Conclusion}
+\begin{frame}{Conclusion}
+    \textbf{Summary of Completed Work Matching the Objectives:}
+    \begin{enumerate}
+        \item \textbf{Butterworth Filter}: Implemented zero-phase filter and Z-score scaling to remove noise.
+        \item \textbf{Baseline CNN}: Built 1D ResNet-18 baseline, achieving a strong 0.7285 Macro F1-score.
+        \item \textbf{Lead GNN}: Developed ST-ReGE GNN with learnable adjacency, capturing lead spatial correlations (F1: 0.7444).
+        \item \textbf{ViT Evaluation}: Evaluated 1D ViT, showing it underperforms on medium databases due to inductive bias gaps.
+        \item \textbf{Hybrid Model}: Built Spatio-Temporal Hybrid combining convolutional morphology with attention rhythm.
+        \item \textbf{Boundary Calibration}: Calibrated decision boundaries and ensembled models to reach 0.7506 F1 and 0.9344 AUROC.
+        \item \textbf{Triage Dashboard}: Built async FastAPI prototype and dashboard GUI for real-time triage demo.
+    \end{enumerate}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 22: Future Directions
+% ---------------------------------------------------------
+\begin{frame}{Future Directions}
+    \textbf{Future work will focus on the following key areas:}
+    \begin{itemize}
+        \item \textbf{Model Ensembling}: Combine 1D ResNet-18, ST-ReGE GNN, and Hybrid models to leverage morphological feature extraction, spatial lead propagation, and sequence-level rhythm contexts.
+        \item \textbf{Self-Supervised Pre-training}: Investigate self-supervised pre-training (such as Masked Auto-Encoders) on larger datasets (e.g., MIMIC-IV-ECG) to improve Transformer robustness.
+        \item \textbf{Multi-Modal Fusion}: Integrate patient demographic data (age, sex, clinical history) into the model inputs to build a multi-modal decision support system.
+    \end{itemize}
+\end{frame}
+
+% ---------------------------------------------------------
+% Slide 23: Thank You! (Strictly White Background)
+% ---------------------------------------------------------
+\begin{frame}[plain]
+    \vspace*{0.2cm}
+    {\color{rust}\fontsize{10}{12}\selectfont\sffamily\bfseries THANK YOU}
+    \vspace*{1.0cm}
+    
+    {\color{slate}\rmfamily\Huge\bfseries Thank you\\{\color{rust}\itshape for your attention.}}
+    \vspace*{0.4cm}
+    
+    {\color{slate}\fontsize{18}{22}\selectfont\sffamily\itshape I welcome your questions and discussion.}
+    
+    \vspace*{1.3cm}
+    {\color{slate}\hrule height 0.5pt}
+    \vspace*{0.3cm}
+    
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \flushleft
+            {\color{mutedgray}\fontsize{9}{11}\selectfont\sffamily\bfseries CANDIDATE}\\[0.1cm]
+            {\color{slate}\large\rmfamily\bfseries Askar Anafin}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \flushright
+            {\color{mutedgray}\fontsize{9}{11}\selectfont\sffamily\bfseries SCIENTIFIC SUPERVISOR}\\[0.1cm]
+            {\color{slate}\large\rmfamily\bfseries Minsoo Hahn, PhD}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\end{document}

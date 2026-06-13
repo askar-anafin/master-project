@@ -1,0 +1,79 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian,english]{babel}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+% Standard margins matching AITU and GOST review guidelines
+\geometry{
+    left=2.5cm,
+    right=1.5cm,
+    top=2.0cm,
+    bottom=2.0cm
+}
+
+\onehalfspacing
+\setlength{\parindent}{1.25cm}
+
+\begin{document}
+
+\begin{center}
+    \bfseries\large
+    SUPERVISOR REVIEW OF MASTER'S THESIS
+\end{center}
+\vspace{1em}
+
+\noindent
+\textbf{Master's student:} Anafin Askar \\
+\textbf{Educational program:} Applied Data Analytics (7M06103) \\
+\textbf{Thesis title:} Development of a Heart Disease Diagnosis Technique Using ECG (Electrocardiogram) Signals \\
+
+\hrule height 1pt
+\vspace{1.5em}
+
+\noindent
+\textbf{1. Relevance of the Research Topic} \\
+The topic of the master's thesis is highly relevant. Cardiovascular diseases (CVDs) remain the leading cause of mortality globally, yet standard clinical practice relies heavily on visual interpretation of 12-lead ECG waveforms, a process prone to human error and substantial inter-observer variability exceeding $20\%$. Deep learning offers a viable solution for automated triage and decision support. However, standard deep learning models treat the 12 leads as simple independent channels, omitting the structural and physical spatial geometry of electrode placements. The research addresses a key clinical challenge by developing architectures that model both temporal morphologies and spatial inter-lead relations, and packages these models into a real-time clinical triage prototype, which is directly applicable to medical decision-support systems.
+\vspace{1em}
+
+\noindent
+\textbf{2. General Characteristics of the Thesis} \\
+The master's thesis consists of an abstract, acknowledgements, declarations, a list of figures and tables, table of contents, 4 main chapters, a conclusion, a list of references, and six appendices containing fully reproducible Python code. The thesis is well-structured, and the inclusion of clean, modular PyTorch and FastAPI backend source code listings in the appendices is a notable strength: it allows all reported preprocessing steps, model training runs, ensembling configurations, and local deployment pipelines to be reproduced from the raw dataset without manual intervention.
+\vspace{1em}
+
+\noindent
+\textbf{3. Scientific Novelty} \\
+The scientific novelty of the work lies in the integration of a learnable adjacency matrix $A \in \mathbb{R}^{12 \times 12}$ inside a Spatio-Temporal Graph Neural Network (ST-ReGE) to dynamically model the electrical correlations between anatomically contiguous leads; in the first systematic benchmark on the PTB-XL database comparing morphology-focused 1D ResNet-18, spatial GNN, sequence-focused ViT-1D, and a custom Spatio-Temporal Hybrid architecture under matched validation conditions; and in the demonstration that validation-set threshold grid search combined with soft voting ensembling can resolve severe class imbalances and multi-label pathology co-occurrences without requiring expensive model retraining.
+\vspace{1em}
+
+\noindent
+\textbf{4. Brief Description of the Thesis} \\
+The introductory chapter defines the research problem, objectives, scope, novelty, and three specific hypotheses concerning inductive biases, spatial lead contiguity, and post-hoc interpretability. The literature review covers the physiological foundations of electrocardiography, target pathologies, historical computer-aided diagnostic methods, and deep learning architectures in cardiology. The methodology chapter details the preprocessing pipeline (a 4th-order zero-phase Butterworth bandpass filter from 0.5 to 50 Hz and lead-wise Z-score normalization) and the structural specifications of the CNN, GNN, ViT, and Hybrid models. The results chapter presents quantitative benchmarks, an ablation study, qualitative case studies, 1D Grad-CAM interpretability heatmaps, validation-set threshold optimization, and the deployment details of the FastAPI application server. The discussion and conclusion chapters interpret the findings against the stated hypotheses and outline future clinical deployment challenges.
+\vspace{1em}
+
+\noindent
+\textbf{5. Student Performance Evaluation} \\
+During the preparation of the thesis, the student demonstrated independence, analytical discipline, and strong programming skills. Confronted with a difficult multi-label classification problem on clinical signal sequences, the student initially faced challenges with the training instability of the graph neural network and the severe overfitting of the 1D Vision Transformer baseline due to its lack of local inductive biases. The student showed excellent research initiative and engineering discipline in debugging these issues, which led to the design of the Spatio-Temporal Hybrid model to combine convolutional morphological features with transformer sequence attention, and the implementation of the validation-set threshold optimization which successfully boosted the voting ensemble's Macro F1-score to \textbf{0.7439} and Macro AUROC to \textbf{0.9323}. The student responded constructively to feedback, remained transparent about the performance limits of attention-based models under limited data, and delivered a fully functional FastAPI web dashboard. The work demonstrates readiness for professional or research practice in applied data analytics.
+\vspace{1em}
+
+\noindent
+\textbf{6. Conclusion} \\
+The master's thesis is completed in full, meets all academic integrity and reporting requirements of the Applied Data Analytics curriculum, and can be admitted to the defense. The work deserves the grade «A».
+
+\vspace{3em}
+\noindent
+\textbf{Supervisor:} \\
+Minsoo Hahn, PhD, Professor, \\
+Department of Computational and Data Sciences, \\
+School of Artificial Intelligence and Data Science, \\
+Astana IT University LLP \\
+
+\vspace{2.5em}
+\noindent
+Signature: \rule{4cm}{0.5pt} \hfill Date: \rule{4cm}{0.5pt}
+
+\end{document}

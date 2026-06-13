@@ -1,0 +1,79 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian,english]{babel}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+% Standard margins matching AITU and GOST review guidelines
+\geometry{
+    left=2.5cm,
+    right=1.5cm,
+    top=2.0cm,
+    bottom=2.0cm
+}
+
+\onehalfspacing
+\setlength{\parindent}{1.25cm}
+
+\begin{document}
+
+\begin{center}
+    \bfseries\large
+    EXTERNAL REVIEW OF MASTER'S THESIS
+\end{center}
+\vspace{1em}
+
+\noindent
+\textbf{Master's student:} Anafin Askar \\
+\textbf{Educational program:} Applied Data Analytics (7M06103) \\
+\textbf{Thesis title:} Development of a Heart Disease Diagnosis Technique Using ECG (Electrocardiogram) Signals \\
+
+\hrule height 1pt
+\vspace{1.5em}
+
+\noindent
+\textbf{1. Relevance of the Research Topic} \\
+Automated classification of standard 12-lead electrocardiogram (ECG) signals is a high-priority clinical challenge. Cardiovascular diseases remain the leading cause of mortality globally, and diagnostic errors due to subjective manual interpretation or cognitive fatigue in emergency triage can lead to critical delays in patient care. While deep learning has bypassed traditional handcrafted feature engineering, standard neural networks fail to model the physical, anatomical geometry of electrode placement, treating the 12 leads as simple independent channels. By developing, optimizing, and comparing temporal and spatial architectures alongside post-hoc calibration strategies, this thesis addresses a key research gap and provides a practical, automated triage framework for clinical decision support.
+\vspace{1em}
+
+\noindent
+\textbf{2. General Characteristics of the Thesis} \\
+The master's thesis is written at a high academic level and follows a rigorous, logical structure that meets the academic standards of Astana IT University. The document is well-organized, starting from clear physiological and clinical principles and progressing through data preprocessing, model architectures, rigorous validation benchmarks, interpretability modules, and web microservice implementation. The thesis relies on a solid bibliography of 99 references. The inclusion of complete, modular, and reproducible PyTorch and FastAPI source code listings in the appendices ensures full reproducibility of all reported experiments.
+\vspace{1em}
+
+\noindent
+\textbf{3. Structure and Content of the Thesis} \\
+The introductory chapter defines the research problem, objectives, scope, novelty, and three specific hypotheses concerning inductive biases, spatial lead contiguity, and post-hoc interpretability. The literature review covers the physiological foundations of electrocardiography, target pathologies, historical computer-aided diagnostic methods, and deep learning architectures in cardiology. The methodology chapter details the preprocessing pipeline (a 4th-order zero-phase Butterworth bandpass filter from 0.5 to 50 Hz and lead-wise Z-score normalization) and the structural specifications of the CNN, GNN, ViT, and Hybrid models. The results chapter presents quantitative benchmarks, an ablation study, qualitative case studies, 1D Grad-CAM interpretability heatmaps, validation-set threshold optimization, and the deployment details of the FastAPI application server. The discussion and conclusion chapters interpret the findings against the stated hypotheses and outline future clinical deployment challenges.
+\vspace{1em}
+
+\noindent
+\textbf{4. Strengths of the Work} \\
+The benchmark's multi-perspective approach is the most valuable aspect of the work. By comparing models representing different inductive biases (CNN for local morphology, GNN for spatial propagation, ViT for global sequence attention, and a Spatio-Temporal Hybrid), the study provides a comprehensive evaluation of architectural trade-offs. The introduction of a learnable adjacency matrix $A \in \mathbb{R}^{12 \times 12}$ inside the ST-ReGE GNN represents a methodologically sound way to dynamically discover anatomical lead relationships rather than relying on static, physical distance metrics. Furthermore, the validation-set threshold grid search and soft voting ensemble significantly improve classification metrics (boosting the Macro F1-score to \textbf{0.7439} and Macro AUROC to \textbf{0.9323}) under class imbalance. Finally, the 1D Grad-CAM heatmaps successfully localize elevated ST-segments, matching established clinical guidelines and establishing clinical trust, while the FastAPI dashboard microservice bridges the gap between deep learning theory and real-world deployment.
+\vspace{1em}
+
+\noindent
+\textbf{5. Comments and Suggestions} \\
+Despite the high quality of the work, the following minor comments are made to improve the research:
+\begin{enumerate}
+    \item Although the thesis emphasizes the physiological value of spatio-temporal graph modeling, the baseline 1D ResNet-18 model (Macro F1 = 0.7273) still slightly outperforms the proposed ST-ReGE GNN (Macro F1 = 0.7258) and Hybrid (Macro F1 = 0.7063) models. The author should address why the added structural complexity of learnable graphs and self-attention did not yield a clear benchmark advantage over simple 1D convolutions on the PTB-XL dataset.
+    \item While the FastAPI dashboard is a valuable practical contribution, its evaluation is purely qualitative. The thesis would be strengthened by including a quantitative latency benchmark (such as average inference time per sample on CPU and GPU configurations) to demonstrate the microservice's real-time feasibility.
+\end{enumerate}
+\vspace{1.5em}
+
+\noindent
+\textbf{6. Conclusion} \\
+Overall, the master's thesis is completed at a high academic level. It addresses a well-defined clinical research gap using a methodologically sound, reproducible design, and provides findings that are both statistically interpretable and practically applicable. The thesis meets all the criteria of the Applied Data Analytics curriculum and deserves the grade «A».
+
+\vspace{3em}
+\noindent
+Reviewer: \rule{8cm}{0.5pt} \\
+
+\vspace{1.5em}
+\noindent
+Signature: \rule{4cm}{0.5pt} \hfill Date: \rule{4cm}{0.5pt}
+
+\end{document}

@@ -25,6 +25,7 @@ from src.models.cnn import ResNet18
 from src.models.mamba import MambaECG
 from src.models.gnn import STReGE
 from src.models.vit import ViT1D
+from src.models.hybrid import ResNetTransformer
 
 def get_model(model_name, num_classes=5, input_channels=12):
     if model_name == 'cnn':
@@ -35,10 +36,12 @@ def get_model(model_name, num_classes=5, input_channels=12):
         return STReGE(num_classes=num_classes, num_nodes=input_channels, feature_dim=256)
     elif model_name == 'vit':
         return ViT1D(num_classes=num_classes, input_channels=input_channels, seq_len=5000, patch_size=50, d_model=128, nhead=4, num_layers=4)
+    elif model_name == 'hybrid':
+        return ResNetTransformer(num_classes=num_classes, input_channels=input_channels)
     else:
         raise ValueError(f"Unknown model: {model_name}")
 
-def train_experiment(model_name, experiment_name=None, limit=None, epochs=20, batch_size=32, lr=1e-3, num_workers=4):
+def train_experiment(model_name, experiment_name=None, limit=None, epochs=20, batch_size=32, lr=1e-3, num_workers=4, patience=10):
     
     # 1. Setup Directories
     if experiment_name is None:
@@ -81,6 +84,11 @@ def train_experiment(model_name, experiment_name=None, limit=None, epochs=20, ba
     test_loader = DataLoader(test_data, batch_size=batch_size, shuffle=False, **dataloader_kwargs)
     
     # 3. Model & Optimization
+    # Adjust learning rate for stability in Transformer-based architectures
+    if model_name in ['vit', 'hybrid'] and lr == 1e-3:
+        lr = 1e-4
+        print(f"[*] Adjusted learning rate to {lr} to prevent {model_name} training collapse.")
+        
     model = get_model(model_name).to(DEVICE)
     optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-2)
     criterion = nn.BCEWithLogitsLoss()
@@ -90,6 +98,7 @@ def train_experiment(model_name, experiment_name=None, limit=None, epochs=20, ba
     scaler = torch.amp.GradScaler('cuda')
     
     best_val_score = 0.0
+    patience_counter = 0
     
     # 4. Training Loop
     for epoch in range(epochs):
@@ -132,6 +141,12 @@ def train_experiment(model_name, experiment_name=None, limit=None, epochs=20, ba
             best_val_score = val_f1
             torch.save(model.state_dict(), os.path.join(output_dir, 'best_model.pth'))
             print(f"  [+] New Best Model Saved! ({val_f1:.4f})")
+            patience_counter = 0
+        else:
+            patience_counter += 1
+            if patience_counter >= patience:
+                print(f"  [!] Early stopping triggered after {epoch+1} epochs. Best Val F1: {best_val_score:.4f}")
+                break
             
     # 5. Final Evaluation on Test Set
     print("\n--- Final Evaluation (Test Set) ---")
@@ -198,12 +213,13 @@ def predict_all(model, loader, device):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model', type=str, required=True, choices=['cnn', 'mamba', 'gnn', 'vit'])
+    parser.add_argument('--model', type=str, required=True, choices=['cnn', 'mamba', 'gnn', 'vit', 'hybrid'])
     parser.add_argument('--name', type=str, help='Custom experiment name (folder name)')
     parser.add_argument('--limit', type=int, help='Limit dataset size for debugging')
     parser.add_argument('--epochs', type=int, default=20)
     parser.add_argument('--batch_size', type=int, default=32)
     parser.add_argument('--num_workers', type=int, default=4)
+    parser.add_argument('--patience', type=int, default=10, help='Patience for early stopping')
     args = parser.parse_args()
     
-    train_experiment(args.model, experiment_name=args.name, limit=args.limit, epochs=args.epochs, batch_size=args.batch_size, num_workers=args.num_workers)
+    train_experiment(args.model, experiment_name=args.name, limit=args.limit, epochs=args.epochs, batch_size=args.batch_size, num_workers=args.num_workers, patience=args.patience)

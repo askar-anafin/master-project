@@ -29,7 +29,7 @@ def generate_confusion_matrix():
     print("Loading CNN Model...")
     model = get_model('cnn')
     model.to(device)
-    model.load_state_dict(torch.load('experiments/cnn_full/best_model.pth', map_location=device))
+    model.load_state_dict(torch.load('experiments/cnn_filtered/best_model.pth', map_location=device))
     model.eval()
     
     # Inference

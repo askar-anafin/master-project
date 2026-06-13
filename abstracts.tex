@@ -1,0 +1,96 @@
+\documentclass[12pt,a4paper]{article}
+
+% Language and font configuration
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[kazakh,russian,english]{babel}
+
+% Math and symbols packages
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{hyperref}
+
+% Standard margins (matching the thesis layout: Left=30mm, Right=15mm, Top=20mm, Bottom=20mm)
+\geometry{
+    left=30mm,
+    right=15mm,
+    top=20mm,
+    bottom=20mm
+}
+
+% Paragraph settings (matching the thesis layout)
+\onehalfspacing
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Thesis Abstracts},
+    pdfpagemode=FullScreen,
+}
+
+\begin{document}
+
+% =========================================================================
+% 1. ENGLISH ABSTRACT
+% =========================================================================
+\begin{otherlanguage}{english}
+\begin{center}
+    \large\textbf{Abstract}
+\end{center}
+\vspace{0.3cm}
+
+\noindent \textbf{Thesis structure:} 66 pages, 11 figures, 13 tables, 52 references, 6 appendices.
+\vspace{0.3cm}
+
+This research focuses on the development, optimization, and comparative analysis of deep learning models---including a 1D ResNet-18, Spatio-Temporal Graph Neural Networks (ST-ReGE) with a learnable adjacency matrix, a 1D Vision Transformer, and a Spatio-Temporal Hybrid model---for the automated multi-label classification of standard 12-lead electrocardiogram (ECG) signals. The purpose is to provide robust automated interpretation to assist in clinical decision support and patient triage. Raw signals are preprocessed using a digital bandpass filter (0.5--50 Hz) and Z-score normalization. In our experimental evaluations on the PTB-XL dataset, the GNN (ST-ReGE) achieved the highest Macro F1-score of 0.7444, Macro AUROC of 0.9269, Exact Match Accuracy of 64.42\%, and Macro AUPRC of 0.8218, demonstrating that modeling spatial relations between leads is highly effective. The adapted CNN (ResNet-18) and Spatio-Temporal Hybrid models also performed strongly, achieving Macro F1-scores of 0.7285 and 0.7226, respectively. The Vision Transformer underperformed due to data limitations. Post-hoc soft voting ensembling and validation threshold optimization further boosted the Macro F1-score to 0.7506 and Macro AUROC to 0.9344. A web-based clinical triage prototype was developed to demonstrate real-time classification.
+
+\vspace{0.8cm}
+\noindent\textbf{Keywords:} ECG, Deep Learning, ResNet-18, Graph Neural Networks, Vision Transformers, Multi-label Classification, Ensemble Learning
+\end{otherlanguage}
+
+\clearpage
+
+% =========================================================================
+% 2. RUSSIAN ABSTRACT
+% =========================================================================
+\begin{otherlanguage}{russian}
+\begin{center}
+    \large\textbf{Аннотация}
+\end{center}
+\vspace{0.3cm}
+
+\noindent \textbf{Структура диссертации:} 66 страниц, 11 рисунков, 13 таблиц, 52 литературных источника, 6 приложений.
+\vspace{0.3cm}
+
+Данное исследование посвящено разработке, оптимизации и сравнительному анализу моделей глубокого обучения (1D ResNet-18, пространственно-временных графовых нейронных сетей ST-ReGE с обучаемой матрицей смежности, 1D Vision Transformer и пространственно-временной гибридной модели) для автоматизированной мульти-лейбл классификации стандартных 12-канальных сигналов ЭКГ. Целью работы является создание надежного метода автоматической интерпретации для поддержки принятия клинических решений и триажа пациентов. Сигналы обрабатываются с помощью полосовой фильтрации (0,5--50 Гц) и Z-нормализации. По результатам экспериментов на наборе данных PTB-XL, GNN (ST-ReGE) показала наилучшие результаты, достигнув показателя Macro F1-score 0,7444, Macro AUROC 0,9269, точности Exact Match Accuracy 64,42\% и Macro AUPRC 0,8218, что доказывает эффективность моделирования пространственных отношений между каналами. Адаптированная CNN (ResNet-18) и гибридная модель также показали высокие результаты, достигнув Macro F1-score 0,7285 и 0,7226 соответственно. 1D Vision Transformer уступил остальным из-за ограниченного объема данных. Пост-хок ансамблирование и оптимизация порогов классификации позволили повысить Macro F1-score ансамбля до 0,7506 и Macro AUROC до 0,9344. Веб-интерфейс был разработан в качестве клинического прототипа для демонстрации диагностики в реальном времени.
+
+\vspace{0.8cm}
+\noindent\textbf{Ключевые слова:} ЭКГ, глубокое обучение, ResNet-18, графовые нейронные сети, трансформеры, мульти-лейбл классификация, ансамбли
+\end{otherlanguage}
+
+\clearpage
+
+% =========================================================================
+% 3. KAZAKH ABSTRACT
+% =========================================================================
+\begin{otherlanguage}{kazakh}
+\begin{center}
+    \large\textbf{Аңдатпа}
+\end{center}
+\vspace{0.3cm}
+
+\noindent \textbf{Диссертация құрылымы:} 66 бет, 11 сурет, 13 кесте, 52 әдебиеттер тізімі, 6 қосымша.
+\vspace{0.3cm}
+
+Бұл зерттеу стандартты 12 арналы ЭКГ сигналдарын автоматты түрде көп белгілі (multi-label) жіктеу үшін терең оқыту модельдерін (1D ResNet-18, үйренетін көршілестік матрицасы бар кеңістіктік-уақыттық графттық желі ST-ReGE, 1D Vision Transformer және кеңістіктік-уақыттық гибридтік модель) әзірлеуге, оңтайландыруға және салыстырмалы талдауға бағытталған. Жұмыстың мақсаты — клиникалық шешімдерді қолдау және пациенттерді триаждау үшін автоматты ЭКГ диагностикасының сенімді әдісін құру. Сигналдар сандық жолақты сүзу (0.5--50 Гц) және Z-баллды нормалау арқылы алдын ала өңделеді. PTB-XL деректер жиынтығындағы тәжірибелер нәтижесі бойынша кеңістіктік-уақыттық GNN (ST-ReGE) ең жоғары Macro F1-score 0.7444, Macro AUROC 0.9269, Exact Match дәлдігін 64.42\% және Macro AUPRC 0.8218 көрсеткіштерін көрсетіп, арналар арасындағы кеңістіктік қатынастарды модельдеудің тиімділігін дәлелдеді. Бейімделген CNN (ResNet-18) және гибридтік модельдер де сәйкесінше 0.7285 және 0.7226 жоғары Macro F1-score көрсетіп, жақсы нәтижелерге қол жеткізді. 1D Vision Transformer деректер көлемінің шектеулі болуына байланысты төменірек нәтиже көрсетті. Пост-хок ансамбльдеу және жіктеу табалдырығын оңтайландыру ансамбльдің Macro F1 көрсеткішін 0.7506-ға дейін және Macro AUROC мәнін 0.9344-ке дейін арттырды. Клиникалық триаждық веб-қосымша прототипі нақты уақыт режимінде диагноз қою үшін әзірленді.
+
+\vspace{0.8cm}
+\noindent\textbf{Түйін сөздер:} ЭКГ, терең оқыту, ResNet-18, графттық нейрондық желілер, трансформерлер, көп белгілі жіктеу, ансамбльдеу
+\end{otherlanguage}
+
+\end{document}

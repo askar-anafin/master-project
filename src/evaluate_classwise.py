@@ -88,12 +88,12 @@ def generate_table_3_2(results):
     print("\\caption{Quantitative Benchmark Results on PTB-XL Test Set}")
     print("\\begin{center}")
     print("\\resizebox{\\linewidth}{!}{%")
-    print("\\begin{tabular}{lccc}")
+    print("\\begin{tabular}{lcccc}")
     print("\\toprule")
-    print("\\textbf{Metric} & \\textbf{CNN (1D ResNet-18)} & \\textbf{GNN (ST-ReGE)} & \\textbf{ViT (1D Transformer)} \\\\")
+    print("\\textbf{Metric} & \\textbf{CNN (1D ResNet-18)} & \\textbf{GNN (ST-ReGE)} & \\textbf{ViT (1D Transformer)} & \\textbf{Hybrid (ResNet-Transformer)} \\\\")
     print("\\midrule")
     
-    model_keys = ['CNN', 'GNN', 'ViT']
+    model_keys = ['CNN', 'GNN', 'ViT', 'Hybrid']
     
     for metric_label, key, is_percentage in metrics:
         vals = []
@@ -113,7 +113,7 @@ def generate_table_3_2(results):
                 s = f"\\textbf{{{s}}}"
             formatted_vals.append(s)
             
-        print(f"{metric_label} & {formatted_vals[0]} & {formatted_vals[1]} & {formatted_vals[2]} \\\\")
+        print(f"{metric_label} & {formatted_vals[0]} & {formatted_vals[1]} & {formatted_vals[2]} & {formatted_vals[3]} \\\\")
         
     print("\\bottomrule")
     print("\\end{tabular}%")
@@ -125,7 +125,7 @@ def generate_table_3_2(results):
 
 def generate_table_3_3(results):
     metrics_keys = ['f1', 'precision', 'recall', 'auroc', 'auprc']
-    model_keys = ['CNN', 'GNN', 'ViT']
+    model_keys = ['CNN', 'GNN', 'ViT', 'Hybrid']
     
     print("\n% ==================== TABLE 3.3 LATEX CODE ====================")
     print("\\begin{table}[H]")
@@ -181,9 +181,10 @@ def main():
     test_loader = DataLoader(test_data, batch_size=64, shuffle=False)
     
     models_info = {
-        'CNN': ('cnn', 'experiments/cnn_full/best_model.pth'),
-        'GNN': ('gnn', 'experiments/gnn_full/best_model.pth'),
-        'ViT': ('vit', 'experiments/vit_full/best_model.pth')
+        'CNN': ('cnn', 'experiments/cnn_filtered/best_model.pth'),
+        'GNN': ('gnn', 'experiments/gnn_filtered/best_model.pth'),
+        'ViT': ('vit', 'experiments/vit_filtered/best_model.pth'),
+        'Hybrid': ('hybrid', 'experiments/hybrid_filtered/best_model.pth')
     }
     
     results = {}

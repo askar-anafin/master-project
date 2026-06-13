@@ -110,7 +110,21 @@ def process_ptbxl():
     df_processed = df.loc[ids_final]
     y_final, classes = get_labels(df_processed)
     
-    print(f"Labels Shape: {y_final.shape}", flush=True)
+    print(f"Labels Shape (before filtering): {y_final.shape}", flush=True)
+    
+    # Remove records with no diagnostic superclass label (all-zeros rows).
+    # These are records annotated exclusively with rhythm/form SCP codes,
+    # which do not map to any of the 5 diagnostic superclasses (NORM, MI, STTC, CD, HYP).
+    # Keeping them would treat them as true negatives for all classes, inflating metrics.
+    labeled_mask = y_final.sum(axis=1) > 0
+    X_final = X_final[labeled_mask]
+    y_final = y_final[labeled_mask]
+    ids_final = ids_final[labeled_mask]
+    df_processed = df_processed[labeled_mask]
+    
+    n_removed = (~labeled_mask).sum()
+    print(f"Removed {n_removed} records with no diagnostic superclass label.", flush=True)
+    print(f"Final labeled records: {len(y_final)}", flush=True)
     
     np.save(os.path.join(processed_dir, 'X_ptbxl.npy'), X_final)
     np.save(os.path.join(processed_dir, 'y_ptbxl.npy'), y_final)

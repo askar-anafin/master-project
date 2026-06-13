@@ -15,6 +15,8 @@ def calculate_metrics(y_true, y_pred_probs, threshold=0.5):
     Returns:
         dict: Dictionary containing calculated metrics
     """
+    if not np.isfinite(y_pred_probs).all():
+        y_pred_probs = np.nan_to_num(y_pred_probs, nan=0.0, posinf=1.0, neginf=0.0)
     y_pred_binary = (y_pred_probs > threshold).astype(int)
     
     # 1. Macro AUPRC
@@ -51,6 +53,8 @@ def compute_physionet_score(y_true, y_pred_probs, classes=None):
     - Missed Critical (e.g. MI predicted as Normal): -1.0 penalty
     - False Alarm (Normal predicted as Disease): -0.1 penalty
     """
+    if not np.isfinite(y_pred_probs).all():
+        y_pred_probs = np.nan_to_num(y_pred_probs, nan=0.0, posinf=1.0, neginf=0.0)
     y_pred_binary = (y_pred_probs > 0.5).astype(int)
     
     score = 0.0

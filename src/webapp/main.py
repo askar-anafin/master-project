@@ -2,7 +2,7 @@ import torch
 import numpy as np
 import os
 import sys
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, File, UploadFile
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List, Dict, Any
@@ -28,9 +28,10 @@ DATASET = None
 def load_models():
     print(f"Loading models to {DEVICE}...")
     model_paths = {
-        'cnn': ('cnn', 'experiments/cnn_full/best_model.pth'),
-        'gnn': ('gnn', 'experiments/gnn_full/best_model.pth'),
-        'vit': ('vit', 'experiments/vit_full/best_model.pth')
+        'cnn': ('cnn', 'experiments/cnn_filtered/best_model.pth'),
+        'gnn': ('gnn', 'experiments/gnn_filtered/best_model.pth'),
+        'vit': ('vit', 'experiments/vit_filtered/best_model.pth'),
+        'hybrid': ('hybrid', 'experiments/hybrid_filtered/best_model.pth')
     }
     
     for name, (type_name, path) in model_paths.items():
@@ -114,6 +115,7 @@ async def predict_sample(sample_idx: int):
         input_tensor = torch.tensor(signal, dtype=torch.float32).unsqueeze(0).to(DEVICE)
         
         results = []
+        model_probs = {}
         for model_name, model in MODELS.items():
             with torch.no_grad():
                 logits = model(input_tensor)
@@ -121,6 +123,7 @@ async def predict_sample(sample_idx: int):
                 
             probs_dict = {CLASSES[i]: float(probs[i]) for i in range(len(CLASSES))}
             predicted_classes = [CLASSES[i] for i in range(len(CLASSES)) if probs[i] > 0.5]
+            model_probs[model_name] = probs
             
             results.append(PredictionResult(
                 model=model_name,
@@ -128,9 +131,118 @@ async def predict_sample(sample_idx: int):
                 predicted_classes=predicted_classes
             ))
             
+        if MODELS:
+            # Optimal ensemble: cnn + gnn + hybrid
+            ensemble_candidates = [model_probs[name] for name in ['cnn', 'gnn', 'hybrid'] if name in model_probs]
+            if not ensemble_candidates:
+                ensemble_candidates = list(model_probs.values())
+            
+            probs_ensemble = np.mean(ensemble_candidates, axis=0)
+            probs_ensemble_dict = {CLASSES[i]: float(probs_ensemble[i]) for i in range(len(CLASSES))}
+            
+            # Calibrated validation-set thresholds
+            ensemble_thresholds = {'NORM': 0.45, 'MI': 0.36, 'STTC': 0.42, 'CD': 0.52, 'HYP': 0.35}
+            predicted_ensemble_classes = [
+                CLASSES[i] for i in range(len(CLASSES))
+                if probs_ensemble[i] > ensemble_thresholds.get(CLASSES[i], 0.5)
+            ]
+            
+            results.append(PredictionResult(
+                model="ensemble",
+                probabilities=probs_ensemble_dict,
+                predicted_classes=predicted_ensemble_classes
+            ))
+            
         return results
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+class UploadPredictionResponse(BaseModel):
+    signal: List[List[float]]
+    predictions: List[PredictionResult]
+
+@app.post("/api/predict_upload", response_model=UploadPredictionResponse)
+async def predict_upload(file: UploadFile = File(...)):
+    if not MODELS:
+        raise HTTPException(status_code=500, detail="No models loaded.")
+        
+    try:
+        contents = await file.read()
+        filename = file.filename
+        
+        # Parse data based on file type
+        if filename.endswith('.json'):
+            import json
+            data = json.loads(contents.decode('utf-8'))
+            signal = np.array(data, dtype=np.float32)
+        elif filename.endswith('.csv'):
+            import io
+            import pandas as pd
+            df = pd.read_csv(io.BytesIO(contents))
+            # If the CSV has column headers, df.values will exclude them, which is perfect.
+            signal = df.values.astype(np.float32)
+        else:
+            raise HTTPException(status_code=400, detail="Unsupported file format. Please upload a .json or .csv file.")
+            
+        # Standardize shape to (5000, 12)
+        if signal.shape == (12, 5000):
+            signal = signal.T
+            
+        if signal.shape != (5000, 12):
+            raise HTTPException(status_code=400, detail=f"Invalid signal shape {signal.shape}. Expected (5000, 12) or (12, 5000).")
+            
+        # Run inference
+        input_tensor = torch.tensor(signal, dtype=torch.float32).unsqueeze(0).to(DEVICE)
+        results = []
+        model_probs = {}
+        for model_name, model in MODELS.items():
+            with torch.no_grad():
+                logits = model(input_tensor)
+                probs = torch.sigmoid(logits).cpu().numpy()[0]
+                
+            probs_dict = {CLASSES[i]: float(probs[i]) for i in range(len(CLASSES))}
+            predicted_classes = [CLASSES[i] for i in range(len(CLASSES)) if probs[i] > 0.5]
+            model_probs[model_name] = probs
+            
+            results.append(PredictionResult(
+                model=model_name,
+                probabilities=probs_dict,
+                predicted_classes=predicted_classes
+            ))
+            
+        if MODELS:
+            # Optimal ensemble: cnn + gnn + hybrid
+            ensemble_candidates = [model_probs[name] for name in ['cnn', 'gnn', 'hybrid'] if name in model_probs]
+            if not ensemble_candidates:
+                ensemble_candidates = list(model_probs.values())
+            
+            probs_ensemble = np.mean(ensemble_candidates, axis=0)
+            probs_ensemble_dict = {CLASSES[i]: float(probs_ensemble[i]) for i in range(len(CLASSES))}
+            
+            # Calibrated validation-set thresholds
+            ensemble_thresholds = {'NORM': 0.45, 'MI': 0.36, 'STTC': 0.42, 'CD': 0.52, 'HYP': 0.35}
+            predicted_ensemble_classes = [
+                CLASSES[i] for i in range(len(CLASSES))
+                if probs_ensemble[i] > ensemble_thresholds.get(CLASSES[i], 0.5)
+            ]
+            
+            results.append(PredictionResult(
+                model="ensemble",
+                probabilities=probs_ensemble_dict,
+                predicted_classes=predicted_ensemble_classes
+            ))
+            
+        # Downsample signal by a factor of 5 for frontend performance
+        downsampled_signal = signal[::5, :]
+        
+        return UploadPredictionResponse(
+            signal=downsampled_signal.tolist(),
+            predictions=results
+        )
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Failed to process file: {str(e)}")
 
 # Root redirect to index.html
 from fastapi.responses import RedirectResponse

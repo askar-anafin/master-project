@@ -39,7 +39,7 @@ def visualize_sample():
     # Load Model
     print("Loading CNN Model...")
     model = ResNet18(num_classes=5).to(DEVICE)
-    model.load_state_dict(torch.load('experiments/cnn_full/best_model.pth', map_location=DEVICE))
+    model.load_state_dict(torch.load('experiments/cnn_filtered/best_model.pth', map_location=DEVICE))
     model.eval()
     
     # Initialize GradCAM

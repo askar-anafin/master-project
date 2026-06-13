@@ -32,9 +32,10 @@ def run_demo():
     # Load Models
     models = {}
     model_configs = {
-        'CNN (ResNet)': ('cnn', 'experiments/cnn_full/best_model.pth'),
-        'GNN (ST-ReGE)': ('gnn', 'experiments/gnn_full/best_model.pth'),
-        'ViT (Transformer)': ('vit', 'experiments/vit_full/best_model.pth')
+        'CNN (ResNet)': ('cnn', 'experiments/cnn_filtered/best_model.pth'),
+        'GNN (ST-ReGE)': ('gnn', 'experiments/gnn_filtered/best_model.pth'),
+        'ViT (Transformer)': ('vit', 'experiments/vit_filtered/best_model.pth'),
+        'Hybrid (ResNet-Transformer)': ('hybrid', 'experiments/hybrid_filtered/best_model.pth')
     }
     
     for name, (type_name, path) in model_configs.items():
